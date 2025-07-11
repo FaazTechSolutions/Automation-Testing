@@ -1,15 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-import { time } from 'console';
-
-// login function
-async function login(page: Page, username: string, password: string) {
-    await page.goto('https://portal.mawarid.com.sa/apps4x/#/login', { waitUntil: 'domcontentloaded' });
-    await page.getByRole('textbox', { name: 'UserName' }).click({ timeout: 20000 });
-    await page.getByRole('textbox', { name: 'UserName' }).fill(username);
-    await page.getByRole('textbox', { name: 'Password' }).click({ timeout: 20000 });
-    await page.getByRole('textbox', { name: 'Password' }).fill(password);
-    await page.getByRole('button', { name: 'SignIn' }).click({ timeout: 20000 });
-}
+import { LoginPage } from '../pages/loginPage';
 
 
 test.describe('Helpdesk', () => {
@@ -17,8 +7,12 @@ test.describe('Helpdesk', () => {
     test.beforeEach(async ({ page }) => {
         test.slow();
         await test.step('Login the mawarid portal', async () => {
-            await login(page, 'm.afrith', '123456');
+            //POM login 
+            const loginPage = new LoginPage(page);
+            await loginPage.goto();
+            await loginPage.login('m.afrith', '123456');
         });
+
         await test.step('go to the helpdesk app', async () => {
             await expect(page.getByRole('link', { name: 'Helpdesk' })).toBeVisible({ timeout: 30000 });
             await page.getByRole('link', { name: 'Helpdesk' }).click();
