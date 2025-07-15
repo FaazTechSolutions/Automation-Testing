@@ -856,7 +856,7 @@ test.describe('Helpdesk', () => {
             await page.getByRole('link', { name: 'Accept' }).click();
             await page.locator('#relation_autoComplete_dropdown_TicketTypeddl label').click();
             await page.locator('#autoComplete_dropdown_TicketTypeddl a').nth(3).click();
-            await expect(page.getByText('Test', { exact: true })).toBeVisible();
+            await expect(page.getByText('Recruitment Campaign Plan')).toBeVisible();
             await page.locator('#autoComplete_dropdown_TicketTypeddl a').nth(2).click();
             await page.getByText('Issue').click();
             await page.getByPlaceholder('Scheduled Date').fill('2025-07-30');
