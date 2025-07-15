@@ -1268,7 +1268,7 @@ test.describe('Customer Support', async () => {
             // Pickup Action
             await page.getByRole('link', { name: 'Pickup' }).click();
             await expect(page.locator('#Actionform').getByText('Pickup')).toBeVisible();
-            await page.locator('#Actionform').getByText('Close').click();
+            await page.locator('#Actionform').getByText('Close').click(); 
 
             // Assign Action
             await page.getByRole('link', { name: 'Assign', exact: true }).click();
