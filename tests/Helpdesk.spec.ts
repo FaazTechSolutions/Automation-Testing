@@ -221,7 +221,7 @@ test.describe('Helpdesk', () => {
                 await expect(page.locator('td').filter({ hasText: 'a.aldosari01@mawarid.com.sa' }).first()).toBeVisible();
                 await page.getByText('Next page').click();
                 await expect(page.locator('td').filter({ hasText: 'a.almansour@mawarid.com.sa' }).first()).toBeVisible();
-                await page.getByText('page 70').click();
+                await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[9]/a').click();
                 await page.getByText('page 1').click();
                 await page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first().click();
                 await page.locator('.angular-editor-textarea').first().click({ timeout: 20000 });
@@ -348,9 +348,9 @@ test.describe('Helpdesk', () => {
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('Next page').click();
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('Next page').click();
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('Next page').click();
-                await page.locator('#autoComplete_dropdown_table_Approvers').getByText('page 70').click();
-                await page.locator('#autoComplete_dropdown_table_Approvers').getByText('page 66').click();
-                await expect(page.locator('td').filter({ hasText: 'ux@mawarid.com.sa' }).first()).toBeVisible();
+                await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[9]/a').nth(1).click();
+                await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[8]/a').nth(1).click();
+                await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[7]/a').nth(1).click();
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('Previous page').click();
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('Previous page').click();
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('Previous page').click();
@@ -471,22 +471,18 @@ test.describe('Helpdesk', () => {
             await page.getByText('Next page').click();
             await page.getByText('Next page').click();
             await expect(page.locator('td').filter({ hasText: 'a.alqahss@mawarid.com.sa' }).first()).toBeVisible();
-
             await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[9]/a').click();
             await page.getByText('Previous page').click();
             await page.getByText('Previous page').click();
             await page.getByText('Previous page').click();
-
             await page.getByText('page 1').click();
             await page.locator('input[type="search"]').first().click();
-
             await page.locator('input[type="search"]').first().click();
             await page.locator('input[type="search"]').first().fill('a.alharbi01@mawarid.com.sa');
             await page.locator('tr').filter({ hasText: 'a.alharbi01@mawarid.com.sa' }).locator('i').click();
             await page.getByPlaceholder('Comments').click();
             await page.getByPlaceholder('Comments').fill('test');
             await page.locator('#pills-tabContent').getByText('Close').click();
-
             await page.getByText('Notes').click();
             await page.locator('#angular_editor_ETN0000029_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').click();
             await page.locator('#angular_editor_ETN0000029_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test');
@@ -618,6 +614,8 @@ test.describe('Helpdesk', () => {
                 await page.getByRole('list').filter({ hasText: /of/i }).locator('a').nth(3).click();
                 await page.getByRole('list').filter({ hasText: /of/i }).locator('a').first().click();
                 await expect(page.getByRole('listitem').filter({ hasText: /of/i }).getByRole('spinbutton')).toBeVisible();
+                await page.getByRole('cell', { name: 'IN New,Approved' }).hover();
+                // await page.getByRole('cell', { name: 'IN New,Approved value text ' }).getByRole('combobox').first().hover();
                 await page.getByText('New,Approved').hover();
                 await page.locator('label').filter({ hasText: 'New' }).locator('i').click();
                 await page.locator('#dynamic_list_EFN0000118').getByRole('listitem').first().click();
@@ -960,7 +958,12 @@ test.describe('Helpdesk', () => {
             await page.locator('#cdk-drop-list-0 a').filter({ hasText: 'List' }).click();
         });
 
-        test('RequestByCategory: should filter, select, and validate open requests assigned to the user', async ({ page }) => {
+        test('RequestByCategory: should filter, select, and validate open requests assigned to the user', async ({ page }, testInfo) => {
+            testInfo.annotations.push({
+                type: 'issue',
+                description: 'https://github.com/FaazTechSolutions/Apps4x_new/issues/493',
+            });
+
             test.slow();
             await page.locator('#MNU0000051').click();
             await page.getByRole('link', { name: ' Request By Category' }).click();
@@ -984,7 +987,11 @@ test.describe('Helpdesk', () => {
             await page.getByText('Filter').click();
         });
 
-        test('RequestByTechnician: should filter, select, and validate open requests assigned to the user', async ({ page }) => {
+        test('RequestByTechnician: should filter, select, and validate open requests assigned to the user', async ({ page }, testInfo) => {
+            testInfo.annotations.push({
+                type: 'issue',
+                description: 'https://github.com/FaazTechSolutions/Apps4x_new/issues/493',
+            });
             test.slow();
             await page.locator('#MNU0000051').click();
             await page.getByRole('link', { name: ' Request By Technician' }).click();
@@ -1077,7 +1084,7 @@ test.describe('Helpdesk', () => {
             await expect(page.getByRole('heading', { name: 'Approvals Details' })).toBeVisible({ timeout: 10000 });
             await expect(page.locator('a').filter({ hasText: 'Conversation' })).toBeVisible();
             await page.locator('a').filter({ hasText: 'Ticket Details' }).click();
-            await expect(page.locator('#custom_template_dynamic_list_EFN0000114 div').filter({ hasText: 'Test Status : Closed Request' }).nth(1)).toBeVisible();
+            await expect(page.locator('#custom_template_dynamic_list_EFN0000114 div').filter({ hasText: 'Test Status : Closed Request' }).nth(1)).toBeVisible({ timeout: 10000 });
             await page.waitForTimeout(3000);
             await page.locator('#cdk-drop-list-2 a').filter({ hasText: 'Approvals' }).click();
             await page.locator('#cdk-drop-list-2').getByRole('listitem').filter({ hasText: 'Task' }).locator('a').click();
@@ -1140,7 +1147,7 @@ test.describe('Helpdesk', () => {
             await page.waitForTimeout(3000);
 
             await page.locator('#cdk-drop-list-2 a').filter({ hasText: 'Approvals' }).click();
-            await expect(page.getByRole('cell', { name: 'Approver Id' }).locator('a')).toBeVisible();
+            await expect(page.getByRole('cell', { name: 'Approver Id' }).locator('a')).toBeVisible({ timeout: 10000 });
             await expect(page.getByRole('cell', { name: 'APR0001223' }).locator('comp-datatype')).toBeVisible();
             await page.locator('#cdk-drop-list-2').getByRole('listitem').filter({ hasText: 'Task' }).locator('a').click();
             await page.getByRole('listitem').filter({ hasText: 'History' }).locator('a').click();

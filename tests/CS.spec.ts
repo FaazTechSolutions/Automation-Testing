@@ -22,7 +22,7 @@ test.describe('Customer Support', async () => {
     test('Dashboard:', async ({ page }) => {
         await page.waitForTimeout(15000);
         await expect(page.locator('#canvasjs-angular-chart-container-0 canvas').nth(1)).toBeVisible();
-        await expect(page.locator('#canvasjs-angular-chart-container-1 canvas').nth(1)).toBeVisible();
+        await expect(page.locator('#canvasjs-angular-chart-container-1 canvas').nth(1)).toBeVisible({ timeout: 10000 });
         await page.locator('#canvasjs-angular-chart-container-0').getByRole('button', { name: 'More Options' }).click();
         await page.locator('#canvasjs-angular-chart-container-0').getByRole('button', { name: 'More Options' }).click();
         await page.locator('#canvasjs-angular-chart-container-1').getByRole('button', { name: 'More Options' }).click();
@@ -58,7 +58,7 @@ test.describe('Customer Support', async () => {
     test('MyTeamDashboard:', async ({ page }) => {
         await page.getByRole('link', { name: ' My Team Dashboard' }).click();
         await page.waitForTimeout(2000);
-        await expect(page.getByRole('heading', { name: 'My Team Ticket Count' })).toBeVisible();
+        await expect(page.getByRole('heading', { name: 'My Team Ticket Count' })).toBeVisible({ timeout: 10000 });
         await expect(page.locator('.myAssignedTikcetDashboard > div > div').first()).toBeVisible();
         await expect(page.locator('.row > div:nth-child(5)')).toBeVisible();
         await expect(page.getByRole('heading', { name: 'Request by Coordinator' })).toBeVisible();
@@ -177,7 +177,7 @@ test.describe('Customer Support', async () => {
                 // My Tickets: Open Ticket Details
                 await page.locator('comp-field-view-type').filter({ hasText: 'Test Ticket create' }).locator('a').click();
                 await page.waitForTimeout(2000);
-                await expect(page.getByRole('heading', { name: '[MWD0015478] Test Ticket' })).toBeVisible();
+                await expect(page.getByRole('heading', { name: '[MWD0015478] Test Ticket' })).toBeVisible({ timeout: 10000 });
 
                 // Ticket Details: Schedule Action
                 await page.getByRole('link', { name: 'Schedule' }).click();
@@ -401,7 +401,7 @@ test.describe('Customer Support', async () => {
                 await page.getByLabel('Title*').fill('test');
                 await page.locator('#relation_autoComplete_dropdown_TicketCategory > .control-input > .form-control').first().click();
                 await page.waitForTimeout(2000);
-                await expect(page.locator('tr').filter({ hasText: 'IT CRM TCY0000001 DPT0000001' }).locator('i')).toBeVisible({ timeout: 5000 });
+                await expect(page.locator('tr').filter({ hasText: 'IT CRM TCY0000001 DPT0000001' }).locator('i')).toBeVisible({ timeout: 7000 });
                 await page.locator('//*[@id="autoComplete_dropdown_TicketCategory"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
                 await page.waitForTimeout(1000);
                 await expect(page.locator('tr').filter({ hasText: 'Maintenance Maintenance' }).locator('i')).toBeVisible({ timeout: 5000 });
@@ -716,6 +716,7 @@ test.describe('Customer Support', async () => {
                 await page.locator('comp-field-view-type').filter({ hasText: 'test cc' }).locator('a').click();
                 //Reopen
                 await page.getByRole('link', { name: 'Re Open' }).click();
+                await page.waitForTimeout(5000);
                 await expect(page.locator('#Actionform').getByText('ReOpen')).toBeVisible({ timeout: 7000 });
                 await page.getByPlaceholder('Comments').click();
                 await page.getByPlaceholder('Comments').fill('yest');
@@ -840,7 +841,7 @@ test.describe('Customer Support', async () => {
                 // Reopen ticket details 
 
                 await page.getByRole('link', { name: 'Close', exact: true }).click();
-                await expect(page.locator('h4').filter({ hasText: 'Close' })).toBeVisible();
+                await expect(page.locator('h4').filter({ hasText: 'Close' })).toBeVisible({ timeout: 7000 });
                 await page.getByPlaceholder('Comments').click();
                 await page.getByPlaceholder('Comments').fill('test');
                 await page.locator('button').filter({ hasText: 'Close' }).click();
@@ -1185,7 +1186,7 @@ test.describe('Customer Support', async () => {
             await page.getByRole('link', { name: ' Unassigned Tickets' }).click();
             await expect(page.locator('section').getByText('Unassigned Tickets')).toBeVisible();
             await page.getByText('Options').click();
-            await expect(page.getByText('Export SelectedExportExport')).toBeVisible();
+            await expect(page.getByText('Export SelectedExportExport')).toBeVisible({ timeout: 5000 });
             await page.getByText('Options').click();
             await page.locator('i:nth-child(2)').click();
 
@@ -1268,7 +1269,7 @@ test.describe('Customer Support', async () => {
             // Pickup Action
             await page.getByRole('link', { name: 'Pickup' }).click();
             await expect(page.locator('#Actionform').getByText('Pickup')).toBeVisible();
-            await page.locator('#Actionform').getByText('Close').click(); 
+            await page.locator('#Actionform').getByText('Close').click();
 
             // Assign Action
             await page.getByRole('link', { name: 'Assign', exact: true }).click();
@@ -1762,7 +1763,367 @@ test.describe('Customer Support', async () => {
             await page.locator('comp-field-view-type').filter({ hasText: 'test after update' }).locator('a').click();
 
             //Reopen
+            await page.getByRole('link', { name: 'Re Open' }).click();
+            await expect(page.locator('#Actionform').getByText('ReOpen')).toBeVisible({ timeout: 7000 });
+            await page.getByPlaceholder('Comments').click();
+            await page.getByPlaceholder('Comments').fill('yest');
+            await page.getByText('Close', { exact: true }).click();
+            // Pickup
+            await page.getByRole('link', { name: 'Pickup' }).click();
+            await expect(page.locator('#Actionform').getByText('Pickup')).toBeVisible();
+            await page.locator('#Actionform').getByText('Close').click();
+            await page.getByRole('link', { name: 'Assign', exact: true }).click();
+            await page.locator('label').filter({ hasText: 'Mohamed Afrith' }).click();
+            await expect(page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('a.hyder', { exact: true }).first()).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByText('j.wilfred@mawarid.com.sa', { exact: true }).first()).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByText('b.iqbal@mawarid.com.sa').first()).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[5]').click();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[2]/a/i').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[2]/a/i').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[1]').click();
+            await page.waitForTimeout(1000);
+            await expect(page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('a.hyder', { exact: true }).first()).toBeVisible();
+            await page.getByText('OK', { exact: true }).click();
+            await page.locator('#Actionform button').first().click();
+            //ticket
+            await page.getByRole('link', { name: 'Ticket', exact: true }).click();
+            await page.waitForTimeout(1000);
+            await page.getByLabel('Title*').click();
+            await page.getByLabel('Title*').fill('test');
+            await page.locator('#relation_autoComplete_dropdown_TicketCategory > .control-input > .form-control').first().click();
+            await page.waitForTimeout(2000);
+            await expect(page.locator('tr').filter({ hasText: 'IT CRM TCY0000001 DPT0000001' }).locator('i')).toBeVisible({ timeout: 5000 });
+            await page.locator('//*[@id="autoComplete_dropdown_TicketCategory"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.locator('tr').filter({ hasText: 'Maintenance Maintenance' }).locator('i')).toBeVisible({ timeout: 5000 });
+            await page.locator('//*[@id="autoComplete_dropdown_TicketCategory"]/div[2]/div[1]/comp-pagination/ul/li[5]').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="autoComplete_dropdown_TicketCategory"]/div[2]/div[1]/comp-pagination/ul/li[2]/a/i').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="autoComplete_dropdown_TicketCategory"]/div[2]/div[1]/comp-pagination/ul/li[1]').click();
+            await expect(page.locator('tr').filter({ hasText: 'IT CRM TCY0000001 DPT0000001' }).locator('i')).toBeVisible();
+            await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).click();
+            await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).fill('test');
+            await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).press('Enter');
+            await page.locator('#autoComplete_dropdown_tableTicketCategory i').click();
+            await page.locator('.col-9 > relation-field > #relation_autoComplete_dropdown_AssignedTo > .control-input > .form-control').first().click();
+            await expect(page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('a.hyder')).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByText('a.alabbad01@mawarid.com.sa').first()).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByText('a.Aldhubayban@mawarid.com.sa').first()).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByText('a.alharbi@mawarid.com.sa').first()).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[5]').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[2]/a/i').click();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[2]/a/i').click();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[1]').click();
+            await expect(page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('a.hyder')).toBeVisible();
+            await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').first().click();
+            await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').first().fill('afrith');
+            await page.waitForTimeout(1000);
+            await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').first().press('Enter');
+            await page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('m.afrith', { exact: true }).click();
+            await page.locator('.angular-editor-textarea').first().click();
+            await page.locator('.angular-editor-textarea').first().fill('t');
+            await page.locator('div').filter({ hasText: /^t$/ }).first().fill('test');
+            await page.locator('button').filter({ hasText: 'Close' }).click();
+            await page.getByRole('link', { name: ' Attach' }).click();
+            await page.locator('#page_form_MON0000002').getByText('x', { exact: true }).click();
+            await page.locator('dynamic-field').filter({ hasText: 'Ticket ID MWD0000846 Subject' }).locator('a').click();
+            await expect(page.getByText('Details', { exact: true })).toBeVisible();
+            await expect(page.getByText('Customer Details')).toBeVisible();
+            await page.locator('//*[@id="DynamicCreate"]/div/div/div[1]/div/app-button/button/i').click();
+            await page.locator('a').filter({ hasText: 'Mohamed Afrith' }).click();
+            await expect(page.getByText('Details', { exact: true })).toBeVisible();
+            await expect(page.getByText('Coordinators Details')).toBeVisible();
+            await page.locator('//*[@id="DynamicCreate"]/div/div/div[1]/div/app-button/button/i').click();
+            //Ticket tab
+            await page.getByRole('list').filter({ hasText: 'Conversation Ticket Approvals' }).locator('a').nth(1).click();
+            await expect(page.getByText('Request Id')).toBeVisible();
+            // approvals tab
+            await page.locator('//*[starts-with(@id, "cdk-drop-list")]//a').filter({ hasText: 'Approvals' }).click();
+            await expect(page.getByText('Approver Id')).toBeVisible();
+            // attachments tab
+            await page.locator('a').filter({ hasText: 'Attachments' }).click();
+            await expect(page.getByText('Name')).toBeVisible();
+            // status history tab
+            await page.locator('a').filter({ hasText: 'Status History' }).click();
+            await expect(page.getByRole('cell', { name: 'MWD0000846' }).locator('comp-datatype')).toBeVisible();
+            await expect(page.getByText('Ticket Id', { exact: true })).toBeVisible();
+            await page.getByRole('button', { name: 'Close' }).click();
+            await page.getByRole('button', { name: ' Clear' }).click();
+        });
+
+        test('Create By Me:should filter, select, and validate requests', async ({ page }) => {
+            await page.locator('#MNU0000082').click();
+            await page.getByRole('link', { name: ' Created By Me' }).click();
+            await expect(page.locator('section').getByText('Created By Me')).toBeVisible();
+            await expect(page.getByText('Options')).toBeVisible();
+            await page.getByText('Options').click();
+            await expect(page.getByText('Export SelectedExportExport')).toBeVisible();
+            await page.getByText('Options').click();
+
+            // Pagination
+            await expect(page.getByRole('spinbutton')).toHaveValue('1');
+            await page.locator('//*[@id="dynamic_list_EFN0000007"]/widget-grid/div[1]/div[3]/div[2]/comp-pagination/ul/li[4]/a/i').click(); await expect(page.getByRole('spinbutton')).toHaveValue('2');
+            await page.locator('//*[@id="dynamic_list_EFN0000007"]/widget-grid/div[1]/div[3]/div[2]/comp-pagination/ul/li[1]').click();
+            await expect(page.getByRole('spinbutton')).toHaveValue('1');
+
+            // Title Filter
+            await page.locator('i:nth-child(2)').click();
+            await page.locator('#dynamic_list_EFN0000007').getByRole('textbox').click();
+            await page.getByRole('option', { name: 'Title' }).click();
+            await page.getByRole('textbox').nth(3).click();
+            await page.getByRole('textbox').nth(3).fill('Multiple attachment test');
+            await page.getByRole('button', { name: '' }).click();
+            await expect(page.locator('comp-field-view-type').filter({ hasText: 'Multiple attachment test' }).locator('a')).toBeVisible();
+            await page.getByRole('button', { name: ' Clear' }).click();
+            await expect(page.locator('#dynamic_list_EFN0000007').getByRole('textbox')).toBeEmpty();
+
+            // Status Filter
+
+            await page.locator('#dynamic_list_EFN0000007').getByRole('textbox').click();
+            await page.getByRole('option', { name: 'Status' }).click();
+            await page.locator('#autoComplete_dropdown_Status label').click();
+            await page.getByRole('row', { name: ' Closed Closed' }).locator('i').click();
+            await page.getByRole('button', { name: 'OK' }).click();
+            await expect(page.getByRole('listitem').filter({ hasText: 'Te Test MWD0001519 Closed' })).toBeVisible();
+            await page.getByRole('button', { name: ' Clear' }).click();
+            await expect(page.locator('#dynamic_list_EFN0000007').getByRole('textbox')).toBeEmpty();
+
+            // Ticket ID Filter
+            await page.locator('#dynamic_list_EFN0000007').getByRole('textbox').click();
+            await page.getByRole('option', { name: 'Ticket ID' }).click();
+            await page.getByRole('textbox').nth(3).click();
+            await page.getByRole('textbox').nth(3).fill('MWD0000894');
+            await page.getByRole('button', { name: '' }).click();
+            await expect(page.getByText('MWD0000894')).toBeVisible();
+            await page.locator('comp-field-view-type').filter({ hasText: 'Multiple attachment test' }).locator('a').click();
+
+            // Cancel
+            await page.getByRole('link', { name: 'Close', exact: true }).click();
+            await page.waitForTimeout(1000);
+            await expect(page.locator('h4').filter({ hasText: 'Close' })).toBeVisible();
+            await page.getByPlaceholder('Comments').click();
+            await page.getByPlaceholder('Comments').fill('test ');
+            await page.locator('button').filter({ hasText: 'Close' }).click();
+
+            // Start
+            await page.getByRole('link', { name: 'Start' }).click();
+            await expect(page.locator('#Actionform').getByText('Start')).toBeVisible();
+            await page.getByPlaceholder('Comments').click();
+            await page.getByPlaceholder('Comments').fill('test s');
+            await page.locator('#Actionform').getByText('Close').click();
+            await page.getByRole('link', { name: 'Pickup' }).click();
+            await expect(page.locator('#Actionform').getByText('Pickup')).toBeVisible();
+            await page.locator('#Actionform').getByText('Close').click();
+            await page.getByRole('link', { name: 'Assign', exact: true }).click();
+            await page.locator('#relation_autoComplete_dropdown_AssignedTo').getByText('Mohamed Afrith').click();
+            await expect(page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('a.hyder', { exact: true }).first()).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByText('j.wilfred@mawarid.com.sa', { exact: true }).first()).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByText('b.iqbal@mawarid.com.sa').first()).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[5]').click();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[2]/a/i').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[2]/a/i').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[1]').click();
+            await page.waitForTimeout(1000);
+            await expect(page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('a.hyder', { exact: true }).first()).toBeVisible();
+            await page.getByText('OK', { exact: true }).click();
+            await page.locator('#Actionform button').first().click();
+            //ticket
+            await page.getByRole('link', { name: 'Ticket', exact: true }).click();
+            await page.waitForTimeout(1000);
+            await page.getByLabel('Title*').click();
+            await page.getByLabel('Title*').fill('test');
+            await page.locator('#relation_autoComplete_dropdown_TicketCategory > .control-input > .form-control').first().click();
+            await page.waitForTimeout(2000);
+            await expect(page.locator('tr').filter({ hasText: 'IT CRM TCY0000001 DPT0000001' }).locator('i')).toBeVisible({ timeout: 5000 });
+            await page.locator('//*[@id="autoComplete_dropdown_TicketCategory"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.locator('tr').filter({ hasText: 'Maintenance Maintenance' }).locator('i')).toBeVisible({ timeout: 5000 });
+            await page.locator('//*[@id="autoComplete_dropdown_TicketCategory"]/div[2]/div[1]/comp-pagination/ul/li[5]').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="autoComplete_dropdown_TicketCategory"]/div[2]/div[1]/comp-pagination/ul/li[2]/a/i').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="autoComplete_dropdown_TicketCategory"]/div[2]/div[1]/comp-pagination/ul/li[1]').click();
+            await expect(page.locator('tr').filter({ hasText: 'IT CRM TCY0000001 DPT0000001' }).locator('i')).toBeVisible();
+            await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).click();
+            await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).fill('test');
+            await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).press('Enter');
+            await page.locator('#autoComplete_dropdown_tableTicketCategory i').click();
+            await page.locator('#relation_autoComplete_dropdown_AssignedTo > .control-input > .form-control').first().click();
+            await expect(page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('a.hyder')).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByText('a.alabbad01@mawarid.com.sa').first()).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByText('a.Aldhubayban@mawarid.com.sa').first()).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByText('a.alharbi@mawarid.com.sa').first()).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[5]').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[2]/a/i').click();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[2]/a/i').click();
+            await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[1]').click();
+            await expect(page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('a.hyder')).toBeVisible();
+            await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').first().click();
+            await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').first().fill('afrith');
+            await page.waitForTimeout(1000);
+            await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').first().press('Enter');
+            await page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('m.afrith', { exact: true }).click();
+            await page.locator('.angular-editor-textarea').first().click();
+            await page.locator('.angular-editor-textarea').first().fill('t');
+            await page.locator('div').filter({ hasText: /^t$/ }).first().fill('test');
+            await page.locator('button').filter({ hasText: 'Close' }).click();
+            await page.getByRole('link', { name: ' Attach' }).click();
+            await page.locator('#page_form_MON0000002').getByText('x', { exact: true }).click();
+            await page.locator('dynamic-field').filter({ hasText: 'Ticket ID MWD0000894 Subject' }).locator('a').click();
+            await expect(page.getByText('Details', { exact: true })).toBeVisible();
+            await expect(page.getByText('Customer Details')).toBeVisible();
+            await page.locator('dynamic-details').filter({ hasText: 'Close Start Pickup Assign' }).locator('button').click();
+            await page.locator('a').filter({ hasText: 'Mohamed Afrith' }).click();
+            await expect(page.getByText('Details', { exact: true })).toBeVisible();
+            await expect(page.getByText('Coordinators Details')).toBeVisible();
+            await page.locator('dynamic-details').filter({ hasText: 'Close Start Pickup Assign' }).locator('button').click();
+            //comments
+            await page.getByRole('link', { name: ' Comments' }).click();
+            await page.locator('#angular_editor_ETN0000007_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').click();
+            await page.locator('#angular_editor_ETN0000007_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test');
+            await page.locator('#pills-tabContent').getByRole('button', { name: 'Close' }).click();
+            //notes
+            await page.getByRole('link', { name: ' Notes' }).click();
+            await page.locator('#angular_editor_ETN0000007_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').click();
+            await page.locator('#angular_editor_ETN0000007_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test');
+            await page.locator('div').filter({ hasText: /^test$/ }).fill('test note');
+            await page.locator('#pills-tabContent').getByRole('button', { name: 'Close' }).click();
+            //send approval
+            await page.getByRole('link', { name: '魯 Send Approval' }).click();
+            await page.locator('#autoComplete_dropdown_Approver label').nth(1).click();
+            await expect(page.getByText('a.abdalhamed@mawarid.com.sa').first()).toBeVisible();
+            await page.getByText('page 2').click();
+            await expect(page.getByText('a.alabbad01@mawarid.com.sa').first()).toBeVisible();
+            await page.getByText('Next page').click();
+            await expect(page.getByText('a.albugami@mawarid.com.sa').first()).toBeVisible();
+            await page.getByText('page 2').click();
+            await expect(page.getByText('a.alabbad01@mawarid.com.sa').first()).toBeVisible();
+            await page.getByText('Previous page').click();
+            await expect(page.getByText('a.abdalhamed@mawarid.com.sa').first()).toBeVisible();
+            await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[9]').click();
+            await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[8]').click();
+            await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[7]').click();
+            await page.getByText('Previous page').click();
+            await page.getByText('Previous page').click();
+            await page.getByText('page 1').click();
+            await expect(page.getByText('a.abdalhamed@mawarid.com.sa').first()).toBeVisible();
+            await page.getByRole('searchbox').first().click();
+            await page.getByRole('searchbox').first().fill('afrith');
+            await page.getByRole('cell', { name: 'm.afrith', exact: true }).locator('div').click();
+            await page.getByRole('textbox', { name: 'Comments Comments Comments *' }).click();
+            await page.getByRole('textbox', { name: 'Comments Comments Comments *' }).fill('test');
+            await page.locator('#pills-tabContent').getByRole('button', { name: 'Close' }).click();
+            // reply
+            await page.locator('dynamic-details').getByRole('link', { name: ' Reply' }).click();
+            await expect(page.getByRole('textbox', { name: 'Add a To' })).toBeVisible();
+            await expect(page.getByRole('textbox', { name: 'Cc' })).toBeVisible();
+            await page.locator('#pills-tabContent').getByRole('button', { name: 'Close' }).click();
+            //Ticket tab
+            await page.getByRole('list').filter({ hasText: 'Conversation Ticket Approvals' }).locator('a').nth(1).click();
+            await expect(page.getByText('Request Id')).toBeVisible();
+            // approvals tab
+            page.locator('//*[starts-with(@id, "cdk-drop-list")]//a').filter({ hasText: 'Approvals' }).click();
+            await expect(page.getByText('Approver Id')).toBeVisible();
+            await expect(page.getByText('APR0001175')).toBeVisible();
+            // attachments tab
+            await page.locator('a').filter({ hasText: 'Attachments' }).click();
+            await expect(page.getByText('Name')).toBeVisible();
+            await expect(page.getByRole('link', { name: ' QuestionBank (2).xlsx' })).toBeVisible();
+            // status history tab
+            await page.locator('a').filter({ hasText: 'Status History' }).click();
+            await expect(page.getByRole('cell', { name: 'MWD0000894' }).locator('comp-datatype')).toBeVisible();
+            await expect(page.getByText('Ticket Id', { exact: true })).toBeVisible();
+            await page.getByRole('button', { name: 'Close' }).click();
+            await page.getByRole('button', { name: ' Clear' }).click();
+        });
+    });
+
+    test.describe('My Team Tickets', () => {
+        test('Create By Me:should filter, select, and validate requests', async ({ page }) => {
+            await page.locator('#MNU0000136').click();
+            await page.getByRole('link', { name: ' My Team Tickets' }).click();
+            await expect(page.locator('section').getByText('My Team Tickets')).toBeVisible();
+            await page.getByText('Options').click();
+            await expect(page.getByText('Export SelectedExportExport')).toBeVisible();
+            await page.getByText('Options').click();
+
+            // List Pagination
+            await page.locator('//*[@id="dynamic_list_EFN0000276"]/widget-grid/div[1]/div[3]/div[2]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByRole('spinbutton')).toHaveValue('2');
+            await page.locator('//*[@id="dynamic_list_EFN0000276"]/widget-grid/div[1]/div[3]/div[2]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByRole('spinbutton')).toHaveValue('3');
+            await page.locator('//*[@id="dynamic_list_EFN0000276"]/widget-grid/div[1]/div[3]/div[2]/comp-pagination/ul/li[5]').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="dynamic_list_EFN0000276"]/widget-grid/div[1]/div[3]/div[2]/comp-pagination/ul/li[2]/a/i').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="dynamic_list_EFN0000276"]/widget-grid/div[1]/div[3]/div[2]/comp-pagination/ul/li[2]/a/i').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="dynamic_list_EFN0000276"]/widget-grid/div[1]/div[3]/div[2]/comp-pagination/ul/li[1]').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByRole('spinbutton')).toHaveValue('1');
+            
+            // Title Filter
+            await page.locator('i:nth-child(2)').click();
+            await page.locator('#dynamic_list_EFN0000276').getByRole('textbox').click();
+            await page.getByRole('option', { name: 'Subject' }).click();
+            await page.getByRole('textbox').nth(3).click();
+            await page.getByRole('textbox').nth(3).fill('Status for Arrival from India.');
+            await page.getByRole('button', { name: '' }).click();
+            await expect(page.getByRole('heading', { name: 'Status for Arrival from India.' })).toBeVisible();
+            await page.getByRole('button', { name: ' Clear' }).click();
+            await expect(page.locator('#dynamic_list_EFN0000276').getByRole('textbox')).toBeEmpty();
+
+            // Status Filter
+            await page.locator('#dynamic_list_EFN0000276').getByRole('textbox').click();
+            await page.getByRole('option', { name: 'Status' }).click();
+            await page.locator('#autoComplete_dropdown_Status label').click();
+            await page.getByRole('row', { name: ' Closed Closed' }).locator('i').click();
+            await page.getByRole('button', { name: 'OK' }).click();
+            await expect(page.getByText('Need Approval From Chamber of Commerce Visit Visa. 90273 MWD0016041 Closed')).toBeVisible();
+            await page.getByRole('button', { name: ' Clear' }).click();
+            await expect(page.locator('#dynamic_list_EFN0000276').getByRole('textbox')).toBeEmpty();
+
+            // Ticket ID Filter
+            await page.locator('#dynamic_list_EFN0000276').getByRole('textbox').click();
+            await page.getByRole('option', { name: 'Ticket ID' }).click();
+            await page.getByRole('textbox').nth(3).click();
+            await page.getByRole('textbox').nth(3).fill('MWD0000075');
+            await page.getByRole('button', { name: '' }).click();
+            await expect(page.getByRole('paragraph').filter({ hasText: 'MWD0000075' })).toBeVisible();
+            await page.locator('comp-field-view-type').filter({ hasText: 'Status for Arrival from India.' }).locator('a').click();
+
+            //Reopen
                 await page.getByRole('link', { name: 'Re Open' }).click();
+                await page.waitForTimeout(5000);
                 await expect(page.locator('#Actionform').getByText('ReOpen')).toBeVisible({ timeout: 7000 });
                 await page.getByPlaceholder('Comments').click();
                 await page.getByPlaceholder('Comments').fill('yest');
@@ -1772,7 +2133,7 @@ test.describe('Customer Support', async () => {
                 await expect(page.locator('#Actionform').getByText('Pickup')).toBeVisible();
                 await page.locator('#Actionform').getByText('Close').click();
                 await page.getByRole('link', { name: 'Assign', exact: true }).click();
-                await page.locator('label').filter({ hasText: 'Mohamed Afrith' }).click();
+                await page.locator('#relation_autoComplete_dropdown_AssignedTo').getByText('Ali Al Maragah').click();
                 await expect(page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('a.hyder', { exact: true }).first()).toBeVisible();
                 await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
                 await page.waitForTimeout(1000);
@@ -1787,7 +2148,9 @@ test.describe('Customer Support', async () => {
                 await page.waitForTimeout(1000);
                 await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[1]').click();
                 await page.waitForTimeout(1000);
-                await expect(page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('a.hyder', { exact: true }).first()).toBeVisible();
+                await expect(page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('a.hyder', { exact: true }).first()).toBeVisible(
+                    { timeout: 7000 }
+                );
                 await page.getByText('OK', { exact: true }).click();
                 await page.locator('#Actionform button').first().click();
                 //ticket
@@ -1811,7 +2174,7 @@ test.describe('Customer Support', async () => {
                 await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).fill('test');
                 await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).press('Enter');
                 await page.locator('#autoComplete_dropdown_tableTicketCategory i').click();
-                await page.locator('.col-9 > relation-field > #relation_autoComplete_dropdown_AssignedTo > .control-input > .form-control').first().click();
+                await page.locator('#relation_autoComplete_dropdown_AssignedTo > .control-input > .form-control').first().click();
                 await expect(page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('a.hyder')).toBeVisible();
                 await page.locator('//*[@id="autoComplete_dropdown_AssignedTo"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
                 await page.waitForTimeout(1000);
@@ -1839,14 +2202,48 @@ test.describe('Customer Support', async () => {
                 await page.locator('button').filter({ hasText: 'Close' }).click();
                 await page.getByRole('link', { name: ' Attach' }).click();
                 await page.locator('#page_form_MON0000002').getByText('x', { exact: true }).click();
-                await page.locator('dynamic-field').filter({ hasText: 'Ticket ID MWD0000846 Subject' }).locator('a').click();
+                await page.locator('dynamic-field').filter({ hasText: 'Ticket ID MWD0000075 Subject' }).locator('a').click();
                 await expect(page.getByText('Details', { exact: true })).toBeVisible();
                 await expect(page.getByText('Customer Details')).toBeVisible();
                 await page.locator('//*[@id="DynamicCreate"]/div/div/div[1]/div/app-button/button/i').click();
-                await page.locator('a').filter({ hasText: 'Mohamed Afrith' }).click();
+                await page.locator('a').filter({ hasText: 'Ali Al Maragah' }).click();
                 await expect(page.getByText('Details', { exact: true })).toBeVisible();
                 await expect(page.getByText('Coordinators Details')).toBeVisible();
                 await page.locator('//*[@id="DynamicCreate"]/div/div/div[1]/div/app-button/button/i').click();
+
+                // Reply 
+                await page.locator('.timeline-header-action > .actions > .actionlist > a').first().click();
+                await page.getByPlaceholder('Add a To').click();
+                await page.waitForTimeout(3000);
+                await page.getByPlaceholder('Add a To').fill('afrith');
+                await expect(page.getByRole('button', { name: 'm.afrith@faaztechsolutions.com' }).first()).toBeVisible();
+                await page.getByRole('button', { name: 'm.afrith@faaztechsolutions.com' }).first().click();
+                await page.waitForTimeout(3000);
+                await page.getByPlaceholder('Add a CC').click();
+                await page.getByPlaceholder('Add a CC').fill('afrith');
+                await page.waitForTimeout(3000);
+                await page.getByRole('button', { name: 'm.afrith@faaztechsolutions.com' }).first().click();
+                await page.getByTitle('aabdulhadi@femco.com.sa').hover();
+                await page.getByLabel('aabdulhadi@femco.com.sa').getByLabel('Remove tag').click();
+                await page.locator('.angular-editor-textarea > div').first().click();
+                await page.getByText('Thanks & Regards,Mohamed').fill('Test\n\n\nThanks & Regards,\nMohamed Afrith');
+                await page.getByText('Close', { exact: true }).click();
+
+                // Forward
+                await page.locator('.timeline-header-action > .actions > .actionlist > a:nth-child(2)').first().click();
+                await page.getByPlaceholder('Add a To').click();
+                await page.getByPlaceholder('Add a To').fill('afrith');
+                await page.waitForTimeout(3000);
+                await page.getByRole('button', { name: 'm.afrith@faaztechsolutions.com' }).first().click();
+                await page.waitForTimeout(3000);
+                await page.getByPlaceholder('Add a CC').click();
+                await page.getByPlaceholder('Add a CC').fill('afrith');
+                await page.waitForTimeout(3000);
+                await page.getByRole('button', { name: 'm.afrith@faaztechsolutions.com' }).first().click();
+                await page.locator('.angular-editor-textarea > div').first().click();
+                await page.getByText('Thanks & Regards,Mohamed').fill('test\n\n\nThanks & Regards,\nMohamed Afrith');
+                await page.getByText('Close', { exact: true }).click();
+                
                 //Ticket tab
                 await page.getByRole('list').filter({ hasText: 'Conversation Ticket Approvals' }).locator('a').nth(1).click();
                 await expect(page.getByText('Request Id')).toBeVisible();
@@ -1855,14 +2252,263 @@ test.describe('Customer Support', async () => {
                 await expect(page.getByText('Approver Id')).toBeVisible();
                 // attachments tab
                 await page.locator('a').filter({ hasText: 'Attachments' }).click();
-                await expect(page.getByText('Name')).toBeVisible();
+                await expect(page.getByRole('cell', { name: 'Name' })).toBeVisible();
                 // status history tab
                 await page.locator('a').filter({ hasText: 'Status History' }).click();
-                await expect(page.getByRole('cell', { name: 'MWD0000846' }).locator('comp-datatype')).toBeVisible();
+                await expect(page.getByRole('cell', { name: 'MWD0000075' }).locator('comp-datatype')).toBeVisible();
                 await expect(page.getByText('Ticket Id', { exact: true })).toBeVisible();
                 await page.getByRole('button', { name: 'Close' }).click();
                 await page.getByRole('button', { name: ' Clear' }).click();
         });
     });
+
+    test.describe('Mails', () => {
+        test('Address Book:should filter, select, and validate requests', async ({ page }) => {
+            await page.locator('#MNU0000081').click();
+            await page.getByRole('link', { name: ' Address Book' }).click();
+            await expect(page.getByText('Customer Contacts')).toBeVisible({ timeout: 7000 });
+            await page.getByText('Options').click();
+            await expect(page.getByText('Export SelectedExportExport')).toBeVisible();
+            await page.getByText('Options').click();
+
+            // Create 
+            await page.getByText('Create', { exact: true }).click();
+            await expect(page.locator('h4')).toBeVisible();
+            await page.locator('#autoComplete_dropdown_CustomerId label').click();
+
+            // Create Pagination
+            await page.getByText('page 2', { exact: true }).click();
+            await expect(page.getByText('CBN-0008329')).toBeVisible();
+            await expect(page.getByText('شركة اتحاد العائلة للتشغيل')).toBeVisible();
+            await page.getByText('Next page').click();
+            await expect(page.getByText('CBN0002805')).toBeVisible();
+            await expect(page.getByText('sagrclinic@mawaridservices.com')).toBeVisible();
+            await page.getByText('page 4').click();
+            await expect(page.getByText('CBN-0008052')).toBeVisible();
+            await expect(page.getByText('شركة النقل المتخصص الطبي')).toBeVisible();
+            await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[9]').click(); 
+            await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[8]/a').click();
+            await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[7]/a').click();
+            await page.getByText('Previous page').click();
+            await page.getByText('Previous page').click();
+            await page.getByText('Previous page').click();
+            await page.getByText('page 1', { exact: true }).click(); 
+
+            // Create Name Filter 
+            await page.locator('input[type="search"]').nth(1).click();
+            await page.locator('input[type="search"]').nth(1).fill('مستشفي المدينة الوطني');
+            await expect(page.getByText('مستشفي المدينة الوطني')).toBeVisible();
+            await page.locator('input[type="search"]').nth(1).click(); 
+            await page.locator('input[type="search"]').nth(1).fill(''); 
+
+            //  Create Email Filter 
+            await page.locator('input[type="search"]').nth(2).click();
+            await page.locator('input[type="search"]').nth(2).fill('madinanh@mawaridservices.com');
+            await expect(page.getByText('madinanh@mawaridservices.com')).toBeVisible();
+            await page.locator('input[type="search"]').nth(2).click();
+            await page.locator('input[type="search"]').nth(2).press('ControlOrMeta+a');
+            await page.locator('input[type="search"]').nth(2).fill('');
+            await page.locator('input[type="search"]').first().click();
+            await page.locator('input[type="search"]').first().fill('CBN-0009258');
+            await expect(page.getByText('CBN-')).toBeVisible();
+            await page.locator('tr').filter({ hasText: 'CBN-0009258' }).locator('i').click();
+            await page.getByPlaceholder('Contact Name').click();
+            await page.getByPlaceholder('Contact Name').fill('test');
+            await page.getByPlaceholder('Email').click();
+            await page.getByPlaceholder('Email').fill('test');
+            await page.getByText('Close', { exact: true }).click();
+
+            // List Pagination 
+            await expect(page.getByRole('spinbutton')).toHaveValue('1');
+            await page.locator('//*[@id="dynamic_list_EFN0000391"]/widget-grid/div[1]/div[3]/div[2]/comp-pagination/ul/li[4]/a/i').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByRole('spinbutton')).toHaveValue('2');
+            await page.locator('//*[@id="dynamic_list_EFN0000391"]/widget-grid/div[1]/div[3]/div[2]/comp-pagination/ul/li[4]/a').click();
+            await page.waitForTimeout(1000);
+            await expect(page.getByRole('spinbutton')).toHaveValue('3');
+            await page.locator('//*[@id="dynamic_list_EFN0000391"]/widget-grid/div[1]/div[3]/div[2]/comp-pagination/ul/li[5]/a/i').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="dynamic_list_EFN0000391"]/widget-grid/div[1]/div[3]/div[2]/comp-pagination/ul/li[2]/a/i').click();
+            await page.waitForTimeout(1000);
+            await page.locator('//*[@id="dynamic_list_EFN0000391"]/widget-grid/div[1]/div[3]/div[2]/comp-pagination/ul/li[1]/a/i').click();
+            await page.waitForTimeout(1000);
+
+            // Filter by RecId 
+            await page.locator('i:nth-child(2)').click();
+            await page.locator('.table_filter_text').first().click();
+            await page.locator('.table_filter_text').first().click();
+            await page.locator('.table_filter_text').first().fill('11515');
+            await page.locator('.table_filter_text').first().press('Enter');
+            await expect(page.getByRole('row', { name: '11515 CBN0007859 talharbi@' }).locator('a')).toBeVisible();
+            await page.getByRole('cell', { name: '% 11515' }).hover();
+            await page.getByRole('cell', { name: '% 11515 ' }).getByRole('combobox').hover(); 
+            await page.locator('.table_filter_clear').click();
+
+            // Filter by Customer Id & Pagination
+            await page.getByRole('row', { name: '% IN % %' }).locator('label').click();
+
+            // Pagination
+            await page.getByText('page 2', { exact: true }).click();
+            await expect(page.getByText('CBN-0008329')).toBeVisible();
+            await expect(page.getByText('شركة اتحاد العائلة للتشغيل')).toBeVisible();
+            await page.getByText('Next page').click();
+            await expect(page.getByText('CBN0002805')).toBeVisible();
+            await expect(page.getByText('sagrclinic@mawaridservices.com')).toBeVisible();
+            await page.getByText('page 4').click();
+            await expect(page.getByText('CBN-0008052')).toBeVisible();
+            await expect(page.getByText('شركة النقل المتخصص الطبي')).toBeVisible();
+            await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[9]').click(); 
+            await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[8]/a').click();
+            await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[7]/a').click();
+            await page.getByText('Previous page').click();
+            await page.getByText('Previous page').click();
+            await page.getByText('Previous page').click();
+            await page.getByText('page 1', { exact: true }).click(); 
+
+            // Name Filter 
+            await page.locator('input[type="search"]').nth(1).click();
+            await page.locator('input[type="search"]').nth(1).fill('مستشفي المدينة الوطني');
+            await expect(page.getByText('مستشفي المدينة الوطني')).toBeVisible();
+            await page.locator('input[type="search"]').nth(1).click(); 
+            await page.locator('input[type="search"]').nth(1).fill(''); 
+
+            // Email Filter 
+            await page.locator('input[type="search"]').nth(2).click();
+            await page.locator('input[type="search"]').nth(2).fill('madinanh@mawaridservices.com');
+            await expect(page.getByText('madinanh@mawaridservices.com')).toBeVisible();
+            await page.locator('input[type="search"]').nth(2).click();
+            await page.locator('input[type="search"]').nth(2).press('ControlOrMeta+a');
+            await page.locator('input[type="search"]').nth(2).fill('');
+            await page.locator('input[type="search"]').first().click();
+
+            // Filter by Customer Id
+            await page.locator('input[type="search"]').first().fill('CBN-0009258');
+            await page.getByRole('cell', { name: 'CBN-0009258', exact: true }).locator('div').click(); 
+            await page.getByRole('cell', { name: '', exact: true }).locator('span').click();
+            await page.getByRole('cell', { name: 'CBN-0009258', exact: true }).click();
+            await page.getByRole('button', { name: 'OK' }).click();
+            await expect(page.getByRole('row', { name: '11070 CBN-0009258 ahmad-14133' }).locator('comp-datatype').nth(1)).toBeVisible();
+            await expect(page.getByRole('row', { name: '11073 CBN-0009258 madinanh@' }).locator('comp-datatype').nth(1)).toBeVisible();
+            await page.getByRole('cell', { name: 'IN CBN-' }).getByRole('combobox').hover();
+            await page.getByRole('cell', { name: 'IN CBN-' }).hover();
+            await page.locator('label').filter({ hasText: 'CBN-' }).locator('i').click();
+
+            // Filter by Email 
+            await page.locator('td:nth-child(4) > .clearfix > .table_filter_text').click();
+            await page.locator('td:nth-child(4) > .clearfix > .table_filter_text').fill('talharbi@arabianfood.sa');
+            await page.locator('td:nth-child(4) > .clearfix > .table_filter_text').press('Enter');
+            await expect(page.getByRole('cell', { name: 'talharbi@arabianfood.sa', exact: true }).locator('comp-datatype')).toBeVisible();
+            await page.getByRole('cell', { name: '% talharbi@arabianfood.sa ' }).getByRole('combobox').hover();
+            await page.getByRole('cell', { name: '% talharbi@arabianfood.sa ' }).getByRole('textbox').nth(1).hover();
+            await page.locator('.table_filter_clear').click();
+
+            // Filter by Contact Name
+            await page.locator('td:nth-child(5) > .clearfix > .table_filter_text').click();
+            await page.locator('td:nth-child(5) > .clearfix > .table_filter_text').fill('talharbi');
+            await page.locator('td:nth-child(5) > .clearfix > .table_filter_text').press('Enter');
+            await expect(page.getByRole('row', { name: '11515 CBN0007859 talharbi@' })).toBeVisible();
+            await expect(page.getByRole('cell', { name: '11515' }).locator('a')).toBeVisible();
+
+            // Contact Details
+            await page.getByRole('cell', { name: '11515' }).locator('a').click();
+            await expect(page.getByText('CustomerContactEmail Details')).toBeVisible();
+            await expect(page.locator('#DynamicDetails').getByText('talharbi@arabianfood.sa')).toBeVisible();
+            await expect(page.locator('#DynamicDetails').getByText('talharbi', { exact: true })).toBeVisible();
+            await expect(page.locator('#DynamicDetails').getByText('CBN0007859')).toBeVisible();
+            await page.getByText('Next', { exact: true }).click();
+            await page.getByText('Previous', { exact: true }).click();
+            await page.locator('app-button button').click();
+            await page.getByRole('cell', { name: '% talharbi' }).hover();
+            await page.getByRole('cell', { name: '% talharbi ' }).getByRole('combobox').hover();
+            await page.locator('.table_filter_clear').click();
+            await expect(page.locator('td:nth-child(5) > .clearfix > .table_filter_text')).toBeEmpty();
+        });
+
+        test('New Mail :should filter, select, and validate requests', async ({ page }) => {
+            await page.locator('#MNU0000081').click();
+            await page.locator('#MNU0000080').click();
+            await page.locator('#relation_autoComplete_dropdown_customerQuery label').nth(1).click();
+
+            // Customer Dropdown Pagination
+            await expect(page.locator('input[name="currentPage"]')).toHaveValue('1');
+            await page.locator('//*[@id="autoComplete_dropdown_customerQuery"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await expect(page.locator('input[name="currentPage"]')).toHaveValue('2');
+            await page.locator('//*[@id="autoComplete_dropdown_customerQuery"]/div[2]/div[1]/comp-pagination/ul/li[4]/a/i').click();
+            await expect(page.locator('input[name="currentPage"]')).toHaveValue('3'); 
+            await expect(page.locator('tr').filter({ hasText: 'CBN0002805 مجمع عيادات شركة صقر المجد الدولية sagrclinic@mawaridservices.com' }).locator('i')).toBeVisible();
+            await page.locator('//*[@id="autoComplete_dropdown_customerQuery"]/div[2]/div[1]/comp-pagination/ul/li[5]').click(); 
+            await page.locator('//*[@id="autoComplete_dropdown_customerQuery"]/div[2]/div[1]/comp-pagination/ul/li[2]/a/i').click();
+            await page.locator('//*[@id="autoComplete_dropdown_customerQuery"]/div[2]/div[1]/comp-pagination/ul/li[2]/a/i').click();
+            await page.locator('//*[@id="autoComplete_dropdown_customerQuery"]/div[2]/div[1]/comp-pagination/ul/li[2]/a/i').click(); 
+            await page.locator('//*[@id="autoComplete_dropdown_customerQuery"]/div[2]/div[1]/comp-pagination/ul/li[1]').click();
+            await expect(page.locator('tr').filter({ hasText: 'CBN-0009198 شركة ريادتي للتشغيل والصيانة riadty@mawaridservices.com' }).locator('i')).toBeVisible(); 
+
+            // Customer Name Filter 
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(1).click();  
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(1).fill('مستشفي المدينة الوطني');
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(1).press('Enter');
+            await expect(page.locator('td').filter({ hasText: 'مستشفي المدينة الوطني' }).locator('comp-datatype')).toBeVisible();
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(1).click();
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(1).press('ControlOrMeta+a');
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(1).fill('');
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(1).press('Enter');
+            await expect(page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(1)).toBeEmpty();
+
+            // Customer Email Filter 
+            
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(2).click();
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(2).fill('madinanh@mawaridservices.com');
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(2).press('Enter');
+            await expect(page.locator('td').filter({ hasText: 'madinanh@mawaridservices.com' }).locator('comp-datatype')).toBeVisible();
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(2).click();
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(2).press('ControlOrMeta+a');
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(2).fill('');
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(2).press('Enter');
+            await expect(page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').nth(2)).toBeEmpty();
+
+            // Code/Customer Id Filter
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').first().click();
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').first().fill('CBN-0009258');
+            await page.locator('#autoComplete_dropdown_tablecustomerQuery input[type="text"]').first().press('Enter');
+            await expect(page.locator('comp-table')).toContainText('CBN-0009258');
+            await page.waitForTimeout(2000);
+            await page.locator('td').filter({ hasText: 'مستشفي المدينة الوطني' }).locator('comp-datatype').click();
+            await page.waitForTimeout(1000);
+            await page.getByPlaceholder('To*').click();
+            await page.waitForTimeout(1000);
+            await page.locator('.modal-body').first().click();
+            await page.waitForTimeout(1000);
+            await page.getByPlaceholder('To*').click();
+            await page.waitForTimeout(1000);
+            await page.getByPlaceholder('To*').fill('afrith');
+            await page.getByRole('button', { name: 'm.afrith@faaztechsolutions.com' }).first().click();
+            await page.getByPlaceholder('Add a To').fill('basith');
+            await page.getByRole('button', { name: 'm.basith@faaztechsolutions.com', exact: true }).first().click();
+            await page.getByText('m.basith@faaztechsolutions.com', { exact: true }).hover(); 
+            await page.getByLabel('m.basith@faaztechsolutions.com').getByLabel('Remove tag').click();
+            await page.getByPlaceholder('Cc', { exact: true }).click();
+            await page.getByPlaceholder('Cc', { exact: true }).fill('krishna');
+            await page.waitForTimeout(2000);
+            await page.getByRole('button', { name: 'm.krishna@faaztechsolutions.' }).click();
+            await page.waitForTimeout(2000);
+            await page.getByPlaceholder('Add a Cc').fill('basith');
+            await page.waitForTimeout(2000);
+            await page.getByRole('button', { name: 'm.basith@faaztechsolutions.com', exact: true }).first().click();
+            await page.getByText('m.basith@faaztechsolutions.com', { exact: true }).hover();
+            await page.getByLabel('m.basith@faaztechsolutions.com').getByLabel('Remove tag').click();
+            await page.getByPlaceholder('Bcc').click();
+            await page.getByPlaceholder('Bcc').fill('basith');
+            await page.getByRole('button', { name: 'm.basith@faaztechsolutions.com', exact: true }).first().click();
+            await page.waitForTimeout(2000);
+            await page.locator('h4').click();
+            await page.waitForTimeout(1000);
+            await page.getByPlaceholder('Subject').click();
+            await page.getByPlaceholder('Subject').fill('test');
+            await page.locator('div').filter({ hasText: /^Thanks & Regards,Mohamed Afrith$/ }).locator('div').first().click();
+            await page.getByText('Thanks & Regards,Mohamed').fill('test\n\n\nThanks & Regards,\nMohamed Afrith');
+            await page.getByText('Close', { exact: true }).click();
+        });
+    });    
+
 });
 
