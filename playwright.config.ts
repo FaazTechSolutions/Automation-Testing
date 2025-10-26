@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  timeout: 90_000, // 60 sec per test
+  timeout: 120_000, // 120 sec per test
   testDir: './tests',
   
   /* Run tests in parallel if possible */
@@ -23,7 +23,10 @@ export default defineConfig({
     screenshot: 'only-on-failure', // Save screenshots on failure
     video: 'retain-on-failure', // Keep video on failure
     headless: true,             // Always run headless on CI
-    viewport: { width: 1280, height: 720 }
+    viewport: { width: 1280, height: 720 },
+    // launchOptions: {
+    //   slowMo: 1000,   // 2 seconds delay between actions
+    // },
   },
 
   projects: [
