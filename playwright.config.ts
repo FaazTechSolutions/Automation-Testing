@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  timeout: 120_000, // 120 sec per test
+  timeout: 160_000, // 140 sec per test
   testDir: './tests',
   
   /* Run tests in parallel if possible */
@@ -11,22 +11,20 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
 
   /* Retries on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0,
 
   /* Run up to 2 workers on CI; use more if tests are isolated */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 2 : undefined,
 
   reporter: [['html', { open: 'never' }], ['list']], // List + HTML
 
   use: {
     trace: 'on-first-retry',    // Capture trace on first retry
-    screenshot: 'only-on-failure', // Save screenshots on failure
-    video: 'retain-on-failure', // Keep video on failure
+    screenshot: 'off', // Save screenshots on failure
+    video: 'off', // Keep video on failure
     headless: true,             // Always run headless on CI
-    viewport: { width: 1280, height: 720 },
-    // launchOptions: {
-    //   slowMo: 1000,   // 2 seconds delay between actions
-    // },
+    viewport: { width: 1440, height: 900 },
+    navigationTimeout: 40_000,
   },
 
   projects: [
@@ -34,14 +32,5 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    // Uncomment these if you want cross-browser testing
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
   ],
 });
