@@ -8,10 +8,10 @@ async function globalSetup(config: FullConfig) {
   const page = await browser.newPage();
 
   // 🧹 Step 1: Open login and clear previous session
-  await page.goto('https://portal.mawarid.com.sa/apps4x/#/login');
+  await page.goto('https://portal.mawarid.com.sa/apps4x/#/login', { timeout: 60000 });
   await page.evaluate(() => localStorage.clear());
   await page.context().clearCookies();
-  await page.goto('https://portal.mawarid.com.sa/apps4x/#/login');
+  await page.goto('https://portal.mawarid.com.sa/apps4x/#/login', { timeout: 60000 });
 
   // ✅ Step 2: Do login manually
   await page.getByRole('textbox', { name: 'UserName' }).fill('a.hyder');
