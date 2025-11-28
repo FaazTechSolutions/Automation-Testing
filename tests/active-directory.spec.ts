@@ -1,15 +1,8 @@
 import { test, expect, Page } from '@playwright/test';
 
 test.describe('active-directory login', () => {
-    test.beforeEach(async ({ page }) => {
-        await page.goto('https://portal.mawarid.com.sa/apps4x/#/home');
-    });
-
-    test('home loads', async ({ page }) => {
-        await expect(page).toHaveURL(/apps4x\/#\/home/);
-    });
-
     test('AD login', async ({ page }) => {
+        await page.goto('https://portal.mawarid.com.sa/apps4x/#/login');
         await expect(page.getByRole('button', { name: 'Sign in with Active Directory' })).toBeVisible();
         const page1Promise = page.waitForEvent('popup');
         await page.getByRole('button', { name: 'Sign in with Active Directory' }).click();

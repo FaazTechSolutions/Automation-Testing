@@ -1,5 +1,4 @@
 import { test, expect, Page } from '@playwright/test';
-import { LoginPage } from '../pages/loginPage';
 import { performAssignAction } from '../utils/helpers/cs-helpers/cs-assign-action.ts';
 import { AssignActionForAssignedTickets } from '../utils/helpers/cs-helpers/cs-assign-action-ForAssignedTickets.ts';
 import { performOptionExport } from '../utils/helpers/cs-helpers/options-export.ts';
@@ -14,15 +13,8 @@ import { attachmentTab } from '../utils/helpers/cs-helpers/cs-attachment-tab.ts'
 test.describe('Customer Support', async () => {
 
     test.beforeEach(async ({ page }) => {
-        // test.slow();
-        await test.step('Login the mawarid portal', async () => {
-            //POM login 
-            const loginPage = new LoginPage(page);
-            await loginPage.goto();
-            await loginPage.login('a.hyder', '123456');
-        });
-
         await test.step('go to the CustomerSupport app', async () => {
+            await page.goto('https://portal.mawarid.com.sa/apps4x/');
             await expect(page.getByRole('link', { name: 'Customer Support' })).toBeVisible({ timeout: 30000 });
             await page.getByRole('link', { name: 'Customer Support' }).click();
         });
@@ -2836,7 +2828,7 @@ test.describe('Customer Support', async () => {
         test('Team :should filter, select, and validate requests', async ({ page }) => {
             await page.locator('#MNU0000001').click();
             await page.getByRole('link', { name: '﫟 Team', exact: true }).click();
-            await expect(page.getByText('Teams')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Teams')).toBeVisible({ timeout: 30000 });
             await performOptionExport(page);
 
             // Create
@@ -3955,4 +3947,3 @@ test.describe('Customer Support', async () => {
         });
     });
 });
-

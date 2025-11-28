@@ -1,18 +1,11 @@
 import { test, expect, Page } from '@playwright/test';
-import { LoginPage } from '../pages/loginPage';
 
 
 test.describe('Helpdesk', () => {
 
     test.beforeEach(async ({ page }) => {
-        await test.step('Login the mawarid portal', async () => {
-            //POM login 
-            const loginPage = new LoginPage(page);
-            await loginPage.goto();
-            await loginPage.login('a.hyder', '123456');
-        });
-
         await test.step('go to the helpdesk app', async () => {
+            await page.goto('https://portal.mawarid.com.sa/apps4x/');
             await expect(page.getByRole('link', { name: 'Helpdesk' })).toBeVisible({ timeout: 40000 });
             await page.getByRole('link', { name: 'Helpdesk' }).click();
         });
