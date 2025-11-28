@@ -21,7 +21,7 @@ export default defineConfig({
     actionTimeout: 90_000,
   },
 
-  globalSetup: './setup/login.setup.ts', // Reference your login file
+  // globalSetup: './setup/login.setup.ts', // Reference your login file
 
   projects: [
     // {
