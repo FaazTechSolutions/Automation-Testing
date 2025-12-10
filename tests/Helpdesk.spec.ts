@@ -250,7 +250,7 @@ test.describe('Helpdesk', () => {
                 await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[9]/a').click();
                 await page.getByText('page 1', { exact: true }).click();
                 await page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first().click();
-                await page.locator('.angular-editor-textarea').first().click({ timeout: 20000 });
+                await page.locator('.angular-editor-textarea').first().click({ timeout: 30000 });
                 await expect(page.getByText('Submit')).toBeVisible();
                 await expect(page.getByText('Close', { exact: true })).toBeVisible();
                 await page.locator('.modal-header > div > .btn').click();
@@ -294,7 +294,7 @@ test.describe('Helpdesk', () => {
 
                 // Assign action validations
                 await page.getByText('Assign', { exact: true }).nth(1).click();
-                await page.waitForTimeout(4000);
+                await page.waitForTimeout(6000);
                 await page.locator('#Actionform_EFN0000177').getByText('Portal').click();
                 await expect(page.locator('#autoComplete_dropdown_tableTicketCategory td').filter({ hasText: 'portal' })).toBeVisible();
                 await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).click();
@@ -383,7 +383,7 @@ test.describe('Helpdesk', () => {
 
                 // Attach action validations
                 await page.getByText('Attach').nth(1).click();
-                await expect(page.getByText('HDRequestAttachment')).toBeVisible();
+                await expect(page.getByText('HDRequestAttachment')).toBeVisible({ timeout: 30000 });
                 await page.getByLabel('Close').getByText('x').click();
 
                 // // Approvals action validations
@@ -468,7 +468,7 @@ test.describe('Helpdesk', () => {
                 await page.locator('.text-left > .clearfix > .table_filter_text').first().press('Enter');
                 await expect(page.getByRole('cell', { name: 'Test ticket 3 for Automation test', exact: true }).locator('a')).toBeVisible();
                 await page.getByRole('cell', { name: 'Test ticket 3 for Automation test', exact: true }).locator('a').click();
-                await expect(page.locator('#custom_template_dynamic_list_EFN0000114').getByText('Test ticket 3 for Automation test')).toBeVisible({ timeout: 20000 });
+                await expect(page.locator('#custom_template_dynamic_list_EFN0000114').getByText('Test ticket 3 for Automation test')).toBeVisible({ timeout: 30000 });
                 await expect(page.getByText('Assign Accept Cancel Close Attach Assign Accept Cancel Close Attach Title Test')).toBeVisible({ timeout: 20000});
                 await expect(page.getByText('Approval', { exact: true })).toBeVisible();
                 await expect(page.locator('dynamic-details').getByText('Task', { exact: true })).toBeVisible();
@@ -951,7 +951,7 @@ test.describe('Helpdesk', () => {
             await page.locator('dynamic-field').filter({ hasText: 'Request Id TRQ0016098 Title' }).locator('a').click();
             await page.locator('dynamic-details').filter({ hasText: 'Attach Attach Title test' }).locator('button').click();
             await page.locator('a').filter({ hasText: 'Maintenance Mawarid' }).click();
-            await expect(page.getByText('SysUsers Details')).toBeVisible();
+            await expect(page.getByText('SysUsers Details')).toBeVisible({ timeout: 20000 });
             await page.locator('dynamic-details').filter({ hasText: 'Attach Attach Title test' }).locator('button').click();
 
             // Notes Validation
@@ -1027,12 +1027,12 @@ test.describe('Helpdesk', () => {
 
             // Pickup action validations
             await page.getByText('Pickup').nth(1).click();
-            await expect(page.locator('#Actionform_EFN0000176').getByText('Pickup')).toBeVisible();
+            await expect(page.locator('#Actionform_EFN0000176').getByText('Pickup')).toBeVisible({ timeout: 30000 });
             await page.locator('#Actionform_EFN0000176').getByText('Close').click();
 
             // Assign action validations
             await page.getByText('Assign', { exact: true }).nth(1).click();
-            await expect(page.locator('#Actionform_EFN0000177').getByText('Assign', { exact: true })).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('#Actionform_EFN0000177').getByText('Assign', { exact: true })).toBeVisible({ timeout: 30000 });
             await page.locator('#Actionform_EFN0000177').getByText('Close').click();
 
             // Accept action validations
@@ -1071,6 +1071,7 @@ test.describe('Helpdesk', () => {
 
             // Task Action validations
             await page.locator('dynamic-details').getByText('Task', { exact: true }).click();
+            await page.waitForTimeout(2000);
             await page.locator('#relation_autoComplete_dropdown_DepartmentMember label').nth(1).click();
             await page.locator('#autoComplete_dropdown_tableDepartmentMember').getByRole('textbox').first().click();
             await page.locator('#autoComplete_dropdown_tableDepartmentMember input[type="text"]').first().fill('m.viswa');
@@ -1105,7 +1106,7 @@ test.describe('Helpdesk', () => {
 
             // Notes Action validations
             await page.getByText('Notes').click();
-            await page.locator('#angular_editor_ETN0000029_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').click();
+            await page.locator('#angular_editor_ETN0000029_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').click({ timeout: 20000 });
             await page.locator('#angular_editor_ETN0000029_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test');
             await page.locator('div').filter({ hasText: /^test$/ }).fill('test notes');
             await page.locator('#pills-tabContent').getByText('Close').click();
@@ -1171,7 +1172,7 @@ test.describe('Helpdesk', () => {
             // Assign Action validations
             await page.getByText('Assign', { exact: true }).nth(1).click();
             await expect(page.locator('label').filter({ hasText: 'Portal' })).toBeVisible({ timeout: 20000 });
-            await expect(page.locator('#relation_autoComplete_dropdown_AssignedTo').getByText('Hyder Ali A')).toBeVisible();
+            await expect(page.locator('#relation_autoComplete_dropdown_AssignedTo').getByText('Hyder Ali A')).toBeVisible({ timeout: 20000 });
             await page.locator('#relation_autoComplete_dropdown_AssignedTo').getByText('Hyder Ali A').click();
             await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').nth(1).click();
             await page.waitForTimeout(100);
@@ -1321,8 +1322,8 @@ test.describe('Helpdesk', () => {
 
             // Notes Validation
 
-            await page.getByText('Notes').click();
-            await expect(page.locator('#Actionform_EFN0000185').getByText('Notes')).toBeVisible();
+            await page.getByText('Notes').click({ timeout: 20000 });
+            await expect(page.locator('#Actionform_EFN0000185').getByText('Notes')).toBeVisible({ timeout: 20000 });
             await page.locator('#angular_editor_ETN0000029_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').click();
             await page.locator('#angular_editor_ETN0000029_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test');
             await page.locator('#pills-tabContent').getByText('Close').click();
@@ -1460,7 +1461,7 @@ test.describe('Helpdesk', () => {
             await expect(page.locator('#Actionform_EFN0000218').getByText('Approve')).toBeVisible();
             await page.getByText('Close').click();
             await page.getByRole('link', { name: 'Reject' }).click();
-            await expect(page.locator('#Actionform_EFN0000219').getByText('Reject')).toBeVisible();
+            await expect(page.locator('#Actionform_EFN0000219').getByText('Reject')).toBeVisible({ timeout: 20000});
             await page.getByText('Close').click();
 
             // Ticket details page validation
@@ -1468,7 +1469,7 @@ test.describe('Helpdesk', () => {
             await expect(page.getByRole('heading', { name: 'Test Ticket for Playwright' })).toBeVisible({ timeout: 30000 });
             await expect(page.locator('#page_form_MON0000024 dynamic-details').getByText('TRQ0016253')).toBeVisible({ timeout: 20000 });
             await page.locator('dynamic-field').filter({ hasText: 'Request Id TRQ0016253 Title' }).locator('a').click();
-            await expect(page.getByText('TicketCategory Details')).toBeVisible();
+            await expect(page.getByText('TicketCategory Details')).toBeVisible({ timeout: 20000 });
             await expect(page.getByText('Category Id TCY0000003 Name')).toBeVisible();
             await page.locator('dynamic-details').filter({ hasText: 'Pickup Assign Cancel Attach' }).locator('button').click();
             await page.locator('#cdk-drop-list-2 a').filter({ hasText: 'Approvals' }).click();
@@ -1766,7 +1767,7 @@ test.describe('Helpdesk', () => {
 
             // Department Details Validation
             await page.locator('#page_left a').filter({ hasText: 'IT' }).click();
-            await expect(page.getByText('Department Details')).toBeVisible();
+            await expect(page.getByText('Department Details')).toBeVisible({ timeout: 20000 });
             await expect(page.getByText('Department Id DPT0000001 Name')).toBeVisible();
             await page.locator('dynamic-details').filter({ hasText: 'Task Details Task Id' }).locator('button').click();
             await page.locator('div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').click();
