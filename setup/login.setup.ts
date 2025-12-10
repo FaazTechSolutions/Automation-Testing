@@ -1,32 +1,47 @@
-import { chromium, FullConfig } from '@playwright/test';
+// 📌 Import Playwright
+import { chromium, expect } from '@playwright/test';
+
+// 📌 Import "path" to create the file path for saving login session
 import path from 'path';
 
-async function globalSetup(config: FullConfig) {
-  console.log('🔄 Running Global Setup...');
+async function globalSetup() {
+  console.log('🚀 Starting Global Login Setup...');
 
-  const browser = await chromium.launch({ headless: true }); // Set to false for debugging
+  // 🔥 Launch Chromium (browser not visible because headless = true)
+  const browser = await chromium.launch({ headless: true });
+
+  // 🔥 Open a new page/tab
   const page = await browser.newPage();
 
-  // 🧹 Step 1: Open login and clear previous session
-  await page.goto('https://portal.mawarid.com.sa/apps4x/#/login', { timeout: 60000 });
+  // ⏩ Navigate to login page
+  await page.goto('https://portal.mawarid.com.sa/apps4x/#/login');
+
+  // 🧹 Clear previous session
   await page.evaluate(() => localStorage.clear());
   await page.context().clearCookies();
-  await page.goto('https://portal.mawarid.com.sa/apps4x/#/login', { timeout: 60000 });
 
-  // ✅ Step 2: Do login manually
+  // 🔁 Reload login screen to ensure fresh state
+  await page.goto('https://portal.mawarid.com.sa/apps4x/#/login');
+
+  // 🧑‍💻 Enter login details
   await page.getByRole('textbox', { name: 'UserName' }).fill('a.hyder');
   await page.getByRole('textbox', { name: 'Password' }).fill('123456');
-  await page.getByRole('button', { name: 'SignIn' }).click();
 
-  // ✅ Step 3: Wait for stable element that confirms login
-  await page.getByRole('heading', { name: 'Home' }).waitFor({ timeout: 15000 });
+  // 🔐 Click Sign In button (stable locator)
+  await page.locator('#Login').click();
 
-  // ✅ Step 4: Save storage state to auth.json for re-use in other tests
+  // ⏳ Wait until login is successful
+  await expect(page.getByRole('heading', { name: 'Home' })).toBeVisible();
+
+  // 💾 Save login session into auth.json
   const storagePath = path.resolve(__dirname, '../auth.json');
   await page.context().storageState({ path: storagePath });
-  console.log('✅ auth.json has been updated at:', storagePath);
 
+  console.log('✅ Login session saved at:', storagePath);
+
+  // 🔚 Close browser
   await browser.close();
 }
 
+// 📌 Export this file for Playwright to use in config
 export default globalSetup;

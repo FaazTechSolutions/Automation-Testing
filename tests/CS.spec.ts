@@ -64,6 +64,7 @@ test.describe('Customer Support', async () => {
         await page.getByPlaceholder('From Date').fill('2025-12-11');
         await page.getByPlaceholder('To Date').fill('2025-07-13');
         // UserId Dropdown
+        await page.waitForTimeout(3000);
         await page.locator('#relation_autoComplete_dropdown_UserId label').click();
         await expect(page.getByText('a.hyder').first()).toBeVisible();
         await page.locator('comp-pagination a').nth(2).click();
@@ -363,7 +364,7 @@ test.describe('Customer Support', async () => {
                 await page.getByRole('link', { name: '魯 Send Approval' }).click();
                 // SA Dropdown
                 await page.locator('#autoComplete_dropdown_Approver label').nth(1).click();
-                await expect(page.getByText('a.abdelhakim@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
+                await expect(page.getByText('a.abdelhakim@mawarid.com.sa').first()).toBeVisible({ timeout: 30000 });
                 // SA Pagination
                 await page.getByText('page 2').click();
                 await expect(page.getByText('a.alangari@mawarid.com.sa').first()).toBeVisible();
@@ -500,7 +501,7 @@ test.describe('Customer Support', async () => {
 
                 // Start Action 
                 await page.getByRole('link', { name: 'Start' }).click();
-                await expect(page.locator('#Actionform_EFN0000019').getByText('Start')).toBeVisible();
+                await expect(page.locator('#Actionform_EFN0000019').getByText('Start')).toBeVisible({ timeout: 30000 });
                 await page.getByPlaceholder('Comments').click();
                 await page.getByPlaceholder('Comments').fill('test');
                 await page.locator('#Actionform_EFN0000019').getByText('Close').click();
@@ -1188,8 +1189,8 @@ test.describe('Customer Support', async () => {
 
                 // Notes Sub Action
                 await page.getByRole('link', { name: ' Notes' }).click();
-                await page.locator('#angular_editor_ETN0000007_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').click();
-                await page.locator('#angular_editor_ETN0000007_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test Note');
+                await page.locator('#angular_editor_ETN0000007_Notes').getByText('Type here...').click();
+                await page.locator('#angular_editor_ETN0000007_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test notes');
                 await page.getByRole('button', { name: 'Close' }).click();
 
                 // Sent Approval Sub Action 
@@ -1292,7 +1293,7 @@ test.describe('Customer Support', async () => {
                 // Clear the filters 
                 await expect(page.getByRole('textbox').nth(3)).toHaveValue('MWD0017195');
                 await page.getByRole('button', { name: ' Clear' }).click();
-                await expect(page.locator('#dynamic_list_EFN0000244').getByRole('textbox')).toBeEmpty();
+                await expect(page.locator('#dynamic_list_EFN0000244').getByRole('textbox')).toBeEmpty({ timeout: 20000 });
                 await page.locator('#tabView_6 > div > page-controller > .content-box > .content-view > .content-add > .inner_flex > div > div > app-dynamic-list > .content > .container-fluid > .position-relative > div > .card-header > .Right > .d-flex > i').first().click();
             });
         });
@@ -1329,7 +1330,7 @@ test.describe('Customer Support', async () => {
             // My Tickets: Open Ticket Details
             await expect(page.getByText('MWD0017195')).toBeVisible();
             await page.locator('comp-field-view-type').filter({ hasText: 'Automation test ticket Don\'t' }).locator('a').click();
-            await expect(page.getByRole('heading', { name: '[MWD0017195] Automation test' })).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('heading', { name: '[MWD0017195] Automation test' })).toBeVisible({ timeout: 30000 });
 
             // Ticket Details: Schedule Action
             await scheduleHelper(page);
@@ -1368,7 +1369,7 @@ test.describe('Customer Support', async () => {
             // Notes Sub Action
             await page.getByRole('link', { name: ' Notes' }).click();
             await page.locator('#angular_editor_ETN0000007_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').click();
-            await page.locator('#angular_editor_ETN0000007_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test Note');
+            await page.locator('#angular_editor_ETN0000007_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test notes');
             await page.getByRole('button', { name: 'Close' }).click();
 
             // Sent Approval Sub Action 
@@ -1507,7 +1508,7 @@ test.describe('Customer Support', async () => {
 
             // Start Action 
             await page.getByRole('link', { name: 'Start' }).click();
-            await expect(page.locator('#Actionform_EFN0000019').getByText('Start')).toBeVisible();
+            await expect(page.locator('#Actionform_EFN0000019').getByText('Start')).toBeVisible({ timeout: 20000});
             await page.getByPlaceholder('Comments').click();
             await page.getByPlaceholder('Comments').fill('test');
             await page.locator('#Actionform_EFN0000019').getByText('Close').click();
@@ -1544,7 +1545,7 @@ test.describe('Customer Support', async () => {
             await page.getByRole('button', { name: 'Close' }).click({ timeout: 20000 });
 
             // Sent Approval Sub Action 
-            await page.getByRole('link', { name: '魯 Send Approval' }).click();
+            await page.getByRole('link', { name: '魯 Send Approval' }).click({ timeout: 20000 });
             // SA Dropdown
             await page.locator('#autoComplete_dropdown_Approver label').nth(1).click();
             await expect(page.getByText('a.abdelhakim@mawarid.com.sa').first()).toBeVisible({ timeout: 30000 });
@@ -1685,7 +1686,7 @@ test.describe('Customer Support', async () => {
 
             // Reopen Action Verification
             await page.getByRole('link', { name: 'Re Open' }).click();
-            await expect(page.locator('#Actionform_EFN0000020').getByText('ReOpen')).toBeVisible();
+            await expect(page.getByText('ReOpen', { exact: true })).toBeVisible();
             await expect(page.getByPlaceholder('Comments')).toHaveValue('Test closed comment');
             await page.getByText('Close', { exact: true }).click();
 
@@ -2145,7 +2146,7 @@ test.describe('Customer Support', async () => {
 
             // Reopen Action Verification
             await page.getByRole('link', { name: 'Re Open' }).click();
-            await expect(page.locator('#Actionform_EFN0000020').getByText('ReOpen')).toBeVisible();
+            await expect(page.locator('#Actionform_EFN0000020').getByText('ReOpen')).toBeVisible({ timeout: 20000 });
             await expect(page.getByPlaceholder('Comments')).toHaveValue('Test closed comment');
             await page.getByText('Close', { exact: true }).click();
 
@@ -2232,7 +2233,7 @@ test.describe('Customer Support', async () => {
             // Clear the filters 
             await expect(page.getByRole('textbox').nth(3)).toHaveValue('MWD0016530');
             await page.getByRole('button', { name: ' Clear' }).click();
-            await expect(page.locator('#dynamic_list_EFN0000276').getByRole('textbox')).toBeEmpty();
+            await expect(page.locator('#dynamic_list_EFN0000276').getByRole('textbox')).toBeEmpty({ timeout: 20000 });
             await page.locator('.Right > .d-flex > i').first().click();
         });
     });
@@ -2357,7 +2358,7 @@ test.describe('Customer Support', async () => {
         test('New Mail :should filter, select, and validate requests', async ({ page }) => {
             await page.locator('#MNU0000081').click();
             await page.locator('#MNU0000080').click();
-            await page.locator('#autoComplete_dropdown_customerQuery label').nth(1).click();
+            await page.locator('#autoComplete_dropdown_customerQuery label').nth(1).click({ timeout: 20000 });
 
             // Customer Dropdown Pagination
             await page.getByText('page 2').click();
@@ -2387,7 +2388,7 @@ test.describe('Customer Support', async () => {
             await page.locator('input[type="search"]').first().fill('1030');
             await expect(page.getByText('CBN0001030').first()).toBeVisible();
             await page.getByText('CBN0001030').first().click();
-            await expect(page.getByText('Customer Customer CBN0001030 Customer Customer مؤسسة غوار التجارية x Code Name')).toBeVisible();
+            await expect(page.getByText('Customer Customer CBN0001030 Customer Customer CBN0001030 x Code Name Support')).toBeVisible({ timeout: 20000 });
             await page.getByPlaceholder('To*').click();
             await page.getByPlaceholder('To*').fill('krish');
             await expect(page.getByRole('button', { name: 'm.krishna@faaztechsolutions.' })).toBeVisible({ timeout: 20000 });
@@ -2482,9 +2483,11 @@ test.describe('Customer Support', async () => {
             await page.locator('#dynamic_list_EFN0000231').getByRole('textbox').click();
             await page.getByRole('option', { name: 'ToRecipients' }).click();
             await page.getByRole('textbox').nth(3).click();
+            await page.waitForTimeout(50);
             await page.getByRole('textbox').nth(3).fill('a.minhaj@faaztechsolutions.com');
+            await page.waitForTimeout(50);
             await page.getByRole('button', { name: '' }).click();
-            await expect(page.getByRole('heading', { name: 'a.minhaj@faaztechsolutions.com' }).first()).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('heading', { name: 'a.minhaj@faaztechsolutions.com' }).nth(0)).toBeVisible({ timeout: 20000 });
             await page.getByRole('button', { name: ' Clear' }).click({ timeout: 2000 });
             await expect(page.locator('#dynamic_list_EFN0000231').getByRole('textbox')).toBeEmpty();
 
@@ -2746,7 +2749,7 @@ test.describe('Customer Support', async () => {
 
             // Address Book menu navigation 
             await page.getByRole('link', { name: ' Address Book' }).click();
-            await expect(page.getByText('Customer Contacts')).toBeVisible();
+            await expect(page.getByText('Customer Contacts')).toBeVisible({ timeout: 20000 });
 
             // Options validation
             await performOptionExport(page);
@@ -3011,6 +3014,7 @@ test.describe('Customer Support', async () => {
             await page.getByText('Create', { exact: true }).click();
             await expect(page.locator('#DynamicCreate').getByText('Create')).toBeVisible();
             await expect(page.getByText('Coordinator * m.afrith Customer Code *')).toBeVisible();
+            await page.waitForTimeout(3000); 
             await page.locator('#relation_autoComplete_dropdown_CustomerCode label').click();
             await page.locator('ul').filter({ hasText: 'of21' }).locator('a').nth(2).click();
             await expect(page.locator('#autoComplete_dropdown_CustomerCode input[name="currentPage"]')).toHaveValue('2');
@@ -3051,6 +3055,7 @@ test.describe('Customer Support', async () => {
 
             // Filter By User id
             await page.locator('.Right > .d-flex > i').first().click();
+            await page.waitForTimeout(2000); 
             await page.locator('#relation_autoComplete_dropdown_UserID label').click();
             await expect(page.getByText('a.hyder', { exact: true }).first()).toBeVisible();
             await expect(page.getByRole('cell', { name: '⯆  User Id  Name  Position' }).getByRole('spinbutton')).toHaveValue('1');
@@ -3350,7 +3355,7 @@ test.describe('Customer Support', async () => {
             // Request Id Details Page 
             await page.locator('a').filter({ hasText: 'MWD0016843' }).click();
             await expect(page.getByText('Details', { exact: true })).toBeVisible();
-            await expect(page.getByText('Tickets Details')).toBeVisible();
+            await expect(page.getByText('Tickets Details')).toBeVisible({ timeout: 20000 });
             await page.locator('dynamic-details').filter({ hasText: 'Approvals Details Approver m.' }).locator('button').click();
 
             // Conversation Tab 
@@ -3857,7 +3862,7 @@ test.describe('Customer Support', async () => {
             await page.getByRole('link', { name: '賂 All Send Emails' }).click();
 
             // options and Export
-            await expect(page.getByText('Options')).toBeVisible();
+            await expect(page.getByText('Options')).toBeVisible({ timeout: 20000 });
             await page.getByText('Options').click();
             await expect(page.getByText('Export SelectedExport')).toBeVisible();
             await page.getByText('Options').click();

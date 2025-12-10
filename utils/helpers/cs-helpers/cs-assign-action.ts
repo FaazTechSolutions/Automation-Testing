@@ -4,7 +4,7 @@ export async function performAssignAction(page: Page) {
 
   // Open Assign dropdown
   await page.getByRole('link', { name: 'Assign', exact: true }).click();
-
+  await page.waitForTimeout(3000);
   await page.locator('#relation_autoComplete_dropdown_AssignedTo').click();
 
   // Pagination clicks
@@ -52,7 +52,7 @@ export async function performAssignAction(page: Page) {
 
   await expect(page.locator('td').filter({ hasText: 'Mehran Basith' })
     .locator('comp-datatype')).toBeVisible();
-  await page.waitForTimeout(50);  
+  await page.waitForTimeout(50);
 
   // Reset
   await nameSearch.click();

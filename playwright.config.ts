@@ -10,8 +10,9 @@ export default defineConfig({
   ],
 
   outputDir: 'test-results/',
-
+  
   use: {
+    
     trace: 'on-first-retry',
     screenshot: 'off',
     video: 'off',

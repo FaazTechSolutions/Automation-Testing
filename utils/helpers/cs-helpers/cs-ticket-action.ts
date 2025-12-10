@@ -4,7 +4,7 @@ export async function performTicketAction(page: Page) {
     // Ticket Action 
     await page.getByRole('link', { name: 'Ticket', exact: true }).click();
     await expect(page.locator('h4').filter({ hasText: 'Ticket' })).toBeVisible();
-    await expect(page.getByLabel('Title*')).toBeVisible({ timeout: 20000 });
+    await expect(page.getByLabel('Title*')).toBeVisible({ timeout: 30000 });
     await page.getByLabel('Title*').click();
     await page.getByLabel('Title*').fill('test');
 

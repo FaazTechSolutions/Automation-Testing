@@ -4,13 +4,9 @@ export async function AssignActionForAssignedTickets(page: Page) {
 
     // Open Assign dropdown
     await page.getByRole('link', { name: 'Assign', exact: true }).click();
-
-    // Click the Dropdown
-    await page.locator('#Actionform_EFN0000467').getByText('Hyder').click();
-
-    // Pagination clicks
-    await expect(page.locator('#autoComplete_dropdown_tableAssignedTo tbody span')
-        .filter({ hasText: 'a.hyder' }).first()).toBeVisible();
+    await page.waitForTimeout(1000); 
+    await page.locator('#relation_autoComplete_dropdown_AssignedTo').getByText('Hyder').click();
+    await expect(page.locator('#autoComplete_dropdown_tableAssignedTo').getByText('a.hyder', { exact: true }).first()).toBeVisible();
 
     // Go to page 2,3 then back to 2,1
     await page.locator('ul').filter({ hasText: 'of5' }).locator('a').nth(2).click();
