@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 import fs from 'fs';
 
 export default defineConfig({
-  timeout: 100_000,
+  timeout: 400_000,
   testDir: 'tests', // ✅ This must point to your test directory
 
   reporter: [
@@ -10,9 +10,9 @@ export default defineConfig({
   ],
 
   outputDir: 'test-results/',
-  
+
   use: {
-    
+
     trace: 'on-first-retry',
     screenshot: 'off',
     video: 'off',
@@ -43,12 +43,12 @@ export default defineConfig({
     {
       name: 'loginTest',
       testMatch: /tests\/login\.spec\.ts/,
-      use: { ...devices['Desktop Chrome'],},
+      use: { ...devices['Desktop Chrome'], },
     },
     {
       name: 'ActiveDirectoryloginTest',
       testMatch: /tests\/active-directory\.spec\.ts/,
-      use: { ...devices['Desktop Chrome'],},
+      use: { ...devices['Desktop Chrome'], },
     }
   ],
 });

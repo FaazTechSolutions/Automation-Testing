@@ -25,7 +25,7 @@ async function globalSetup() {
 
   // 🧑‍💻 Enter login details
   await page.getByRole('textbox', { name: 'UserName' }).fill('a.hyder');
-  await page.getByRole('textbox', { name: 'Password' }).fill('123456');
+  await page.getByRole('textbox', { name: 'Password' }).fill('hyder@fts');
 
   // 🔐 Click Sign In button (stable locator)
   await page.locator('#Login').click();

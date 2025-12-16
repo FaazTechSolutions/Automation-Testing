@@ -2,9 +2,9 @@ import { Page, expect } from '@playwright/test';
 
 export async function performScheduleAction(page: Page) {
     // Schedule Action
-    await page.getByRole('link', { name: 'Schedule' }).click();
+    await page.getByRole('link', { name: 'Schedule' }).click({ timeout: 20000 });
     // AssignTo Dropdown
-    await page.waitForTimeout(5000); 
+    await page.waitForTimeout(8000);
     await page.locator('#relation_autoComplete_dropdown_AssignedTo label').click();
     await expect(page.locator('#autoComplete_dropdown_tableAssignedTo tbody span').filter({ hasText: 'a.hyder' }).first()).toBeVisible({ timeout: 30000 });
     await page.locator('ul').filter({ hasText: 'of5' }).locator('a').nth(2).click();

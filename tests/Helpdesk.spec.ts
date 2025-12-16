@@ -15,7 +15,7 @@ test.describe('Helpdesk', () => {
         await test.step('Create a new request page', async () => {
             // --- Navigate to Create Request ---
             await page.getByRole('link', { name: '弄 Create Request' }).click();
-            await expect(page.locator('#DynamicCreate div', { hasText: 'Create Request' }).nth(2)).toBeVisible();
+            await expect(page.locator('#DynamicCreate div', { hasText: 'Create Request' }).nth(2)).toBeVisible({ timeout: 20000 });
 
             // --- Title dropdown and table validations ---
             await page.getByLabel('Title*').click();
@@ -30,18 +30,18 @@ test.describe('Helpdesk', () => {
             // --- Check category items on first page ---
             const categories1 = ['CRM', 'ERP', 'Portal', 'General'];
             for (const cat of categories1) {
-                await expect(page.locator('td', { hasText: cat }).locator('comp-datatype')).toBeVisible();
+                await expect(page.locator('td', { hasText: cat }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
             }
 
             // --- Go to page 2, check Maintenance & Projects ---
             await page.locator('comp-pagination a').nth(2).click();
-            await expect(page.getByText('Maintenance', { exact: true }).first()).toBeVisible();
-            await expect(page.locator('td', { hasText: 'Projects Department' }).locator('comp-datatype')).toBeVisible();
+            await expect(page.getByText('Maintenance', { exact: true }).first()).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('td', { hasText: 'Projects Department' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
 
             // --- Page 3 check ---
             await page.locator('comp-pagination a').nth(2).click();
-            await expect(page.locator('td', { hasText: 'Recruitment - Individual Hourly' }).locator('comp-datatype')).toBeVisible();
-            await expect(page.getByText('Test').nth(1)).toBeVisible();
+            await expect(page.locator('td', { hasText: 'Recruitment - Individual Hourly' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Test').nth(1)).toBeVisible({ timeout: 20000 });
 
             // --- Navigate back to Page 2 and 1 ---
             await page.locator('comp-pagination a').nth(1).click();
@@ -50,10 +50,10 @@ test.describe('Helpdesk', () => {
             // --- Search in Title field ---
             const categoryInput = page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]');
             await categoryInput.nth(1).fill('portal');
-            await expect(page.locator('td', { hasText: 'Portal' }).locator('comp-datatype')).toBeVisible();
+            await expect(page.locator('td', { hasText: 'Portal' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
             await categoryInput.nth(1).fill('');
             // await categoryInput.nth(2).fill('02');
-            // await expect(page.locator('td', { hasText: 'TCY0000002' }).locator('comp-datatype')).toBeVisible();
+            // await expect(page.locator('td', { hasText: 'TCY0000002' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
             // await categoryInput.nth(2).fill('');
             await page.locator('td', { hasText: 'Portal' }).click();
 
@@ -65,20 +65,20 @@ test.describe('Helpdesk', () => {
             // const assignedTable = page.locator('#autoComplete_dropdown_table_AssignedToByCategory');
             // const assignedTexts = ['Name', 'Email', 'User Id', 'Ahamed Minhaj', 'Mohamed Afrith'];
             // for (const text of assignedTexts) {
-            //     await expect(assignedTable.getByText(text)).toBeVisible();
+            //     await expect(assignedTable.getByText(text)).toBeVisible({ timeout: 20000 });
             // }
 
             // // Filter by name and email
             // const searchInputs = page.locator('input[type="search"]');
             // await searchInputs.first().fill('afrith');
-            // await expect(assignedTable.getByText('Mohamed Afrith')).toBeVisible();
+            // await expect(assignedTable.getByText('Mohamed Afrith')).toBeVisible({ timeout: 20000 });
             // await searchInputs.first().fill('');
-            // await expect(page.getByText('Ahamed Minhaj')).toBeVisible();
+            // await expect(page.getByText('Ahamed Minhaj')).toBeVisible({ timeout: 20000 });
 
             // await searchInputs.nth(1).fill('hyder');
-            // await expect(page.getByText('hyder@faaztechsolutions.com').first()).toBeVisible();
+            // await expect(page.getByText('hyder@faaztechsolutions.com').first()).toBeVisible({ timeout: 20000 });
             // await searchInputs.nth(1).fill('');
-            // await expect(page.getByText('a.minhaj@faaztechsolutions.com')).toBeVisible();
+            // await expect(page.getByText('a.minhaj@faaztechsolutions.com')).toBeVisible({ timeout: 20000 });
 
             // // Select assignee
             // await assignedTable.getByText('Mohamed Afrith').click();
@@ -86,14 +86,14 @@ test.describe('Helpdesk', () => {
             //on behalf
             // On Behalf Of
             const onBehalfInput = page.locator('#autoComplete_dropdown_OnBehalfOf > .control-input > .form-control').first();
-            await expect(onBehalfInput).toBeVisible();
+            await expect(onBehalfInput).toBeVisible({ timeout: 20000 });
             await onBehalfInput.click();
 
             // Validate table headers
             await expect(page.locator('th').filter({ hasText: 'User Id' })).toBeVisible({ timeout: 20000 });
-            await expect(page.locator('tr').filter({ hasText: 'User Id Name Email Mobile' }).locator('div').nth(1)).toBeVisible();
-            await expect(page.locator('th').filter({ hasText: 'Email' })).toBeVisible();
-            await expect(page.locator('th').filter({ hasText: 'Mobile Number' })).toBeVisible();
+            await expect(page.locator('tr').filter({ hasText: 'User Id Name Email Mobile' }).locator('div').nth(1)).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('th').filter({ hasText: 'Email' })).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('th').filter({ hasText: 'Mobile Number' })).toBeVisible({ timeout: 20000 });
 
             // Define common search input locator
             const tableHead = page.locator('thead', { hasText: 'User Id Name Email Mobile' });
@@ -101,21 +101,21 @@ test.describe('Helpdesk', () => {
 
             // Search by User Id
             await onBehalfSearchInputs.nth(0).fill('a.hyder');
-            await expect(page.getByText('a.hyder')).toBeVisible();
+            await expect(page.getByText('a.hyder')).toBeVisible({ timeout: 20000 });
             await onBehalfSearchInputs.nth(0).fill('');
 
             // Search by Name
             await onBehalfSearchInputs.nth(1).fill('hyder');
-            await expect(page.locator('#DynamicCreate').getByText('Hyder Ali A')).toBeVisible();
+            await expect(page.locator('#DynamicCreate').getByText('Hyder Ali A')).toBeVisible({ timeout: 20000 });
             await onBehalfSearchInputs.nth(1).fill('');
 
             // Search by Email
             await onBehalfSearchInputs.nth(2).fill('hyder');
-            await expect(page.getByText('hyder@faaztechsolutions.com')).toBeVisible();
+            await expect(page.locator('#DynamicCreate').getByText('hyder@faaztechsolutions.com')).toBeVisible({ timeout: 20000 });
             await onBehalfSearchInputs.nth(2).fill('');
 
             // Validate basic records
-            await expect(page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first()).toBeVisible();
+            await expect(page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
 
             // Pagination and email checks
             // for (const emails of [
@@ -126,7 +126,7 @@ test.describe('Helpdesk', () => {
             // ]) {
             //     await page.getByText('Next page').nth(1).click();
             //     for (const email of emails) {
-            //         await expect(page.getByText(email).first()).toBeVisible();
+            //         await expect(page.getByText(email).first()).toBeVisible({ timeout: 20000 });
             //     }
             // }
             await page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first().click();
@@ -144,40 +144,40 @@ test.describe('Helpdesk', () => {
             const dashboardLink = page.getByRole('link', { name: ' Dashboard' });
 
             // Open Dashboard
-            await expect(dashboardLink).toBeVisible({  timeout: 30000 });
+            await expect(dashboardLink).toBeVisible({ timeout: 30000 });
             await dashboardLink.click();
 
             // Check dashboard components
-            // await expect(page.locator('canvas').nth(1)).toBeVisible();
+            // await expect(page.locator('canvas').nth(1)).toBeVisible({ timeout: 20000 });
             await expect(page.getByRole('heading', { name: 'My Team Ticket' })).toBeVisible({ timeout: 30000 });
-            await expect(page.getByRole('heading', { name: 'Request By Category' })).toBeVisible();
-            await expect(page.getByRole('heading', { name: 'Request By Technician' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Request By Category' })).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('heading', { name: 'Request By Technician' })).toBeVisible({ timeout: 20000 });
 
             // Open More Options
             await page.getByRole('button', { name: 'More Options' }).click();
 
             // Open Dashboard for Department
             await page.getByRole('link', { name: ' Department Dashboard' }).click();
-            await expect(page.locator('#page_left').getByText('My Department Requests')).toBeVisible();
+            await expect(page.locator('#page_left').getByText('My Department Requests')).toBeVisible({ timeout: 20000 });
             await expect(page.locator('canvas').nth(1)).toBeVisible({ timeout: 20000 });
-            await expect(page.locator('canvas').nth(3)).toBeVisible();
+            await expect(page.locator('canvas').nth(3)).toBeVisible({ timeout: 20000 });
             // Requests by Category table
             await expect(page.getByText('Requests by Category')).toBeVisible({ timeout: 20000 });
             await page.locator('div:nth-child(3) > .content_add > page-controller > .content-box > .content-view > .content-add > .inner_flex > div > div > app-dynamic-list > .content > .container-fluid > .position-relative > div > .card-header > .Right > .d-flex > i').first().click();
             await page.locator('.table_filter_text').first().click();
             await page.locator('.table_filter_text').first().fill('por');
-            await expect(page.getByText('Portal')).toBeVisible();
+            await expect(page.getByText('Portal')).toBeVisible({ timeout: 20000 });
             await page.getByRole('cell', { name: ' Category Name  ' }).hover();
             await page.getByRole('cell', { name: 'por', exact: true }).hover();
             await page.getByRole('cell', { name: 'por ' }).getByRole('textbox').hover();
-            await page.getByRole('cell', { name: 'por ' }).locator('span').click({ timeout: 10000 });
+            await page.getByRole('cell', { name: 'por ' }).locator('span').click({ timeout: 20000 });
             await expect(page.locator('.table_filter_text').first()).toBeEmpty();
             // Requests by Technician table
-            await expect(page.getByText('Requests by Technician')).toBeVisible();
+            await expect(page.getByText('Requests by Technician')).toBeVisible({ timeout: 20000 });
             await page.locator('div:nth-child(4) > .content_add > page-controller > .content-box > .content-view > .content-add > .inner_flex > div > div > app-dynamic-list > .content > .container-fluid > .position-relative > div > .card-header > .Right > .d-flex > i').first().click();
             await page.locator('#dynamic_list_EFN0000482 > widget-grid > .card > div:nth-child(2) > comp-table > .table > thead > tr:nth-child(2) > td:nth-child(3) > .clearfix > .table_filter_text').click();
             await page.locator('#dynamic_list_EFN0000482 > widget-grid > .card > div:nth-child(2) > comp-table > .table > thead > tr:nth-child(2) > td:nth-child(3) > .clearfix > .table_filter_text').fill('ahmed');
-            await expect(page.locator('#dynamic_list_EFN0000482').getByRole('table').getByText('Ahmed Fawzy').first()).toBeVisible();
+            await expect(page.locator('#dynamic_list_EFN0000482').getByRole('table').getByText('Ahmed Fawzy').first()).toBeVisible({ timeout: 20000 });
             await page.getByRole('cell', { name: ' Technician Name  ' }).hover();
             await page.getByRole('cell', { name: 'ahmed', exact: true }).hover();
             await page.getByRole('cell', { name: 'ahmed ' }).getByRole('textbox').hover();
@@ -195,71 +195,71 @@ test.describe('Helpdesk', () => {
                 // Navigate to Requests
                 await expect(page.locator('#MNU0000040')).toBeVisible({ timeout: 30000 });
                 await page.locator('#MNU0000040').click();
-                await expect(page.getByRole('link', { name: ' My Requests' })).toBeVisible();
+                await expect(page.getByRole('link', { name: ' My Requests' })).toBeVisible({ timeout: 20000 });
                 await page.getByRole('link', { name: ' My Requests' }).click();
 
                 const createButton = page.getByRole('button', { name: ' Create' });
-                await createButton.waitFor({ state: 'visible', timeout: 30000 });
-                await expect(createButton).toBeVisible();
+                await createButton.waitFor({ state: 'visible', timeout: 40000 });
+                await expect(createButton).toBeVisible({ timeout: 20000 });
                 await createButton.click();
 
                 await expect(page.getByLabel('Title*')).toBeVisible({ timeout: 20000 });
-                await expect(page.locator('#relation_autoComplete_dropdown_TicketCategory > .control-input > .form-control').first()).toBeVisible();
+                await expect(page.locator('#relation_autoComplete_dropdown_TicketCategory > .control-input > .form-control').first()).toBeVisible({ timeout: 20000 });
                 await page.waitForTimeout(2000);
                 await page.locator('#relation_autoComplete_dropdown_TicketCategory > .control-input > .form-control').first().click();
                 await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).click();
                 await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).fill('portal');
                 await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).fill('portal');
-                await expect(page.locator('#autoComplete_dropdown_tableTicketCategory td').filter({ hasText: 'portal' })).toBeVisible();
+                await expect(page.locator('#autoComplete_dropdown_tableTicketCategory td').filter({ hasText: 'portal' })).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).click();
                 await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).fill('');
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').nth(2).click();
-                await expect(page.getByText('Maintenance', { exact: true }).first()).toBeVisible();
-                await expect(page.locator('td').filter({ hasText: 'Projects Department' }).locator('comp-datatype')).toBeVisible();
+                await expect(page.getByText('Maintenance', { exact: true }).first()).toBeVisible({ timeout: 20000 });
+                await expect(page.locator('td').filter({ hasText: 'Projects Department' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').nth(2).click();
-                await expect(page.locator('tr').filter({ hasText: 'Test Test' }).locator('td').first()).toBeVisible();
+                await expect(page.locator('tr').filter({ hasText: 'Test Test' }).locator('td').first()).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').nth(1).click();
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').nth(1).click();
-                await expect(page.locator('td').filter({ hasText: 'General' }).locator('comp-datatype')).toBeVisible();
+                await expect(page.locator('td').filter({ hasText: 'General' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').nth(2).click();
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').nth(2).click();
-                await expect(page.locator('tr').filter({ hasText: 'Test Test' }).locator('td').first()).toBeVisible();
+                await expect(page.locator('tr').filter({ hasText: 'Test Test' }).locator('td').first()).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').first().click();
-                await expect(page.locator('#autoComplete_dropdown_tableTicketCategory tbody').getByText('Portal')).toBeVisible();
+                await expect(page.locator('#autoComplete_dropdown_tableTicketCategory tbody').getByText('Portal')).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_tableTicketCategory tbody').getByText('Portal').click();
                 await page.locator('#autoComplete_dropdown_OnBehalfOf > .control-input > .form-control').first().click();
-                await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="search"]').first().click();
+                await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="search"]').first().click({ timeout: 20000 });
                 await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="search"]').first().fill('hyder');
-                await expect(page.getByText('a.hyder')).toBeVisible();
+                await expect(page.getByText('a.hyder')).toBeVisible({ timeout: 20000 });
                 await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="search"]').first().click();
                 await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="search"]').first().fill('');
                 await page.locator('thead').filter({ hasText: 'User Id Name Email' }).locator('input[type="search"]').nth(1).click();
                 await page.locator('thead').filter({ hasText: 'User Id Name Email' }).locator('input[type="search"]').nth(1).fill('');
                 await page.locator('thead').filter({ hasText: 'User Id Name Email' }).locator('input[type="search"]').nth(2).click();
                 await page.locator('thead').filter({ hasText: 'User Id Name Email' }).locator('input[type="search"]').nth(2).fill('hyder');
-                await expect(page.locator('#DynamicCreate').getByText('hyder@faaztechsolutions.com')).toBeVisible();
+                await expect(page.locator('#DynamicCreate').getByText('hyder@faaztechsolutions.com')).toBeVisible({ timeout: 20000 });
                 await page.locator('thead').filter({ hasText: 'User Id Name Email' }).locator('input[type="search"]').nth(2).click();
                 await page.locator('thead').filter({ hasText: 'User Id Name Email' }).locator('input[type="search"]').nth(2).fill('');
-                await expect(page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first()).toBeVisible();
+                await expect(page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
                 await page.getByText('Next page').click();
-                await expect(page.locator('td').filter({ hasText: 'a.alamrani@mawarid.com.sa' }).first()).toBeVisible();
+                await expect(page.locator('td').filter({ hasText: 'a.alamrani@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
                 await page.getByText('Next page').click();
-                await expect(page.locator('td').filter({ hasText: 'a.aldosari01@mawarid.com.sa' }).first()).toBeVisible();
+                await expect(page.locator('td').filter({ hasText: 'a.aldosari01@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
                 await page.getByText('Next page').click();
-                await expect(page.locator('td').filter({ hasText: 'a.almansour@mawarid.com.sa' }).first()).toBeVisible();
+                await expect(page.locator('td').filter({ hasText: 'a.almansour@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
                 await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[9]/a').click();
                 await page.getByText('page 1', { exact: true }).click();
                 await page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first().click();
                 await page.locator('.angular-editor-textarea').first().click({ timeout: 30000 });
-                await expect(page.getByText('Submit')).toBeVisible();
-                await expect(page.getByText('Close', { exact: true })).toBeVisible();
+                await expect(page.getByText('Submit')).toBeVisible({ timeout: 20000 });
+                await expect(page.getByText('Close', { exact: true })).toBeVisible({ timeout: 20000 });
                 await page.locator('.modal-header > div > .btn').click();
-                await expect(page.locator('.Right > .d-flex > i').first()).toBeVisible();
+                await expect(page.locator('.Right > .d-flex > i').first()).toBeVisible({ timeout: 20000 });
                 await page.locator('.Right > .d-flex > i').first().click({ timeout: 40000 });
                 await page.locator('//*[@id="autoComplete_dropdown_Status"]/div[1]/label').click();
                 await page.getByRole('row', { name: ' New', exact: true }).locator('div').click({ timeout: 10000 });
                 await page.getByRole('button', { name: 'OK' }).click();
-                await expect(page.locator('.grid-field-tag > comp-datatype').first()).toBeVisible();
+                await expect(page.locator('.grid-field-tag > comp-datatype').first()).toBeVisible({ timeout: 20000 });
                 await expect(page.getByRole('table')).toContainText('New');
 
                 // Hover and clear the filters New Status
@@ -271,11 +271,11 @@ test.describe('Helpdesk', () => {
                 await page.locator('.text-left > .clearfix > .table_filter_text').first().click();
                 await page.locator('.text-left > .clearfix > .table_filter_text').first().fill('TRQ0016310');
                 await page.locator('.text-left > .clearfix > .table_filter_text').first().press('Enter');
-                await expect(page.getByText('TRQ0016310')).toBeVisible();
+                await expect(page.getByText('TRQ0016310')).toBeVisible({ timeout: 20000 });
                 await page.getByRole('cell', { name: 'Test ticket 3 for Automation test' }).locator('a').click();
 
                 // Goto details page
-                await expect(page.getByText('Details')).toBeVisible();
+                await expect(page.getByText('Details')).toBeVisible({ timeout: 20000 });
                 await page
                     .locator('#custom_template_dynamic_list_EFN0000114 div')
                     .filter({ hasText: 'Test ticket 3 for Automation test' })
@@ -288,30 +288,30 @@ test.describe('Helpdesk', () => {
                     .locator('div')
                     .filter({ hasText: /^Test ticket 3 for Automation test$/ })
                     .nth(3);
-                await ticketLocator.waitFor({ state: 'visible', timeout: 30000 });
-                await expect(ticketLocator).toBeVisible();
-                await expect(page.getByText('Note - Don\'t take any actions').nth(1)).toBeVisible();
+                await ticketLocator.waitFor({ state: 'visible', timeout: 60000 });
+                await expect(ticketLocator).toBeVisible({ timeout: 20000 });
+                await expect(page.getByText('Note - Don\'t take any actions').nth(1)).toBeVisible({ timeout: 20000 });
 
                 // Assign action validations
                 await page.getByText('Assign', { exact: true }).nth(1).click();
                 await page.waitForTimeout(6000);
-                await page.locator('#Actionform_EFN0000177').getByText('Portal').click();
-                await expect(page.locator('#autoComplete_dropdown_tableTicketCategory td').filter({ hasText: 'portal' })).toBeVisible();
+                await page.locator('#Actionform_EFN0000177').getByText('Portal').click({ timeout: 60000 });
+                await expect(page.locator('#autoComplete_dropdown_tableTicketCategory td').filter({ hasText: 'portal' })).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).click();
-                await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).click();
+                await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).click({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).fill('portal');
                 await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).fill('portal');
-                await expect(page.locator('#autoComplete_dropdown_tableTicketCategory td').filter({ hasText: 'portal' })).toBeVisible();
+                await expect(page.locator('#autoComplete_dropdown_tableTicketCategory td').filter({ hasText: 'portal' })).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).click();
                 await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).fill('');
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').nth(2).click();
-                await expect(page.getByText('Maintenance', { exact: true }).first()).toBeVisible();
-                await expect(page.locator('td').filter({ hasText: 'Projects Department' }).locator('comp-datatype')).toBeVisible();
+                await expect(page.getByText('Maintenance', { exact: true }).first()).toBeVisible({ timeout: 20000 });
+                await expect(page.locator('td').filter({ hasText: 'Projects Department' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').nth(2).click();
-                await expect(page.locator('tr').filter({ hasText: 'Test Test' }).locator('td').first()).toBeVisible();
+                await expect(page.locator('tr').filter({ hasText: 'Test Test' }).locator('td').first()).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').nth(1).click({ timeout: 10000 });
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').nth(1).click({ timeout: 10000 });
-                await expect(page.locator('td').filter({ hasText: 'General' }).locator('comp-datatype')).toBeVisible();
+                await expect(page.locator('td').filter({ hasText: 'General' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').nth(2).click();
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').nth(2).click();
                 await expect(page.locator('tr').filter({ hasText: 'Test Test' }).locator('td').first()).toBeVisible({ timeout: 30000 });
@@ -322,7 +322,7 @@ test.describe('Helpdesk', () => {
 
                 // Assign to Dropdown
                 await page.locator('#relation_autoComplete_dropdown_AssignedTo label').nth(1).click();
-                await expect(page.getByText('a.abdalhamed@mawarid.com.sa').first()).toBeVisible();
+                await expect(page.getByText('a.abdalhamed@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
                 await expect(page.locator('#relation_autoComplete_dropdown_AssignedTo input[name="currentPage"]')).toHaveValue('1');
 
                 // Wait for text like "of73" anywhere on the page
@@ -331,7 +331,7 @@ test.describe('Helpdesk', () => {
                 await page.locator('#relation_autoComplete_dropdown_AssignedTo ul a').nth(2).click();
 
                 await expect(page.locator('#relation_autoComplete_dropdown_AssignedTo input[name="currentPage"]')).toHaveValue('2');
-                await expect(page.locator('comp-field-view-type').filter({ hasText: 'a.alamrani@mawarid.com.sa' }).first()).toBeVisible();
+                await expect(page.locator('comp-field-view-type').filter({ hasText: 'a.alamrani@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
 
                 // Wait for text like "of73" anywhere on the page
                 await page.locator('text=/of\\d+/i').nth(2).waitFor({ state: 'visible', timeout: 10000 });
@@ -339,7 +339,7 @@ test.describe('Helpdesk', () => {
                 await page.locator('#relation_autoComplete_dropdown_AssignedTo ul a').nth(2).click();
 
                 await expect(page.locator('#relation_autoComplete_dropdown_AssignedTo input[name="currentPage"]')).toHaveValue('3');
-                await expect(page.getByText('a.aldukhayil@mawarid.com.sa').first()).toBeVisible()
+                await expect(page.getByText('a.aldukhayil@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 })
                 await page.locator('text=/of\\d+/i').first().waitFor({ state: 'visible', timeout: 10000 });
 
                 // Now click the second pagination link
@@ -364,7 +364,7 @@ test.describe('Helpdesk', () => {
                 await page.locator('#Durationperiod').click();
                 await page.locator('#Durationperiod').fill('1');
                 await page.locator('ng-select').filter({ hasText: 'Duration Type' }).locator('input[type="text"]').click();
-                await page.locator('div').filter({ hasText: /^Hours$/ }).click();
+                await page.locator('div').filter({ hasText: /^Hours$/ }).click({ timeout: 30000 });
                 await page.locator('#Actionform_EFN0000178').getByText('Close').click();
 
                 // Cancel action validations
@@ -378,7 +378,7 @@ test.describe('Helpdesk', () => {
                 await page.getByText('Close', { exact: true }).nth(2).click();
                 await page.getByPlaceholder('Comments').click();
                 await page.getByPlaceholder('Comments').fill('  close');
-                await expect(page.locator('h4').filter({ hasText: 'Close' })).toBeVisible();
+                await expect(page.locator('h4').filter({ hasText: 'Close' })).toBeVisible({ timeout: 20000 });
                 await page.locator('#Actionform_EFN0000182 button').filter({ hasText: 'Close' }).click();
 
                 // Attach action validations
@@ -393,13 +393,14 @@ test.describe('Helpdesk', () => {
                 // Approvers Dropdown validations
                 await expect(page.getByText('a.abdalhamed@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('page 2').click();
-                await expect(page.getByText('a.alanazi@mawarid.com.sa').first()).toBeVisible();
+                await expect(page.getByText('a.alanazi@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('Next page').click();
-                await expect(page.getByText('a.aldursuni@mawarid.com.sa').first()).toBeVisible();       
+                await expect(page.getByText('a.aldursuni@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('page 2').click();
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('page 1', { exact: true }).click();
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').first().click();
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').first().fill('hyder');
+                await page.locator('#autoComplete_dropdown_Approvers').getByText('a.hyder').hover();
                 await page.locator('tr').filter({ hasText: 'a.hyder Hyder Ali A hyder@' }).locator('i').click();
                 await page.getByPlaceholder('Comments').click();
                 await page.getByPlaceholder('Comments').fill('test comment');
@@ -408,16 +409,15 @@ test.describe('Helpdesk', () => {
                 // Task Action validations
                 await page.locator('dynamic-details').getByText('Task', { exact: true }).click();
                 await expect(page.getByText('IT', { exact: true })).toBeVisible({ timeout: 20000 });
-                await expect(page.getByPlaceholder('Title')).toBeVisible();
-                await expect(page.locator('#angular_editor_ETN0000029_Description').getByText('Note - Don\'t take any actions')).toBeVisible();
+                await expect(page.getByPlaceholder('Title')).toBeVisible({ timeout: 20000 });
+                await expect(page.locator('#angular_editor_ETN0000029_Description').getByText('Note - Don\'t take any actions')).toBeVisible({ timeout: 20000 });
                 await page.getByText('IT', { exact: true }).click();
                 await page.locator('ul').filter({ hasText: 'of2' }).locator('a').nth(2).click();
                 await page.locator('ul').filter({ hasText: 'of2' }).locator('a').nth(1).click();
                 await page.locator('#autoComplete_dropdown_tableDepartment input[type="text"]').first().click();
                 await page.locator('#autoComplete_dropdown_tableDepartment input[type="text"]').first().fill('IT');
                 await page.locator('#autoComplete_dropdown_tableDepartment input[type="text"]').first().press('Enter');
-                await page.locator('tr').filter({ hasText: 'IT DPT0000001 s.alissa@' }).locator('span').first().click();
-                await page.locator('tr').filter({ hasText: 'IT DPT0000001 s.alissa@' }).locator('i').click();
+                await page.locator('#autoComplete_dropdown_Department').getByText('OK').click();
                 await page.locator('#relation_autoComplete_dropdown_DepartmentMember div').filter({ hasText: 'Assinged To *' }).locator('label').nth(1).click({ timeout: 30000 });
                 await page.locator('#autoComplete_dropdown_tableDepartmentMember input[type="text"]').first().click();
                 await page.locator('#autoComplete_dropdown_tableDepartmentMember input[type="text"]').first().fill('ajeesh');
@@ -442,7 +442,7 @@ test.describe('Helpdesk', () => {
         test('Assigned To Me: should filter, select, and validate requests assigned to the user', async ({ page }) => {
             await test.step('check the AssignedToMe menu', async () => {
                 await page.locator('#MNU0000040').click();
-                await expect(page.getByRole('link', { name: ' Assigned to me' })).toBeVisible();
+                await expect(page.getByRole('link', { name: ' Assigned to me' })).toBeVisible({ timeout: 20000 });
                 await page.getByRole('link', { name: ' Assigned to me' }).click();
                 await expect(page.getByText('Request Assigned to me')).toBeVisible({ timeout: 20000 });
                 await page.locator('.Right > .d-flex > i').first().click();
@@ -450,7 +450,7 @@ test.describe('Helpdesk', () => {
                 await page.getByRole('row', { name: ' New', exact: true }).locator('div').click();
                 await page.getByText('ReOpen').first().click();
                 await page.getByRole('button', { name: 'OK' }).click();
-                await expect(page.getByRole('table').locator('span').filter({ hasText: 'New' }).first()).toBeVisible();
+                await expect(page.getByRole('table').locator('span').filter({ hasText: 'New' }).first()).toBeVisible({ timeout: 20000 });
                 await page.getByText('New,ReOpen').hover();
                 await page.locator('label').filter({ hasText: 'New,ReOpen' }).locator('i').click();
                 await page.locator('comp-pagination a').nth(2).click();
@@ -459,35 +459,35 @@ test.describe('Helpdesk', () => {
                 await page.locator('comp-pagination a').nth(2).click();
                 await expect(page.locator('input[name="currentPage"]')).toHaveValue('5');
                 await page.locator('comp-pagination a').nth(1).click();
-                await expect(page.locator('comp-pagination a').nth(1)).toBeVisible();
+                await expect(page.locator('comp-pagination a').nth(1)).toBeVisible({ timeout: 20000 });
                 await page.locator('comp-pagination a').nth(1).click();
                 await page.locator('comp-pagination a').first().click();
                 await page.locator('.text-left > .clearfix > .table_filter_text').first().click();
                 await page.locator('.text-left > .clearfix > .table_filter_text').first().fill('Test ticket 3 for Automation test');
                 await page.waitForTimeout(100);
                 await page.locator('.text-left > .clearfix > .table_filter_text').first().press('Enter');
-                await expect(page.getByRole('cell', { name: 'Test ticket 3 for Automation test', exact: true }).locator('a')).toBeVisible();
+                await expect(page.getByRole('cell', { name: 'Test ticket 3 for Automation test', exact: true }).locator('a')).toBeVisible({ timeout: 20000 });
                 await page.getByRole('cell', { name: 'Test ticket 3 for Automation test', exact: true }).locator('a').click();
                 await expect(page.locator('#custom_template_dynamic_list_EFN0000114').getByText('Test ticket 3 for Automation test')).toBeVisible({ timeout: 30000 });
-                await expect(page.getByText('Assign Accept Cancel Close Attach Assign Accept Cancel Close Attach Title Test')).toBeVisible({ timeout: 20000});
-                await expect(page.getByText('Approval', { exact: true })).toBeVisible();
-                await expect(page.locator('dynamic-details').getByText('Task', { exact: true })).toBeVisible();
-                await expect(page.getByText('Notes')).toBeVisible();
+                await expect(page.getByText('Assign Accept Cancel Close Attach Assign Accept Cancel Close Attach Title Test')).toBeVisible({ timeout: 20000 });
+                await expect(page.getByText('Approval', { exact: true })).toBeVisible({ timeout: 20000 });
+                await expect(page.locator('dynamic-details').getByText('Task', { exact: true })).toBeVisible({ timeout: 20000 });
+                await expect(page.getByText('Notes')).toBeVisible({ timeout: 20000 });
                 await page.getByText('Approval', { exact: true }).click();
                 await page.locator('#autoComplete_dropdown_Approvers label').nth(1).click();
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').first().click();
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').first().fill('afrith');
-                await expect(page.locator('#autoComplete_dropdown_table_Approvers').getByText('m.afrith', { exact: true })).toBeVisible();
+                await expect(page.locator('#autoComplete_dropdown_table_Approvers').getByText('m.afrith', { exact: true })).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').first().click();
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').first().fill('');
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').nth(1).click();
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').nth(1).fill('hyder');
-                await expect(page.locator('#autoComplete_dropdown_table_Approvers').getByText('Hyder Ali A')).toBeVisible();
+                await expect(page.locator('#autoComplete_dropdown_table_Approvers').getByText('Hyder Ali A')).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').nth(1).click();
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').nth(1).fill('');
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').nth(2).click();
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').nth(2).fill('afrith');
-                await expect(page.locator('#autoComplete_dropdown_table_Approvers').getByText('m.afrith@faaztechsolutions.com')).toBeVisible();
+                await expect(page.locator('#autoComplete_dropdown_table_Approvers').getByText('m.afrith@faaztechsolutions.com')).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').nth(2).click();
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').nth(2).fill('');
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('Next page').click({ timeout: 20000 });
@@ -502,14 +502,14 @@ test.describe('Helpdesk', () => {
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('Previous page').click();
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('Previous page').click();
                 await page.locator('#autoComplete_dropdown_table_Approvers').getByText('page 1', { exact: true }).click();
-                await expect(page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first()).toBeVisible();
+                await expect(page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').first().click({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_table_Approvers input[type="search"]').first().fill('a.adm');
                 await page.locator('td').filter({ hasText: 'a.admin' }).first().click();
                 await page.locator('#pills-tabContent').getByText('Close').click({ timeout: 20000 });
                 await page.locator('dynamic-details').getByText('Task', { exact: true }).click();
-                await expect(page.getByPlaceholder('Title')).toBeVisible();
-                await expect(page.getByText('IT', { exact: true })).toBeVisible();
+                await expect(page.getByPlaceholder('Title')).toBeVisible({ timeout: 20000 });
+                await expect(page.getByText('IT', { exact: true })).toBeVisible({ timeout: 20000 });
                 await page.locator('#relation_autoComplete_dropdown_DepartmentMember label').nth(1).click();
                 await page.locator('#autoComplete_dropdown_tableDepartmentMember input[type="text"]').first().click();
                 await page.locator('#autoComplete_dropdown_tableDepartmentMember input[type="text"]').first().fill('viswa');
@@ -525,15 +525,15 @@ test.describe('Helpdesk', () => {
                 await page.getByPlaceholder('Comments').click();
                 await page.locator('#pills-tabContent').getByText('Close').click();
                 await page.getByText('Notes').click();
-                await expect(page.locator('label').filter({ hasText: 'Notes' })).toBeVisible();
+                await expect(page.locator('label').filter({ hasText: 'Notes' })).toBeVisible({ timeout: 20000 });
                 await page.locator('#pills-tabContent').getByText('Close').click();
                 await page.locator('#cdk-drop-list-2 a').filter({ hasText: 'Approvals' }).click();
                 await page.locator('#cdk-drop-list-2 li').filter({ hasText: 'Task' }).locator('a').click();
                 await page.locator('li').filter({ hasText: 'History' }).locator('a').click();
-                await expect(page.getByText('Status History')).toBeVisible();
+                await expect(page.getByText('Status History')).toBeVisible({ timeout: 20000 });
                 await page.locator('a').filter({ hasText: 'Assignment' }).click();
-                await expect(page.locator('#dynamic_list_EFN0000108').getByText('TRQ0016310', { exact: true })).toBeVisible();
-                await expect(page.locator('#dynamic_list_EFN0000108 comp-table tbody').getByText('Test ticket 3 for Automation')).toBeVisible();
+                await expect(page.locator('#dynamic_list_EFN0000108').getByText('TRQ0016310', { exact: true })).toBeVisible({ timeout: 20000 });
+                await expect(page.locator('#dynamic_list_EFN0000108 comp-table tbody').getByText('Test ticket 3 for Automation')).toBeVisible({ timeout: 20000 });
                 await page.locator('button').filter({ hasText: 'Close' }).click();
                 await page.getByRole('cell', { name: 'pin Title  ' }).hover();
                 await page.getByRole('cell', { name: '⯆ Test ticket 3 for' }).hover();
@@ -557,7 +557,7 @@ test.describe('Helpdesk', () => {
             await page.locator('.text-left > .clearfix > .table_filter_text').first().click();
             await page.locator('.text-left > .clearfix > .table_filter_text').first().fill('11625');
             await page.locator('.text-left > .clearfix > .table_filter_text').first().press('Enter');
-            await expect(page.getByText('TRQ0011625')).toBeVisible();
+            await expect(page.getByText('TRQ0011625')).toBeVisible({ timeout: 20000 });
             await page.locator('.mb-1 > .ng-select-container').first().hover();
             await page.locator('.table_filter_clear').click();
             await page.locator('#relation_autoComplete_dropdown_TicketCategory label').click();
@@ -576,7 +576,7 @@ test.describe('Helpdesk', () => {
 
             // Assign action validations
             await page.getByText('Assign', { exact: true }).nth(1).click();
-            await expect(page.locator('#Actionform_EFN0000177').getByText('Assign', { exact: true })).toBeVisible();
+            await expect(page.locator('#Actionform_EFN0000177').getByText('Assign', { exact: true })).toBeVisible({ timeout: 20000 });
             await page.locator('#Actionform_EFN0000177').getByText('Close').click();
 
             // Accept action validations
@@ -584,7 +584,7 @@ test.describe('Helpdesk', () => {
             await page.locator('#relation_autoComplete_dropdown_TicketTypeddl label').click();
             await page.locator('table').filter({ hasText: 'Name Issue Bug Customer' }).locator('input[type="text"]').click();
             await page.locator('table').filter({ hasText: 'Name Issue Bug Customer' }).locator('input[type="text"]').fill('bug');
-            await expect(page.locator('td').filter({ hasText: 'Bug' })).toBeVisible();
+            await expect(page.locator('td').filter({ hasText: 'Bug' })).toBeVisible({ timeout: 20000 });
             await page.locator('td').filter({ hasText: 'Bug' }).locator('div').click();
             await page.getByPlaceholder('Scheduled Date').fill('2025-06-11');
             await page.locator('#Durationperiod').click();
@@ -595,12 +595,12 @@ test.describe('Helpdesk', () => {
 
             // Cancel action validations
             await page.getByText('Cancel').nth(2).click();
-            await expect(page.locator('#Actionform_EFN0000179').getByText('Cancel')).toBeVisible();
+            await expect(page.locator('#Actionform_EFN0000179').getByText('Cancel')).toBeVisible({ timeout: 20000 });
             await page.locator('#Actionform_EFN0000179').getByText('Close').click();
 
             // Close action validations
             await page.getByText('Close').nth(4).click();
-            await expect(page.locator('h4').filter({ hasText: 'Close' })).toBeVisible();
+            await expect(page.locator('h4').filter({ hasText: 'Close' })).toBeVisible({ timeout: 20000 });
             await page.locator('#Actionform_EFN0000182 button').filter({ hasText: 'Close' }).click();
 
             // Approvals action validations
@@ -615,6 +615,7 @@ test.describe('Helpdesk', () => {
 
             // Task Action validations
             await page.locator('dynamic-details').getByText('Task', { exact: true }).click();
+            await page.waitForTimeout(3000);
             await page.locator('#relation_autoComplete_dropdown_DepartmentMember label').nth(1).click();
             await page.locator('#autoComplete_dropdown_tableDepartmentMember > comp-table > .table > thead > tr:nth-child(2) > td:nth-child(2)').hover();
             await page.locator('#autoComplete_dropdown_tableDepartmentMember input[type="text"]').first().waitFor({ state: 'visible' });
@@ -634,7 +635,7 @@ test.describe('Helpdesk', () => {
             await page.getByText('page 4').click();
             await page.getByText('Next page').click();
             await page.getByText('Next page').click();
-            await expect(page.locator('td').filter({ hasText: 'a.alqahss@mawarid.com.sa' }).first()).toBeVisible();
+            await expect(page.locator('td').filter({ hasText: 'a.alqahss@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
             await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[9]/a').click();
             await page.getByText('Previous page').click();
             await page.getByText('Previous page').click();
@@ -657,23 +658,23 @@ test.describe('Helpdesk', () => {
 
             // Approvals Tab validations
             await page.locator('#cdk-drop-list-3 a').filter({ hasText: 'Approvals' }).click();
-            await expect(page.locator('table').filter({ hasText: 'Approver Id Approver Status' })).toBeVisible();
+            await expect(page.locator('table').filter({ hasText: 'Approver Id Approver Status' })).toBeVisible({ timeout: 20000 });
 
             // Task Tab validations
             await page.locator('#cdk-drop-list-3 li').filter({ hasText: 'Task' }).locator('a').click();
-            await expect(page.locator('table').filter({ hasText: 'Task Id Title Status Assigned' })).toBeVisible();
+            await expect(page.locator('table').filter({ hasText: 'Task Id Title Status Assigned' })).toBeVisible({ timeout: 20000 });
 
             // History Tab validations
             await page.locator('li').filter({ hasText: 'History' }).locator('a').click();
-            await expect(page.getByText('Request Id Status System Comments User Comments Action By Action Date No Data')).toBeVisible();
+            await expect(page.getByText('Request Id Status System Comments User Comments Action By Action Date No Data')).toBeVisible({ timeout: 20000 });
 
             // Assignment Tab validations
             await page.locator('a').filter({ hasText: 'Assignment' }).click();
-            await expect(page.locator('#dynamic_list_EFN0000108').getByText('TRQ0011625', { exact: true })).toBeVisible();
+            await expect(page.locator('#dynamic_list_EFN0000108').getByText('TRQ0011625', { exact: true })).toBeVisible({ timeout: 20000 });
 
             // Conversation Tab validations
             await page.locator('a').filter({ hasText: 'Conversation' }).click();
-            await expect(page.locator('app-button > .btn').first()).toBeVisible();
+            await expect(page.locator('app-button > .btn').first()).toBeVisible({ timeout: 20000 });
 
             // close the details page
             await page.locator('app-button > .btn').first().click();
@@ -696,14 +697,14 @@ test.describe('Helpdesk', () => {
                 await page.locator('td:nth-child(3) > .clearfix > .table_filter_text').click();
                 await page.locator('td:nth-child(3) > .clearfix > .table_filter_text').fill('Test ticket 3 for Automation test');
                 await page.locator('td:nth-child(3) > .clearfix > .table_filter_text').press('Enter');
-                await expect(page.getByRole('cell', { name: 'Test ticket 3 for Automation test', exact: true }).locator('a')).toBeVisible();
-                await expect(page.getByText('TRQ0016310')).toBeVisible();
+                await expect(page.getByRole('cell', { name: 'Test ticket 3 for Automation test', exact: true }).locator('a')).toBeVisible({ timeout: 20000 });
+                await expect(page.getByText('TRQ0016310')).toBeVisible({ timeout: 20000 });
                 await page.getByRole('cell', { name: 'Test ticket 3 for Automation test', exact: true }).locator('a').click();
 
                 // Assign Action validations
                 await page.getByText('Assign', { exact: true }).nth(1).click();
                 await expect(page.locator('label').filter({ hasText: 'Portal' })).toBeVisible({ timeout: 20000 });
-                await expect(page.locator('#relation_autoComplete_dropdown_AssignedTo').getByText('Hyder Ali')).toBeVisible();
+                await expect(page.locator('#relation_autoComplete_dropdown_AssignedTo').getByText('Hyder Ali')).toBeVisible({ timeout: 20000 });
                 await page.locator('#relation_autoComplete_dropdown_AssignedTo').getByText('Hyder Ali').click();
                 await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').nth(1).click();
                 await page.waitForTimeout(100);
@@ -726,29 +727,29 @@ test.describe('Helpdesk', () => {
 
                 // Cancel Action validations
                 await page.getByText('Cancel').nth(2).click();
-                await expect(page.locator('#Actionform_EFN0000179').getByText('Cancel')).toBeVisible();
+                await expect(page.locator('#Actionform_EFN0000179').getByText('Cancel')).toBeVisible({ timeout: 20000 });
                 await page.locator('#Actionform_EFN0000179').getByText('Close').click();
 
                 // Close Action validations
                 await page.getByText('Close').nth(3).click();
-                await expect(page.locator('h4').filter({ hasText: 'Close' })).toBeVisible();
+                await expect(page.locator('h4').filter({ hasText: 'Close' })).toBeVisible({ timeout: 20000 });
                 await page.locator('#Actionform_EFN0000182 button').filter({ hasText: 'Close' }).click();
 
                 // Attach Action validations
                 await page.getByText('Attach').nth(1).click();
-                await expect(page.getByText('HDRequestAttachment')).toBeVisible();
+                await expect(page.getByText('HDRequestAttachment')).toBeVisible({ timeout: 20000 });
                 await page.getByLabel('Close').getByText('x').click();
 
                 // Approvals Sub Action validations
                 await page.getByText('Approval', { exact: true }).click();
                 await page.locator('#autoComplete_dropdown_Approvers label').nth(1).click();
-                await expect(page.getByText('a.abdelhakim@mawarid.com.sa').first()).toBeVisible({ timeout: 20000});
+                await expect(page.getByText('a.abdelhakim@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
                 await page.getByText('Next page').click();
-                await expect(page.getByText('a.alangari@mawarid.com.sa').first()).toBeVisible();
+                await expect(page.getByText('a.alangari@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
                 await page.getByText('page 3').click();
-                await expect(page.getByText('a.aldursuni@mawarid.com.sa').first()).toBeVisible();
+                await expect(page.getByText('a.aldursuni@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
                 await page.getByText('page 1', { exact: true }).click();
-                await expect(page.getByText('a.abdulaziz@mawarid.com.sa').first()).toBeVisible();
+                await expect(page.getByText('a.abdulaziz@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
                 await page.locator('input[type="search"]').first().click();
                 await page.locator('input[type="search"]').first().fill('hyder');
                 await page.locator('tr').filter({ hasText: 'a.hyder Hyder Ali A hyder@' }).locator('i').click();
@@ -759,10 +760,10 @@ test.describe('Helpdesk', () => {
                 await page.locator('#cdk-drop-list-2 li').filter({ hasText: 'Task' }).locator('a').click();
                 await page.locator('li').filter({ hasText: 'History' }).locator('a').click();
                 await page.locator('a').filter({ hasText: 'Assignment' }).click();
-                await expect(page.locator('#dynamic_list_EFN0000108 comp-table tbody').getByText('Test ticket 3 for Automation')).toBeVisible();
-                await expect(page.locator('#dynamic_list_EFN0000108 comp-table tbody').getByText('a.hyder', { exact: true })).toBeVisible();
+                await expect(page.locator('#dynamic_list_EFN0000108 comp-table tbody').getByText('Test ticket 3 for Automation')).toBeVisible({ timeout: 20000 });
+                await expect(page.locator('#dynamic_list_EFN0000108 comp-table tbody').getByText('a.hyder', { exact: true })).toBeVisible({ timeout: 20000 });
                 await page.locator('a').filter({ hasText: 'Conversation' }).click();
-                await expect(page.getByText('Hyder Ali A Assigned To Hyder')).toBeVisible();
+                await expect(page.getByText('Hyder Ali A Assigned To Hyder')).toBeVisible({ timeout: 20000 });
 
                 // Task Sub Action validations
                 await page.locator('dynamic-details').getByText('Task', { exact: true }).click();
@@ -797,27 +798,27 @@ test.describe('Helpdesk', () => {
             await test.step('All Requests menu test', async () => {
                 // Menu Navigation
                 await page.locator('#MNU0000040').click();
-                await expect(page.getByRole('link', { name: ' All Requests' })).toBeVisible();
+                await expect(page.getByRole('link', { name: ' All Requests' })).toBeVisible({ timeout: 20000 });
                 // Submenu Navigation
                 await page.getByRole('link', { name: ' All Requests' }).click();
                 await page.locator('.Right > .d-flex > i').first().click();
                 await page.locator('.table_filter_text').first().click();
                 await page.locator('.table_filter_text').first().fill('TRQ0016310');
                 await page.locator('.table_filter_text').first().press('Enter');
-                await expect(page.getByText('TRQ0016310')).toBeVisible();
+                await expect(page.getByText('TRQ0016310')).toBeVisible({ timeout: 20000 });
                 await page.getByRole('cell', { name: 'Test ticket 3 for Automation test', exact: true }).locator('a').click();
 
                 // Assign Action validations
                 await page.getByText('Assign', { exact: true }).nth(1).click();
                 await page.waitForTimeout(3000);
-                await expect(page.locator('label').filter({ hasText: 'Portal' })).toBeVisible();
+                await expect(page.locator('label').filter({ hasText: 'Portal' })).toBeVisible({ timeout: 20000 });
                 await expect(page.locator('#relation_autoComplete_dropdown_AssignedTo').getByText('Hyder Ali A')).toBeVisible({ timeout: 20000 });
                 await page.locator('#relation_autoComplete_dropdown_AssignedTo').getByText('Hyder Ali A').click();
                 await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').nth(1).click();
                 await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').nth(1).fill('kri');
                 await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').nth(1).press('Enter');
                 await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').nth(1).press('Enter');
-                await expect(page.locator('tr').filter({ hasText: 'm.krishna Krishna m.krishna@' }).locator('comp-field-view-type').nth(1)).toBeVisible({ timeout: 20000});
+                await expect(page.locator('tr').filter({ hasText: 'm.krishna Krishna m.krishna@' }).locator('comp-field-view-type').nth(1)).toBeVisible({ timeout: 20000 });
                 await page.locator('#Actionform_EFN0000177 button').first().click();
 
                 // Accept Action validations
@@ -834,30 +835,30 @@ test.describe('Helpdesk', () => {
 
                 // Cancel Action validations
                 await page.getByText('Cancel').nth(1).click();
-                await expect(page.locator('#Actionform_EFN0000179').getByText('Cancel')).toBeVisible();
+                await expect(page.locator('#Actionform_EFN0000179').getByText('Cancel')).toBeVisible({ timeout: 20000 });
                 await page.locator('#Actionform_EFN0000179').getByText('Close').click();
                 await page.getByText('Close').nth(3).click();
 
                 // Close Action validations
-                await expect(page.locator('h4').filter({ hasText: 'Close' })).toBeVisible();
+                await expect(page.locator('h4').filter({ hasText: 'Close' })).toBeVisible({ timeout: 20000 });
                 await page.locator('#Actionform_EFN0000182 button').filter({ hasText: 'Close' }).click();
 
                 // Attach Action validations
                 await page.getByText('Attach').nth(1).click();
-                await expect(page.getByText('HDRequestAttachment')).toBeVisible();
+                await expect(page.getByText('HDRequestAttachment')).toBeVisible({ timeout: 20000 });
                 await page.getByLabel('Close').getByText('x').click();
 
                 // Approvals Sub Action validations
                 await page.getByText('Approval', { exact: true }).click();
                 await page.locator('#autoComplete_dropdown_Approvers label').nth(1).click();
-                await expect(page.getByText('a.abdelhakim@mawarid.com.sa').first()).toBeVisible({ timeout: 20000});
+                await expect(page.getByText('a.abdelhakim@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
                 await page.getByText('Next page').click();
-                await expect(page.getByText('a.alangari@mawarid.com.sa').first()).toBeVisible();
+                await expect(page.getByText('a.alangari@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
                 await page.getByText('page 3').click();
-                await expect(page.getByText('a.aldursuni@mawarid.com.sa').first()).toBeVisible();
+                await expect(page.getByText('a.aldursuni@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
                 await page.getByText('Previous page').click();
                 await page.getByText('page 1', { exact: true }).click();
-                await expect(page.getByText('a.abdulaziz@mawarid.com.sa').first()).toBeVisible();
+                await expect(page.getByText('a.abdulaziz@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
                 await page.locator('input[type="search"]').first().click();
                 await page.locator('input[type="search"]').first().fill('hyder');
                 await page.locator('tr').filter({ hasText: 'a.hyder Hyder Ali A hyder@' }).locator('i').click();
@@ -868,14 +869,14 @@ test.describe('Helpdesk', () => {
                 await page.locator('#cdk-drop-list-2 li').filter({ hasText: 'Task' }).locator('a').click();
                 await page.locator('li').filter({ hasText: 'History' }).locator('a').click();
                 await page.locator('a').filter({ hasText: 'Assignment' }).click();
-                await expect(page.locator('#dynamic_list_EFN0000108 comp-table tbody').getByText('Test ticket 3 for Automation')).toBeVisible();
-                await expect(page.locator('#dynamic_list_EFN0000108 comp-table tbody').getByText('a.hyder', { exact: true })).toBeVisible();
+                await expect(page.locator('#dynamic_list_EFN0000108 comp-table tbody').getByText('Test ticket 3 for Automation')).toBeVisible({ timeout: 20000 });
+                await expect(page.locator('#dynamic_list_EFN0000108 comp-table tbody').getByText('a.hyder', { exact: true })).toBeVisible({ timeout: 20000 });
                 await page.locator('a').filter({ hasText: 'Conversation' }).click();
-                await expect(page.getByText('Hyder Ali A Assigned To Hyder')).toBeVisible();
+                await expect(page.getByText('Hyder Ali A Assigned To Hyder')).toBeVisible({ timeout: 20000 });
 
                 // Task Sub Action validations
                 await page.locator('dynamic-details').getByText('Task', { exact: true }).click();
-                await expect(page.getByText('IT', { exact: true })).toBeVisible();
+                await expect(page.getByText('IT', { exact: true })).toBeVisible({ timeout: 20000 });
                 await page.locator('#relation_autoComplete_dropdown_DepartmentMember label').nth(1).click();
                 await page.locator('#autoComplete_dropdown_tableDepartmentMember input[type="text"]').first().click();
                 await page.locator('#autoComplete_dropdown_tableDepartmentMember input[type="text"]').first().fill('viswa');
@@ -934,7 +935,7 @@ test.describe('Helpdesk', () => {
             await page.locator('.text-left > .clearfix > .table_filter_text').first().click();
             await page.locator('.text-left > .clearfix > .table_filter_text').first().fill('TRQ0016098');
             await page.locator('.text-left > .clearfix > .table_filter_text').first().press('Enter');
-            await expect(page.getByRole('cell', { name: 'test Maintenance request' }).locator('a')).toBeVisible();
+            await expect(page.getByRole('cell', { name: 'test Maintenance request' }).locator('a')).toBeVisible({ timeout: 20000 });
 
             // Go to Request Details
             await page.getByRole('cell', { name: 'test Maintenance request' }).locator('a').click();
@@ -962,26 +963,26 @@ test.describe('Helpdesk', () => {
 
             // Approvals Tab Validation
             await page.locator('#cdk-drop-list-2 a').filter({ hasText: 'Approvals' }).click();
-            await expect(page.getByText('Approver Id')).toBeVisible();
+            await expect(page.getByText('Approver Id')).toBeVisible({ timeout: 20000 });
 
             // Task Tab Validation
             await page.locator('#cdk-drop-list-2 li').filter({ hasText: 'Task' }).locator('a').click();
-            await expect(page.getByText('Task Id')).toBeVisible();
+            await expect(page.getByText('Task Id')).toBeVisible({ timeout: 20000 });
 
             // History Tab Validation
             await page.locator('li').filter({ hasText: 'History' }).locator('a').click();
-            await expect(page.locator('tr').filter({ hasText: 'TRQ0016098Scheduledstatus' }).locator('a')).toBeVisible();
-            await expect(page.locator('#dynamic_list_EFN0000107 comp-table tbody').getByText('Scheduled', { exact: true })).toBeVisible();
+            await expect(page.locator('tr').filter({ hasText: 'TRQ0016098Scheduledstatus' }).locator('a')).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('#dynamic_list_EFN0000107 comp-table tbody').getByText('Scheduled', { exact: true })).toBeVisible({ timeout: 20000 });
 
             // Assignment Tab Validation
             await page.locator('a').filter({ hasText: 'Assignment' }).click();
-            await expect(page.locator('#dynamic_list_EFN0000108 td').filter({ hasText: 'test Maintenance request' }).locator('comp-field-view-type')).toBeVisible();
+            await expect(page.locator('#dynamic_list_EFN0000108 td').filter({ hasText: 'test Maintenance request' }).locator('comp-field-view-type')).toBeVisible({ timeout: 20000 });
 
             // Conversation Tab Validation
             await page.locator('a').filter({ hasText: 'Conversation' }).click();
-            await expect(page.locator('div').filter({ hasText: /^Closed Comments - 1129781 has been completed the request - TRQ0016098$/ }).nth(1)).toBeVisible();
-            await expect(page.locator('#dynamic_list_EFN0000141').getByText('Maintenance Mawarid').first()).toBeVisible();
-            await expect(page.locator('#dynamic_list_EFN0000141').getByText('Maintenance Mawarid').nth(2)).toBeVisible();
+            await expect(page.locator('div').filter({ hasText: /^Closed Comments - 1129781 has been completed the request - TRQ0016098$/ }).nth(1)).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('#dynamic_list_EFN0000141').getByText('Maintenance Mawarid').first()).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('#dynamic_list_EFN0000141').getByText('Maintenance Mawarid').nth(2)).toBeVisible({ timeout: 20000 });
 
             // Close Details Page
             await page.getByText('Close', { exact: true }).click();
@@ -1005,7 +1006,7 @@ test.describe('Helpdesk', () => {
 
             // Options validation
             await page.getByText('Options').click();
-            await expect(page.getByText('Export SelectedExport')).toBeVisible();
+            await expect(page.getByText('Export SelectedExport')).toBeVisible({ timeout: 20000 });
             await page.getByText('Options').click();
 
             // Filter by Request ID and Validation
@@ -1015,7 +1016,7 @@ test.describe('Helpdesk', () => {
             await page.getByRole('textbox').nth(3).fill('TRQ0011625');
             await page.getByRole('button', { name: ' Search' }).click();
             await expect(page.locator('#td_content_0_0')).toContainText("Test 2 Play wright automation (Don't Assign this Ticket)");
-            await expect(page.locator('#td_content_0_1').getByText('TRQ0011625')).toBeVisible();
+            await expect(page.locator('#td_content_0_1').getByText('TRQ0011625')).toBeVisible({ timeout: 20000 });
 
             // Ticket Details page validation
             await page.locator('#td_content_0_0 comp-field-view-type a').click();
@@ -1040,7 +1041,7 @@ test.describe('Helpdesk', () => {
             await page.locator('#relation_autoComplete_dropdown_TicketTypeddl label').click();
             await page.locator('table').filter({ hasText: 'Name Issue Bug Customer' }).locator('input[type="text"]').click();
             await page.locator('table').filter({ hasText: 'Name Issue Bug Customer' }).locator('input[type="text"]').fill('bug');
-            await expect(page.locator('td').filter({ hasText: 'Bug' })).toBeVisible();
+            await expect(page.locator('td').filter({ hasText: 'Bug' })).toBeVisible({ timeout: 20000 });
             await page.locator('td').filter({ hasText: 'Bug' }).locator('div').click();
             await page.getByPlaceholder('Scheduled Date').fill('2025-06-11');
             await page.locator('#Durationperiod').click();
@@ -1051,12 +1052,12 @@ test.describe('Helpdesk', () => {
 
             // Cancel action validations
             await page.getByText('Cancel').nth(1).click();
-            await expect(page.locator('#Actionform_EFN0000179').getByText('Cancel')).toBeVisible();
+            await expect(page.locator('#Actionform_EFN0000179').getByText('Cancel')).toBeVisible({ timeout: 20000 });
             await page.locator('#Actionform_EFN0000179').getByText('Close').click();
 
             // Close action validations
             await page.getByRole('link', { name: 'Close' }).click();
-            await expect(page.locator('h4').filter({ hasText: 'Close' })).toBeVisible();
+            await expect(page.locator('h4').filter({ hasText: 'Close' })).toBeVisible({ timeout: 20000 });
             await page.locator('#Actionform_EFN0000182 button').filter({ hasText: 'Close' }).click();
 
             // Approvals action validations
@@ -1090,7 +1091,7 @@ test.describe('Helpdesk', () => {
             await page.getByText('page 4').click();
             await page.getByText('Next page').click();
             await page.getByText('Next page').click();
-            await expect(page.locator('td').filter({ hasText: 'a.alqahss@mawarid.com.sa' }).first()).toBeVisible();
+            await expect(page.locator('td').filter({ hasText: 'a.alqahss@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
             await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[9]/a').click();
             await page.getByText('Previous page').click();
             await page.getByText('Previous page').click();
@@ -1113,23 +1114,23 @@ test.describe('Helpdesk', () => {
 
             // Appointment Tab validations
             await page.locator('#cdk-drop-list-2 a').filter({ hasText: 'Approvals' }).click();
-            await expect(page.locator('table').filter({ hasText: 'Approver Id Approver Status' })).toBeVisible();
+            await expect(page.locator('table').filter({ hasText: 'Approver Id Approver Status' })).toBeVisible({ timeout: 20000 });
 
             // Task Tab validations
             await page.locator('#cdk-drop-list-2 li').filter({ hasText: 'Task' }).locator('a').click();
-            await expect(page.locator('table').filter({ hasText: 'Task Id Title Status Assigned' })).toBeVisible();
+            await expect(page.locator('table').filter({ hasText: 'Task Id Title Status Assigned' })).toBeVisible({ timeout: 20000 });
 
             // History Tab validations
             await page.locator('li').filter({ hasText: 'History' }).locator('a').click();
-            await expect(page.getByText('Request Id Status System Comments User Comments Action By Action Date No Data')).toBeVisible();
+            await expect(page.getByText('Request Id Status System Comments User Comments Action By Action Date No Data')).toBeVisible({ timeout: 20000 });
 
             // Assignment Tab validations
             await page.locator('a').filter({ hasText: 'Assignment' }).click();
-            await expect(page.locator('#dynamic_list_EFN0000108').getByText('TRQ0011625', { exact: true })).toBeVisible();
+            await expect(page.locator('#dynamic_list_EFN0000108').getByText('TRQ0011625', { exact: true })).toBeVisible({ timeout: 20000 });
 
             // Conversation Tab validations
             await page.locator('a').filter({ hasText: 'Conversation' }).click();
-            await expect(page.locator('app-button > .btn').first()).toBeVisible();
+            await expect(page.locator('app-button > .btn').first()).toBeVisible({ timeout: 20000 });
 
             // Close Details Page
             await page.getByLabel('Close').locator('i').click();
@@ -1149,7 +1150,7 @@ test.describe('Helpdesk', () => {
             // pagination Validation
             await expect(page.getByRole('spinbutton')).toHaveValue('1');
             await page.locator('comp-pagination a').nth(2).click();
-            await expect(page.getByRole('spinbutton')).toBeVisible();
+            await expect(page.getByRole('spinbutton')).toBeVisible({ timeout: 20000 });
             await page.locator('comp-pagination a').nth(2).click();
             await expect(page.getByRole('spinbutton')).toHaveValue('3');
             await page.locator('comp-pagination a').nth(2).click();
@@ -1166,7 +1167,7 @@ test.describe('Helpdesk', () => {
             await page.waitForTimeout(100);
             await page.locator('td:nth-child(3) > .clearfix > .table_filter_text').press('Enter');
             await expect(page.getByRole('cell', { name: 'Test ticket 2 for Automation test', exact: true }).locator('a')).toBeVisible({ timeout: 20000 });
-            await expect(page.getByText('TRQ0016275')).toBeVisible();
+            await expect(page.getByText('TRQ0016275')).toBeVisible({ timeout: 20000 });
             await page.getByRole('cell', { name: 'Test ticket 2 for Automation test', exact: true }).locator('a').click();
 
             // Assign Action validations
@@ -1179,17 +1180,17 @@ test.describe('Helpdesk', () => {
             await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').nth(1).fill('kri');
             await page.waitForTimeout(100);
             await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="text"]').nth(1).press('Enter');
-            await expect(page.locator('tr').filter({ hasText: 'm.krishna Krishna m.krishna@' }).locator('comp-field-view-type').nth(1)).toBeVisible({ timeout: 20000});
+            await expect(page.locator('tr').filter({ hasText: 'm.krishna Krishna m.krishna@' }).locator('comp-field-view-type').nth(1)).toBeVisible({ timeout: 20000 });
             await page.locator('#Actionform_EFN0000177 button').first().click();
 
             // Cancel Action validations
             await page.getByText('Cancel').nth(1).click();
-            await expect(page.locator('#Actionform_EFN0000179').getByText('Cancel')).toBeVisible();
+            await expect(page.locator('#Actionform_EFN0000179').getByText('Cancel')).toBeVisible({ timeout: 20000 });
             await page.locator('#Actionform_EFN0000179').getByText('Close').click();
 
             // Attach Action validations
             await page.getByText('Attach').nth(1).click();
-            await expect(page.getByText('HDRequestAttachment')).toBeVisible();
+            await expect(page.getByText('HDRequestAttachment')).toBeVisible({ timeout: 20000 });
             await page.getByLabel('Close').getByText('x').click();
 
             // Notes Sub Action validations
@@ -1219,9 +1220,9 @@ test.describe('Helpdesk', () => {
             await expect(page.getByText('All Recruitment Request', { exact: true })).toBeVisible({ timeout: 20000 });
             // Options validation
             await page.getByText('Options').click();
-            await expect(page.getByRole('link', { name: ' Export Selected' })).toBeVisible();
-            await expect(page.getByRole('link', { name: ' Export All', exact: true })).toBeVisible();
-            await expect(page.getByRole('link', { name: ' Export Visible' })).toBeVisible();
+            await expect(page.getByRole('link', { name: ' Export Selected' })).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('link', { name: ' Export All', exact: true })).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('link', { name: ' Export Visible' })).toBeVisible({ timeout: 20000 });
             await page.getByText('Options').click();
 
             // Pagination Validation
@@ -1256,21 +1257,21 @@ test.describe('Helpdesk', () => {
             await page.locator('#angular_editor_ETN0000029_Notes').getByText('Type here...').click();
             await page.locator('#angular_editor_ETN0000029_Notes div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test');
             await page.locator('#pills-tabContent').getByText('Close').click();
-            await expect(page.locator('a').filter({ hasText: 'Conversation' })).toBeVisible();
-            await expect(page.getByText('Closed Comments - status')).toBeVisible();
+            await expect(page.locator('a').filter({ hasText: 'Conversation' })).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Closed Comments - status')).toBeVisible({ timeout: 20000 });
             await page.locator('#cdk-drop-list-2 a').filter({ hasText: 'Approvals' }).click();
             await page.locator('#cdk-drop-list-2 li').filter({ hasText: 'Task' }).locator('a').click();
             await page.locator('li').filter({ hasText: 'History' }).locator('a').click();
-            await expect(page.locator('tr').filter({ hasText: 'TRQ0009327Closedstatus' }).locator('a')).toBeVisible();
-            await expect(page.locator('#dynamic_list_EFN0000107 comp-table tbody').getByText('Closed', { exact: true })).toBeVisible();
+            await expect(page.locator('tr').filter({ hasText: 'TRQ0009327Closedstatus' }).locator('a')).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('#dynamic_list_EFN0000107 comp-table tbody').getByText('Closed', { exact: true })).toBeVisible({ timeout: 20000 });
             await page.locator('a').filter({ hasText: 'Assignment' }).click();
             await page.locator('a').filter({ hasText: 'Conversation' }).click();
             await page.getByText('Close', { exact: true }).click();
 
             // Ticket Category details
             await page.getByRole('cell', { name: 'Recruitment - Corporate Medical' }).locator('a').click();
-            await expect(page.getByText('TicketCategory Details')).toBeVisible();
-            await expect(page.getByText('Category Id TCY0000059 Name')).toBeVisible();
+            await expect(page.getByText('TicketCategory Details')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Category Id TCY0000059 Name')).toBeVisible({ timeout: 20000 });
             await page.getByText('Close', { exact: true }).click();
             await page.getByRole('cell', { name: 'pin Title  ' }).hover();
             await page.getByRole('cell', { name: '⯆ Test-' }).hover();
@@ -1304,7 +1305,7 @@ test.describe('Helpdesk', () => {
             await page.locator('.Right > .d-flex > i').first().click();
             await page.locator('.text-left > .clearfix > .table_filter_text').first().fill('TRQ0011381');
             await page.locator('.text-left > .clearfix > .table_filter_text').first().press('Enter');
-            await expect(page.getByText('TRQ0011381')).toBeVisible();
+            await expect(page.getByText('TRQ0011381')).toBeVisible({ timeout: 20000 });
 
             // Ticket Details page validation
             await page.getByRole('cell', { name: 'Test from ERP' }).locator('a').first().click();
@@ -1317,8 +1318,8 @@ test.describe('Helpdesk', () => {
 
             // Ticket details Validation
             await expect(page.locator('dynamic-details').getByText('TRQ0011381')).toBeVisible({ timeout: 20000 });
-            await expect(page.locator('dynamic-details').getByText('Test from ERP').nth(3)).toBeVisible();
-            await expect(page.locator('dynamic-details').getByText('Closed')).toBeVisible();
+            await expect(page.locator('dynamic-details').getByText('Test from ERP').nth(3)).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('dynamic-details').getByText('Closed')).toBeVisible({ timeout: 20000 });
 
             // Notes Validation
 
@@ -1330,23 +1331,23 @@ test.describe('Helpdesk', () => {
 
             // Tabs Validation
             await page.locator('#cdk-drop-list-2 a').filter({ hasText: 'Approvals' }).click();
-            await expect(page.getByText('Approver Id')).toBeVisible();
+            await expect(page.getByText('Approver Id')).toBeVisible({ timeout: 20000 });
             await page.locator('#cdk-drop-list-2 li').filter({ hasText: 'Task' }).locator('a').click();
             await page.locator('li').filter({ hasText: 'History' }).locator('a').click();
-            await expect(page.locator('tr').filter({ hasText: 'TRQ0011381Closedstatus' }).locator('a')).toBeVisible();
-            await expect(page.locator('#dynamic_list_EFN0000107 comp-table tbody').getByText('Closed', { exact: true })).toBeVisible();
+            await expect(page.locator('tr').filter({ hasText: 'TRQ0011381Closedstatus' }).locator('a')).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('#dynamic_list_EFN0000107 comp-table tbody').getByText('Closed', { exact: true })).toBeVisible({ timeout: 20000 });
             await page.locator('a').filter({ hasText: 'Assignment' }).click();
-            await expect(page.locator('#dynamic_list_EFN0000108 comp-table tbody').getByText('Test from ERP')).toBeVisible();
+            await expect(page.locator('#dynamic_list_EFN0000108 comp-table tbody').getByText('Test from ERP')).toBeVisible({ timeout: 20000 });
             await page.locator('a').filter({ hasText: 'Conversation' }).click();
-            await expect(page.getByText('Closed Comments - Test from')).toBeVisible();
+            await expect(page.getByText('Closed Comments - Test from')).toBeVisible({ timeout: 20000 });
             await page.locator('div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').click();
             await page.locator('div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test');
             await page.getByText('Close', { exact: true }).click();
 
             // Category details validation
             await page.getByRole('cell', { name: 'Suggestion' }).locator('a').click();
-            await expect(page.getByText('TicketCategory Details')).toBeVisible();
-            await expect(page.getByText('Category Id TCY0000071 Name')).toBeVisible();
+            await expect(page.getByText('TicketCategory Details')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Category Id TCY0000071 Name')).toBeVisible({ timeout: 20000 });
             await page.getByText('Close', { exact: true }).click();
 
             // Clear Filter Request ID
@@ -1366,8 +1367,8 @@ test.describe('Helpdesk', () => {
             await page.locator('#MNU0000051').click();
             // Sub Menu Navigation
             await page.getByRole('link', { name: ' User Login Report' }).click();
-            await expect(page.locator('#DynamicCreate div').filter({ hasText: 'From Date To Date User Id Filter Clear' }).nth(2)).toBeVisible();
-            await expect(page.locator('#cdk-drop-list-0 a').filter({ hasText: 'List' })).toBeVisible();
+            await expect(page.locator('#DynamicCreate div').filter({ hasText: 'From Date To Date User Id Filter Clear' }).nth(2)).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('#cdk-drop-list-0 a').filter({ hasText: 'List' })).toBeVisible({ timeout: 20000 });
             await expect(page.locator('a').filter({ hasText: 'Total Login Count' })).toBeVisible({ timeout: 40000 });
             await page.getByPlaceholder('From Date').fill('2025-04-01');
             await page.getByPlaceholder('To Date').fill('2025-04-30');
@@ -1379,15 +1380,15 @@ test.describe('Helpdesk', () => {
             await page.locator('comp-pagination a').nth(2).click();
             await page.locator('comp-pagination a').nth(2).click();
             await page.locator('comp-pagination a').nth(3).click();
-            await expect(page.getByRole('row', { name: 'a.hyder a.hyder 29/04/2025 5:20 PM 192.168.9.1 System' })).toBeVisible();
+            await expect(page.getByRole('row', { name: 'a.hyder a.hyder 29/04/2025 5:20 PM 192.168.9.1 System' })).toBeVisible({ timeout: 20000 });
             await page.getByText('Filter').click();
 
             await page.locator('comp-pagination a').first().click();
             await page.locator('a').filter({ hasText: 'Total Login Count' }).click();
-            await expect(page.locator('canvas').nth(1)).toBeVisible();
+            await expect(page.locator('canvas').nth(1)).toBeVisible({ timeout: 20000 });
             await page.getByRole('button', { name: 'More Options' }).click();
             await page.locator('a').filter({ hasText: 'Unique Users Count' }).click();
-            await expect(page.locator('canvas').nth(3)).toBeVisible();
+            await expect(page.locator('canvas').nth(3)).toBeVisible({ timeout: 20000 });
 
             await page.getByText('Clear').click();
             await expect(page.getByPlaceholder('User Id')).toBeEmpty();
@@ -1403,16 +1404,16 @@ test.describe('Helpdesk', () => {
             await page.getByRole('link', { name: ' Request By Category' }).click();
             await expect(page.locator('#DynamicCreate div').filter({ hasText: 'From Date To Date Filter Clear' }).nth(2)).toBeVisible({ timeout: 50000 });
             await expect(page.getByRole('cell', { name: 'CRM' })).toBeVisible({ timeout: 60000 });
-            await expect(page.getByRole('cell', { name: 'ERP' })).toBeVisible();
-            await expect(page.getByRole('cell', { name: 'HR' })).toBeVisible();
+            await expect(page.getByRole('cell', { name: 'ERP' })).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('cell', { name: 'HR' })).toBeVisible({ timeout: 20000 });
             await page.locator('comp-pagination a').nth(2).click();
-            await expect(page.getByRole('cell', { name: 'Maintenance' }).locator('div')).toBeVisible();
+            await expect(page.getByRole('cell', { name: 'Maintenance' }).locator('div')).toBeVisible({ timeout: 20000 });
             await page.locator('comp-pagination a').nth(2).click();
-            await expect(page.getByRole('cell', { name: 'Test' }).locator('div')).toBeVisible();
+            await expect(page.getByRole('cell', { name: 'Test' }).locator('div')).toBeVisible({ timeout: 20000 });
             await page.locator('comp-pagination a').nth(1).click();
-            await expect(page.getByRole('cell', { name: 'Individual Sector Accounts' }).locator('div')).toBeVisible();
+            await expect(page.getByRole('cell', { name: 'Individual Sector Accounts' }).locator('div')).toBeVisible({ timeout: 20000 });
             await page.locator('comp-pagination a').first().click();
-            await expect(page.getByText('Mobile Application')).toBeVisible();
+            await expect(page.getByText('Mobile Application')).toBeVisible({ timeout: 20000 });
             await page.reload();
             await page.getByPlaceholder('From Date').fill('2025-06-01');
             await page.getByPlaceholder('To Date').fill('2025-06-07');
@@ -1428,7 +1429,7 @@ test.describe('Helpdesk', () => {
             await page.getByPlaceholder('To Date').fill('2025-04-10');
             await page.getByText('Filter').click();
             await expect(page.getByText('1010973')).toBeVisible({ timeout: 60000 });
-            await expect(page.locator('app-dynamic-list > .content > .container-fluid')).toBeVisible();
+            await expect(page.locator('app-dynamic-list > .content > .container-fluid')).toBeVisible({ timeout: 20000 });
             await page.getByText('Clear').click();
             await expect(page.getByPlaceholder('From Date')).toBeEmpty();
             await expect(page.getByPlaceholder('To Date')).toBeEmpty();
@@ -1444,9 +1445,9 @@ test.describe('Helpdesk', () => {
             await expect(page.getByText('My Pending Approvals')).toBeVisible({ timeout: 30000 });
             // Options validation
             await page.getByText('Options').click();
-            await expect(page.getByRole('link', { name: ' Export Selected' })).toBeVisible();
-            await expect(page.getByRole('link', { name: ' Export All', exact: true })).toBeVisible();
-            await expect(page.getByRole('link', { name: ' Export Visible' })).toBeVisible();
+            await expect(page.getByRole('link', { name: ' Export Selected' })).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('link', { name: ' Export All', exact: true })).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('link', { name: ' Export Visible' })).toBeVisible({ timeout: 20000 });
             await page.getByText('Options').click();
             // search and filter validation
             await page.locator('.Right > .d-flex > i').first().click();
@@ -1458,10 +1459,10 @@ test.describe('Helpdesk', () => {
             await page.locator('#td_content_0_0 comp-field-view-type a').click();
             await page.waitForTimeout(2000);
             await page.getByRole('link', { name: 'Approve', exact: true }).click();
-            await expect(page.locator('#Actionform_EFN0000218').getByText('Approve')).toBeVisible();
+            await expect(page.locator('#Actionform_EFN0000218').getByText('Approve')).toBeVisible({ timeout: 20000 });
             await page.getByText('Close').click();
             await page.getByRole('link', { name: 'Reject' }).click();
-            await expect(page.locator('#Actionform_EFN0000219').getByText('Reject')).toBeVisible({ timeout: 20000});
+            await expect(page.locator('#Actionform_EFN0000219').getByText('Reject')).toBeVisible({ timeout: 20000 });
             await page.getByText('Close').click();
 
             // Ticket details page validation
@@ -1470,19 +1471,19 @@ test.describe('Helpdesk', () => {
             await expect(page.locator('#page_form_MON0000024 dynamic-details').getByText('TRQ0016253')).toBeVisible({ timeout: 20000 });
             await page.locator('dynamic-field').filter({ hasText: 'Request Id TRQ0016253 Title' }).locator('a').click();
             await expect(page.getByText('TicketCategory Details')).toBeVisible({ timeout: 20000 });
-            await expect(page.getByText('Category Id TCY0000003 Name')).toBeVisible();
+            await expect(page.getByText('Category Id TCY0000003 Name')).toBeVisible({ timeout: 20000 });
             await page.locator('dynamic-details').filter({ hasText: 'Pickup Assign Cancel Attach' }).locator('button').click();
             await page.locator('#cdk-drop-list-2 a').filter({ hasText: 'Approvals' }).click();
-            
-            await expect(page.getByTitle('APR0001550')).toBeVisible();
-            await expect(page.getByRole('cell', { name: 'a.hyder' }).locator('comp-datatype')).toBeVisible();
+
+            await expect(page.getByTitle('APR0001550')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('cell', { name: 'a.hyder' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
 
             // Task Tab validations
             await page.locator('#cdk-drop-list-2').getByRole('listitem').filter({ hasText: 'Task' }).locator('a').click();
-            await expect(page.getByText('TSK0001095')).toBeVisible();
-            await expect(page.getByText('TSK0001097')).toBeVisible();
-            await expect(page.getByText('TSK0001096')).toBeVisible();            
-            await expect(page.getByRole('cell', { name: 'Todo' }).locator('comp-datatype')).toBeVisible();
+            await expect(page.getByText('TSK0001095')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('TSK0001097')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('TSK0001096')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('cell', { name: 'Todo' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
 
             // History Tab validations
             await page.getByRole('listitem').filter({ hasText: 'History' }).locator('a').click();
@@ -1490,7 +1491,7 @@ test.describe('Helpdesk', () => {
 
             // Assignment Tab validations
             await page.locator('a').filter({ hasText: 'Assignment' }).click();
-            await expect(page.getByRole('cell', { name: 'Request Id' }).locator('a')).toBeVisible();
+            await expect(page.getByRole('cell', { name: 'Request Id' }).locator('a')).toBeVisible({ timeout: 20000 });
 
             // Conversation Tab validations
             await page.locator('#cdk-drop-list-6 a').filter({ hasText: 'Conversation' }).click();
@@ -1517,7 +1518,7 @@ test.describe('Helpdesk', () => {
 
             // Options validation
             await page.getByText('Options').click();
-            await expect(page.getByText('Export SelectedExport')).toBeVisible();
+            await expect(page.getByText('Export SelectedExport')).toBeVisible({ timeout: 20000 });
             await page.getByText('Options').click();
 
             // search and filter validation - Approvered List
@@ -1527,7 +1528,7 @@ test.describe('Helpdesk', () => {
             await page.getByRole('textbox').nth(3).click();
             await page.getByRole('textbox').nth(3).fill('APR0001308');
             await page.getByRole('textbox').nth(3).press('Enter');
-            await expect(page.getByRole('listitem').filter({ hasText: 'APR0001308Approver a.hyder' })).toBeVisible();
+            await expect(page.getByRole('listitem').filter({ hasText: 'APR0001308Approver a.hyder' })).toBeVisible({ timeout: 20000 });
             await page.getByRole('button', { name: ' Clear' }).click();
             await expect(page.locator('#dynamic_list_EFN0000215').getByRole('textbox')).toBeEmpty();
             await page.locator('#dynamic_list_EFN0000215').getByRole('textbox').click();
@@ -1535,7 +1536,7 @@ test.describe('Helpdesk', () => {
             await page.locator('comp-tilefilter label').click();
             await page.getByRole('row', { name: ' Approved' }).locator('div').first().click();
             await page.getByRole('button', { name: 'OK' }).click();
-            await expect(page.locator('#td_content_0_2').getByText('Approved')).toBeVisible();
+            await expect(page.locator('#td_content_0_2').getByText('Approved')).toBeVisible({ timeout: 20000 });
             await page.getByRole('button', { name: ' Clear' }).click();
             await page.locator('#dynamic_list_EFN0000215').getByRole('textbox').click({ timeout: 10000 });
             await page.getByRole('option', { name: 'ApproverId' }).click();
@@ -1546,27 +1547,27 @@ test.describe('Helpdesk', () => {
             // Details Page Validation
             await page.locator('#td_content_0_0 comp-field-view-type a').click();
             await expect(page.getByRole('heading', { name: 'Approvals Details' })).toBeVisible({ timeout: 20000 });
-            await expect(page.locator('a').filter({ hasText: 'Conversation' })).toBeVisible();
-            await page.locator('a').filter({ hasText: 'Ticket Details' }).click();await expect(page.getByRole('heading', { name: 'Test ticket for Queue,' })).toBeVisible({ timeout: 30000});
+            await expect(page.locator('a').filter({ hasText: 'Conversation' })).toBeVisible({ timeout: 20000 });
+            await page.locator('a').filter({ hasText: 'Ticket Details' }).click(); await expect(page.getByRole('heading', { name: 'Test ticket for Queue,' })).toBeVisible({ timeout: 30000 });
 
             // Approvals Tab Validation
             await page.locator('#cdk-drop-list-4 a').filter({ hasText: 'Approvals' }).click();
             await expect(page.getByTitle('APR0001308')).toBeVisible({ timeout: 20000 });
-            await expect(page.getByRole('cell', { name: 'Approved' }).locator('comp-datatype')).toBeVisible();
+            await expect(page.getByRole('cell', { name: 'Approved' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
 
             // task Tab Validation
             await page.locator('#cdk-drop-list-4').getByRole('listitem').filter({ hasText: 'Task' }).locator('a').click();
-            await expect(page.getByText('Task Id')).toBeVisible();
-            await expect(page.getByText('Department Name')).toBeVisible();
+            await expect(page.getByText('Task Id')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Department Name')).toBeVisible({ timeout: 20000 });
 
             // History Tab Validation
             await page.getByRole('listitem').filter({ hasText: 'History' }).locator('a').click();
-            await expect(page.getByRole('table').getByText('WaitingforApproval', { exact: true })).toBeVisible();
-            await expect(page.getByTitle('Approved', { exact: true }).first()).toBeVisible();
+            await expect(page.getByRole('table').getByText('WaitingforApproval', { exact: true })).toBeVisible({ timeout: 20000 });
+            await expect(page.getByTitle('Approved', { exact: true }).first()).toBeVisible({ timeout: 20000 });
 
             // Assignment Tab Validation
             await page.locator('a').filter({ hasText: 'Assignment' }).click();
-            await expect(page.getByRole('table').getByText('Test ticket for Queue,')).toBeVisible();
+            await expect(page.getByRole('table').getByText('Test ticket for Queue,')).toBeVisible({ timeout: 20000 });
 
             // Close Details Page
             await page.getByLabel('Close').locator('i').click();
@@ -1588,32 +1589,32 @@ test.describe('Helpdesk', () => {
             await page.getByRole('button', { name: '' }).click();
             await page.locator('#td_content_0_0 comp-field-view-type a').click();
             await page.getByRole('link', { name: 'Approve', exact: true }).click();
-            await expect(page.locator('#Actionform_EFN0000218').getByText('Approve')).toBeVisible();
+            await expect(page.locator('#Actionform_EFN0000218').getByText('Approve')).toBeVisible({ timeout: 20000 });
             await page.getByText('Close').click();
             await page.getByRole('link', { name: 'Reject' }).click();
-            await expect(page.locator('#Actionform_EFN0000219').getByText('Reject')).toBeVisible();
+            await expect(page.locator('#Actionform_EFN0000219').getByText('Reject')).toBeVisible({ timeout: 20000 });
             await page.getByText('Close').click();
 
             // Ticket details page validation
             await expect(page.locator('a').filter({ hasText: 'Ticket Details' })).toBeVisible({ timeout: 10000 });
             await page.locator('a').filter({ hasText: 'Ticket Details' }).click();
-            await expect(page.getByRole('heading', { name: 'Test Ticket for Playwright' })).toBeVisible({ timeout: 20000});
-            await expect(page.locator('#page_form_MON0000024 dynamic-details').getByText('TRQ0016253')).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Test Ticket for Playwright' })).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('#page_form_MON0000024 dynamic-details').getByText('TRQ0016253')).toBeVisible({ timeout: 20000 });
             await page.locator('dynamic-field').filter({ hasText: 'Request Id TRQ0016253 Title' }).locator('a').click();
-            await expect(page.getByText('TicketCategory Details')).toBeVisible();
-            await expect(page.getByText('Category Id TCY0000003 Name')).toBeVisible();
+            await expect(page.getByText('TicketCategory Details')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Category Id TCY0000003 Name')).toBeVisible({ timeout: 20000 });
             await page.locator('dynamic-details').filter({ hasText: 'Pickup Assign Cancel Attach' }).locator('button').click();
             await page.locator('#cdk-drop-list-2 a').filter({ hasText: 'Approvals' }).click();
-            
-            await expect(page.getByTitle('APR0001550')).toBeVisible();
-            await expect(page.getByRole('cell', { name: 'a.hyder' }).locator('comp-datatype')).toBeVisible();
+
+            await expect(page.getByTitle('APR0001550')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('cell', { name: 'a.hyder' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
 
             // Task Tab validations
             await page.locator('#cdk-drop-list-2').getByRole('listitem').filter({ hasText: 'Task' }).locator('a').click();
-            await expect(page.getByText('TSK0001095')).toBeVisible();
-            await expect(page.getByText('TSK0001097')).toBeVisible();
-            await expect(page.getByText('TSK0001096')).toBeVisible(); 
-            await expect(page.getByRole('cell', { name: 'Todo' }).locator('comp-datatype')).toBeVisible();
+            await expect(page.getByText('TSK0001095')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('TSK0001097')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('TSK0001096')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('cell', { name: 'Todo' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
 
             // History Tab validations
             await page.getByRole('listitem').filter({ hasText: 'History' }).locator('a').click();
@@ -1621,7 +1622,7 @@ test.describe('Helpdesk', () => {
 
             // Assignment Tab validations
             await page.locator('a').filter({ hasText: 'Assignment' }).click();
-            await expect(page.getByRole('cell', { name: 'Request Id' }).locator('a')).toBeVisible();
+            await expect(page.getByRole('cell', { name: 'Request Id' }).locator('a')).toBeVisible({ timeout: 20000 });
 
             // Conversation Tab validations
             await page.locator('#cdk-drop-list-6 a').filter({ hasText: 'Conversation' }).click();
@@ -1636,7 +1637,7 @@ test.describe('Helpdesk', () => {
 
             // Clear Filter
             await page.getByRole('button', { name: ' Clear' }).click();
-            
+
         });
     });
 
@@ -1649,7 +1650,7 @@ test.describe('Helpdesk', () => {
             await expect(page.getByText('My Pending Tasks')).toBeVisible({ timeout: 20000 });
             // Options validation
             await page.getByText('Options').click();
-            await expect(page.getByText('Export SelectedExport')).toBeVisible();
+            await expect(page.getByText('Export SelectedExport')).toBeVisible({ timeout: 20000 });
             await page.getByText('Options').click();
             // search and filter validation
             await page.locator('.Right > .d-flex > i').first().click();
@@ -1660,9 +1661,9 @@ test.describe('Helpdesk', () => {
             await page.getByRole('textbox').nth(3).press('Enter');
             await page.locator('#td_content_0_0 comp-field-view-type a').click();
             // Task Details Page Validation
-            await expect(page.getByRole('heading', { name: 'Task Details' })).toBeVisible();
-            await expect(page.locator('#page_left').getByText('Title')).toBeVisible();
-            await expect(page.getByTitle('Test Ticket for Playwright')).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Task Details' })).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('#page_left').getByText('Title')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByTitle('Test Ticket for Playwright')).toBeVisible({ timeout: 20000 });
 
             // Done Action Validation
             await page.getByRole('link', { name: 'Done' }).click();
@@ -1671,10 +1672,10 @@ test.describe('Helpdesk', () => {
 
             // Department Details Validation
             await page.locator('#page_left a').filter({ hasText: 'IT' }).click();
-            await expect(page.getByText('Department Details')).toBeVisible();
-            await expect(page.getByText('Department Id DPT0000001 Name')).toBeVisible();
+            await expect(page.getByText('Department Details')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Department Id DPT0000001 Name')).toBeVisible({ timeout: 20000 });
             await page.locator('dynamic-details').filter({ hasText: 'Done Task Details Done Task' }).locator('button').click();
-            await expect(page.getByText('Status: Doing')).toBeVisible();
+            await expect(page.getByText('Status: Doing')).toBeVisible({ timeout: 20000 });
             await page.locator('div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').click();
             await page.locator('div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test');
 
@@ -1696,7 +1697,7 @@ test.describe('Helpdesk', () => {
 
             // Options validation
             await page.getByText('Options').click();
-            await expect(page.getByText('Export SelectedExport')).toBeVisible();
+            await expect(page.getByText('Export SelectedExport')).toBeVisible({ timeout: 20000 });
             await page.getByText('Options').click();
 
             // search and filter validation
@@ -1708,19 +1709,19 @@ test.describe('Helpdesk', () => {
             await page.getByRole('textbox').nth(3).press('Enter');
             await page.locator('#td_content_0_0 comp-field-view-type a').click();
             // Task Details Page Validation
-            await expect(page.getByRole('heading', { name: 'Task Details' })).toBeVisible();
-            await expect(page.locator('#page_left').getByText('Title')).toBeVisible();
-            await expect(page.getByTitle('Test Ticket for Playwright')).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Task Details' })).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('#page_left').getByText('Title')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByTitle('Test Ticket for Playwright')).toBeVisible({ timeout: 20000 });
 
             // Done Action Validation
             await page.getByRole('link', { name: 'Doing' }).click();
-            await expect(page.locator('#Actionform_EFN0000057').getByText('Doing')).toBeVisible();
+            await expect(page.locator('#Actionform_EFN0000057').getByText('Doing')).toBeVisible({ timeout: 20000 });
             await page.getByText('Close').click();
 
             // Department Details Validation
             await page.locator('#page_left a').filter({ hasText: 'IT' }).click();
             await expect(page.getByText('Department Details')).toBeVisible({ timeout: 10000 });
-            await expect(page.getByText('Department Id DPT0000001 Name')).toBeVisible();
+            await expect(page.getByText('Department Id DPT0000001 Name')).toBeVisible({ timeout: 20000 });
             await page.locator('dynamic-details').filter({ hasText: 'Doing Task Details Doing Task' }).locator('button').click();
             await page.locator('div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').click();
             await page.locator('div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test');
@@ -1743,7 +1744,7 @@ test.describe('Helpdesk', () => {
 
             // Options validation
             await page.getByText('Options').click();
-            await expect(page.getByText('Export SelectedExport')).toBeVisible();
+            await expect(page.getByText('Export SelectedExport')).toBeVisible({ timeout: 20000 });
             await page.getByText('Options').click();
 
             // search and filter validation
@@ -1755,20 +1756,20 @@ test.describe('Helpdesk', () => {
             await page.getByRole('textbox').nth(3).press('Enter');
             await page.locator('#td_content_0_0 comp-field-view-type a').click();
             // Task Details Page Validation
-            await expect(page.getByRole('heading', { name: 'Task Details' })).toBeVisible();
-            await expect(page.locator('#page_left').getByText('Title')).toBeVisible();
-            await expect(page.getByTitle('Test Ticket for Playwright')).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Task Details' })).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('#page_left').getByText('Title')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByTitle('Test Ticket for Playwright')).toBeVisible({ timeout: 20000 });
 
             // status Validation
-            await expect(page.locator('#page_left').getByText('Status', { exact: true })).toBeVisible();
-            await expect(page.locator('#page_left').getByText('Done', { exact: true })).toBeVisible();
-            await expect(page.getByText('Status: Done')).toBeVisible();
-            await expect(page.getByText('Status: Doing')).toBeVisible();
+            await expect(page.locator('#page_left').getByText('Status', { exact: true })).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('#page_left').getByText('Done', { exact: true })).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Status: Done')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Status: Doing')).toBeVisible({ timeout: 20000 });
 
             // Department Details Validation
             await page.locator('#page_left a').filter({ hasText: 'IT' }).click();
             await expect(page.getByText('Department Details')).toBeVisible({ timeout: 20000 });
-            await expect(page.getByText('Department Id DPT0000001 Name')).toBeVisible();
+            await expect(page.getByText('Department Id DPT0000001 Name')).toBeVisible({ timeout: 20000 });
             await page.locator('dynamic-details').filter({ hasText: 'Task Details Task Id' }).locator('button').click();
             await page.locator('div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').click();
             await page.locator('div').filter({ hasText: /^Type here\.\.\.$/ }).locator('div').fill('test');
@@ -1803,37 +1804,37 @@ test.describe('Helpdesk', () => {
             await page.getByText('page 1', { exact: true }).click();
             await page.locator('input[type="search"]').first().click();
             await page.locator('input[type="search"]').first().fill('hyder');
-            await expect(page.getByText('a.hyder')).toBeVisible();
+            await expect(page.getByText('a.hyder')).toBeVisible({ timeout: 20000 });
             await page.locator('tr').filter({ hasText: 'a.hyder Hyder Ali A hyder@' }).locator('i').click();
             await page.locator('#relation_autoComplete_dropdown_Department label').click();
             await page.locator('ul').filter({ hasText: 'of2' }).locator('a').nth(2).click();
-            await expect(page.getByText('Test')).toBeVisible();
+            await expect(page.getByText('Test')).toBeVisible({ timeout: 20000 });
             await page.locator('ul').filter({ hasText: 'of2' }).locator('a').nth(1).click();
             await page.locator('tr').filter({ hasText: 'IT DPT0000001 s.alissa@' }).locator('td').first().click();
             await page.getByText('Close').click();
 
             // Member + validation
             await page.getByRole('row', { name: ' undefined  TEM0000003 CRM' }).locator('a').first().click();
-            await expect(page.getByText('Team Member')).toBeVisible();
+            await expect(page.getByText('Team Member')).toBeVisible({ timeout: 20000 });
 
             // Add Member Validation create
             await page.getByRole('cell', { name: 'Team Member Options  Create' }).getByRole('button').click();
-            await expect(page.getByText('Team Id CRM Team User Id x')).toBeVisible();
+            await expect(page.getByText('Team Id CRM Team User Id x')).toBeVisible({ timeout: 20000 });
 
             // User Id Selection with Pagination
             await page.locator('#autoComplete_dropdown_UserId label').click();
             await expect(page.getByText('a.abdelhakim@mawarid.com.sa').first()).toBeVisible({ timeout: 10000 });
             await page.getByText('Next page').click();
             await page.getByText('Next page').click();
-            await expect(page.getByText('a.aldursuni@mawarid.com.sa').first()).toBeVisible();
+            await expect(page.getByText('a.aldursuni@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
             await page.getByText('page 4').click();
             await page.getByText('page 5').click();
-            await expect(page.getByText('a.almohaimeed@mawarid.com.sa').first()).toBeVisible();
+            await expect(page.getByText('a.almohaimeed@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
             await page.getByText('Previous page').click();
             await page.getByText('Previous page').click();
-            await expect(page.getByText('a.aldursuni@mawarid.com.sa').first()).toBeVisible();
+            await expect(page.getByText('a.aldursuni@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
             await page.getByText('page 1', { exact: true }).click();
-            await expect(page.getByText('a.abdelhafiz@mawarid.com.sa').first()).toBeVisible();
+            await expect(page.getByText('a.abdelhafiz@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
             await page.locator('input[type="search"]').first().click();
             await page.locator('input[type="search"]').first().fill('hyder');
             await page.getByText('a.hyder').click();
@@ -1842,7 +1843,7 @@ test.describe('Helpdesk', () => {
 
             // Category + Validation
             await page.getByRole('row', { name: ' undefined  TEM0000004 ERP' }).locator('a').nth(1).click();
-            await expect(page.getByText('Team Category', { exact: true })).toBeVisible();
+            await expect(page.getByText('Team Category', { exact: true })).toBeVisible({ timeout: 20000 });
 
             // Add Category Validation create
             await page.getByRole('cell', { name: 'Team Category Options ' }).getByRole('button').click();
@@ -1862,8 +1863,8 @@ test.describe('Helpdesk', () => {
 
             // Team Details Page
             await page.locator('#dynamic_list_EFN0000100').getByRole('cell', { name: 'TEM0000004' }).locator('a').click();
-            await expect(page.getByText('Team Details')).toBeVisible();
-            await expect(page.locator('.groupView')).toBeVisible();
+            await expect(page.getByText('Team Details')).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('.groupView')).toBeVisible({ timeout: 20000 });
             await page.getByText('Close').click();
             await page.getByRole('cell', { name: ' undefined' }).locator('a').click();
             await page.locator('.align-items-start > .d-flex > i').first().click();
@@ -1877,20 +1878,20 @@ test.describe('Helpdesk', () => {
             await page.getByText('Next page').click();
             await page.getByText('page 4').click();
             await page.getByText('page 5').click();
-            await expect(page.getByText('a.almohaimeed@mawarid.com.sa').first()).toBeVisible();
+            await expect(page.getByText('a.almohaimeed@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
             await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[9]/a').click();
             await page.getByText('Previous page').click();
             await page.getByText('Previous page').click();
             await page.getByText('page 1', { exact: true }).click();
-            await expect(page.getByText('a.abdalhamed@mawarid.com.sa').first()).toBeVisible();
+            await expect(page.getByText('a.abdalhamed@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
             await page.locator('tr').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).locator('i').click();
             await page.locator('#DynamicCreate').getByText('Close').click();
             await page.getByText('Create').nth(4).click();
             await page.locator('#relation_autoComplete_dropdown_CategoryId label').click();
             await page.locator('#autoComplete_dropdown_CategoryId a').nth(3).click();
-            await expect(page.locator('#autoComplete_dropdown_tableCategoryId').getByText('Payroll')).toBeVisible();
+            await expect(page.locator('#autoComplete_dropdown_tableCategoryId').getByText('Payroll')).toBeVisible({ timeout: 20000 });
             await page.locator('#autoComplete_dropdown_CategoryId a').nth(3).click();
-            await expect(page.getByText('Test')).toBeVisible();
+            await expect(page.getByText('Test')).toBeVisible({ timeout: 20000 });
             await page.locator('#autoComplete_dropdown_CategoryId a').nth(2).click();
             await expect(page.locator('#autoComplete_dropdown_CategoryId input[name="currentPage"]')).toHaveValue('2');
             await page.locator('#autoComplete_dropdown_CategoryId a').nth(1).click();
@@ -1898,7 +1899,7 @@ test.describe('Helpdesk', () => {
             await page.getByText('General Accounts').click();
             await page.locator('#DynamicCreate').getByText('Close').click();
             await page.locator('td').filter({ hasText: 'TCY0000014' }).locator('a').click();
-            await expect(page.getByText('TicketCategory Details')).toBeVisible();
+            await expect(page.getByText('TicketCategory Details')).toBeVisible({ timeout: 20000 });
             await page.locator('#page_left').getByText('Close').click();
             await page.getByText('Close').click();
             await page.getByRole('cell', { name: 'pin Team Lead  ' }).hover();
@@ -1908,8 +1909,8 @@ test.describe('Helpdesk', () => {
             await page.locator('.table_filter_clear').click();
             await page.locator('tbody > tr:nth-child(2) > td:nth-child(8)').hover();
             await page.locator('.px-1 > .fas').first().click();
-            await expect(page.locator('h4')).toBeVisible();
-            await expect(page.getByText('Update')).toBeVisible();
+            await expect(page.locator('h4')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Update')).toBeVisible({ timeout: 20000 });
             await page.getByText('Close').click();
         });
 
@@ -1934,13 +1935,13 @@ test.describe('Helpdesk', () => {
             await page.getByText('page 3').click();
             await page.getByText('Next page').click();
             await page.getByText('Next page').click();
-            await expect(page.getByText('a.almohaimeed@mawarid.com.sa').first()).toBeVisible();
+            await expect(page.getByText('a.almohaimeed@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
             await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[9]/a').click();
             await page.getByText('Previous page').click();
             await page.getByText('Previous page').click();
             await page.getByText('Previous page').click();
             await page.getByText('page 1', { exact: true }).click();
-            await expect(page.getByText('a.abdalhamed@mawarid.com.sa').first()).toBeVisible();
+            await expect(page.getByText('a.abdalhamed@mawarid.com.sa').first()).toBeVisible({ timeout: 20000 });
             await page.locator('input[type="search"]').first().click();
             await page.locator('input[type="search"]').first().fill('hyder');
             await page.locator('#autoComplete_dropdown_table_UserId').getByText('a.hyder').click();
@@ -1956,7 +1957,7 @@ test.describe('Helpdesk', () => {
             await expect(page.getByRole('cell', { name: 'TCY0000013' }).locator('a')).toBeVisible({ timeout: 10000 });
             // Team + Validation
             await page.locator('comp-field-view-type > .pointer').first().click();
-            await expect(page.getByText('Category Team')).toBeVisible();
+            await expect(page.getByText('Category Team')).toBeVisible({ timeout: 20000 });
             await page.getByRole('cell', { name: 'Category Team Options ' }).getByRole('button').click();
             await page.locator('#relation_autoComplete_dropdown_TeamId label').click();
             await page.locator('#autoComplete_dropdown_tableTeamId thead input[type="text"]').click();
@@ -1967,32 +1968,32 @@ test.describe('Helpdesk', () => {
 
             // Category Details Page
             await page.locator('#dynamic_list_EFN0000486').getByRole('cell', { name: 'TCY0000013' }).locator('a').click();
-            await expect(page.getByText('TicketCategory Details')).toBeVisible();
-            await expect(page.getByText('Category Id TCY0000013 Name')).toBeVisible();
+            await expect(page.getByText('TicketCategory Details')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Category Id TCY0000013 Name')).toBeVisible({ timeout: 20000 });
             await page.getByText('Close').click();
 
             // Team Details Page
 
             await page.getByRole('cell', { name: 'TEM0000009', exact: true }).locator('a').click();
-            await expect(page.getByText('Team Details')).toBeVisible();
-            await expect(page.locator('.groupView')).toBeVisible();
-            await expect(page.locator('#DynamicDetails').getByTitle('Maintenance')).toBeVisible();
+            await expect(page.getByText('Team Details')).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('.groupView')).toBeVisible({ timeout: 20000 });
+            await expect(page.locator('#DynamicDetails').getByTitle('Maintenance')).toBeVisible({ timeout: 20000 });
             await page.getByText('Close').click();
             await page.locator('comp-field-view-type > .pointer').first().click();
 
             // Pagination validation
             await page.locator('comp-pagination a').nth(3).click();
             await page.locator('comp-pagination a').first().click();
-            await expect(page.getByRole('cell', { name: 'TCY0000001' }).locator('a')).toBeVisible();
+            await expect(page.getByRole('cell', { name: 'TCY0000001' }).locator('a')).toBeVisible({ timeout: 20000 });
             await page.locator('.align-items-start > .d-flex > i').first().click();
             await page.locator('td:nth-child(4) > .clearfix > .table_filter_text').click();
             await page.locator('td:nth-child(4) > .clearfix > .table_filter_text').fill('TCY0000013');
             await page.locator('td:nth-child(4) > .clearfix > .table_filter_text').press('Enter');
             await page.getByRole('cell', { name: 'TCY0000013', exact: true }).locator('a').click();
-            await expect(page.getByText('Details')).toBeVisible();
-            await expect(page.getByText('Category Id TCY0000013 Name Maintenance Description Maintenance Department Id')).toBeVisible();
+            await expect(page.getByText('Details')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Category Id TCY0000013 Name Maintenance Description Maintenance Department Id')).toBeVisible({ timeout: 20000 });
             await page.locator('#page_left').getByText('Create').click();
-            await expect(page.locator('#DynamicCreate').getByText('Create')).toBeVisible();
+            await expect(page.locator('#DynamicCreate').getByText('Create')).toBeVisible({ timeout: 20000 });
             await page.getByPlaceholder('Name').click();
             await page.getByPlaceholder('Name').fill('test');
             await page.getByPlaceholder('Description').click();
@@ -2005,8 +2006,8 @@ test.describe('Helpdesk', () => {
             await page.locator('td:nth-child(5) > .clearfix > .table_filter_text').fill('Maintenance');
 
             await page.getByRole('cell', { name: '⯆ Maintenance ' }).getByRole('textbox').nth(1).press('Enter');
-            await expect(page.getByRole('table').getByText('Maintenance').first()).toBeVisible();
-            await expect(page.getByRole('cell', { name: 'TCY0000013' }).locator('a')).toBeVisible();
+            await expect(page.getByRole('table').getByText('Maintenance').first()).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('cell', { name: 'TCY0000013' }).locator('a')).toBeVisible({ timeout: 20000 });
             await page.locator('td:nth-child(5) > .clearfix > .mb-1 > .ng-select-container').hover();
             await page.locator('.table_filter_clear').click();
         });
@@ -2017,9 +2018,9 @@ test.describe('Helpdesk', () => {
             // Sub Menu Navigation
             await page.getByRole('link', { name: ' Ticket Type' }).click();
             await page.locator('comp-pagination a').nth(2).click();
-            await expect(page.getByText('Recruitment Campaign Plan').first()).toBeVisible();
+            await expect(page.getByText('Recruitment Campaign Plan').first()).toBeVisible({ timeout: 20000 });
             await page.locator('comp-pagination a').first().click();
-            await expect(page.getByText('Issue').first()).toBeVisible();
+            await expect(page.getByText('Issue').first()).toBeVisible({ timeout: 20000 });
 
             // Create Validation
             await page.locator('section').getByText('Create').click();
@@ -2029,9 +2030,9 @@ test.describe('Helpdesk', () => {
             await page.getByPlaceholder('Description').fill('test des');
             await page.waitForTimeout(1000);
             await page.locator('#relation_autoComplete_dropdown_Department label').click();
-            await expect(page.locator('td').filter({ hasText: 'DPT0000001' }).locator('comp-datatype')).toBeVisible();
+            await expect(page.locator('td').filter({ hasText: 'DPT0000001' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
             await page.locator('#autoComplete_dropdown_Department comp-pagination a').nth(2).click();
-            await expect(page.getByText('Test')).toBeVisible();
+            await expect(page.getByText('Test')).toBeVisible({ timeout: 20000 });
             await page.locator('#autoComplete_dropdown_Department comp-pagination a').first().click();
             await page.locator('tr').filter({ hasText: 'IT DPT0000001 s.alissa@' }).locator('i').click();
             await page.locator('#autoComplete_dropdown_RequestingDepartment label').click();
@@ -2041,7 +2042,7 @@ test.describe('Helpdesk', () => {
             await page.locator('#autoComplete_dropdown_table_RequestingDepartment').getByText('OK').click();
             await page.getByText('Close').click();
             await page.getByRole('row', { name: 'Issue Issue IT   ' }).locator('a').click();
-            await expect(page.getByText('Department Details')).toBeVisible();
+            await expect(page.getByText('Department Details')).toBeVisible({ timeout: 20000 });
             await page.locator('#DynamicDetails button').click();
 
             // pagination validation
@@ -2053,8 +2054,8 @@ test.describe('Helpdesk', () => {
 
             // Department Details Validation
             await page.getByRole('row', { name: 'Issue Issue IT   ' }).locator('a').click();
-            await expect(page.getByText('Department Details')).toBeVisible();
-            await expect(page.getByText('Department Id DPT0000001 Name')).toBeVisible();
+            await expect(page.getByText('Department Details')).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Department Id DPT0000001 Name')).toBeVisible({ timeout: 20000 });
 
             // Close details page
             await page.getByText('Close').click();

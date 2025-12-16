@@ -14,7 +14,7 @@ test.describe('active-directory login', () => {
         await page1.getByRole('textbox', { name: 'Enter the password for app.' }).fill('Sup@78521');
         await page1.getByRole('button', { name: 'Sign in' }).click(); await page1.getByRole('button', { name: 'Yes' }).click();
         await page.goto('https://portal.mawarid.com.sa/apps4x/#/home');
-        await expect(page.getByText('HomeApplication Support')).toBeVisible();
+        await expect(page.getByRole('heading', { name: 'Home' })).toBeVisible({ timeout: 20000 });
         await expect(page.getByRole('link', { name: 'Customer Support' })).toBeVisible();
         await expect(page.getByRole('link', { name: 'Helpdesk' })).toBeVisible();
 
@@ -32,11 +32,11 @@ test.describe('active-directory login', () => {
         await page.getByRole('button', { name: '' }).click();
 
         // logout 
-        await page.getByRole('listitem').filter({ hasText: 'Application Support Signout' }).getByRole('link').click();
-        await expect(page.getByRole('heading', { name: 'Application Support' })).toBeVisible();
-        await page.getByText('Signout').click();
-        await expect(page.locator('div').filter({ hasText: /^User Name$/ })).toBeVisible();
-        await expect(page.locator('div').filter({ hasText: /^Password$/ })).toBeVisible();
-        await expect(page.locator('form div').filter({ hasText: 'SignInORSign in with Active' }).first()).toBeVisible();
+        await page.getByRole('listitem').filter({ hasText: 'MawaridSign outApplication' }).getByRole('link').click();
+        await expect(page.locator('div').filter({ hasText: /^MawaridSign outApplication Supportapp\.sup@mawarid\.com\.sa$/ }).first()).toBeVisible();
+        await expect(page.getByRole('img', { name: 'profile' })).toBeVisible();
+        await page.getByText('Sign out').click();
+        await expect(page.getByRole('button', { name: 'Sign in with Active Directory' })).toBeVisible();
+        await expect(page.getByRole('button', { name: 'Sign In', exact: true })).toBeVisible();
     });
 });
