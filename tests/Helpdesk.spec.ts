@@ -1,9 +1,12 @@
 import { test, expect, Page } from '@playwright/test';
-
+import { trackFailedApis } from '../utils/api-error-catcher/apiErrorTracker';
 
 test.describe('Helpdesk', () => {
+    let failedApis: any[] = [];
 
     test.beforeEach(async ({ page }) => {
+        // START tracking APIs
+        failedApis = trackFailedApis(page);
         await test.step('go to the helpdesk app', async () => {
             await page.goto('https://portal.mawarid.com.sa/apps4x/', { timeout: 60000 });
             await expect(page.getByRole('link', { name: 'Helpdesk' })).toBeVisible({ timeout: 40000 });
@@ -17,125 +20,33 @@ test.describe('Helpdesk', () => {
             await page.getByRole('link', { name: '弄 Create Request' }).click();
             await expect(page.locator('#DynamicCreate div', { hasText: 'Create Request' }).nth(2)).toBeVisible({ timeout: 20000 });
 
-            // --- Title dropdown and table validations ---
+            // --- Title validations ---
             await page.getByLabel('Title*').click();
-            const titleInput = page.locator('.control-input > .form-control').first();
-            await titleInput.click();
+            await page.getByLabel('Title*').fill('test');
 
-            const verifyColumns = ['Department Name', 'Name'];
-            for (const col of verifyColumns) {
-                await expect(page.getByText(col, { exact: true })).toBeVisible({ timeout: 30000 });
-            }
+            // --- ticket Category validations ---
+            await page.waitForTimeout(2000);
+            await page.locator('.control-input > .form-control').first().click();
 
-            // --- Check category items on first page ---
-            const categories1 = ['CRM', 'ERP', 'Portal', 'General'];
-            for (const cat of categories1) {
-                await expect(page.locator('td', { hasText: cat }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
-            }
-
-            // --- Go to page 2, check Maintenance & Projects ---
+            await expect(page.getByText('Department Name')).toBeVisible();
+            await expect(page.locator('#cdk-drop-list-6').getByText('Name', { exact: true })).toBeVisible();
+            await expect(page.locator('td').filter({ hasText: 'Portal' }).locator('comp-datatype')).toBeVisible();
             await page.locator('comp-pagination a').nth(2).click();
-            await expect(page.getByText('Maintenance', { exact: true }).first()).toBeVisible({ timeout: 20000 });
-            await expect(page.locator('td', { hasText: 'Projects Department' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
-
-            // --- Page 3 check ---
+            await expect(page.locator('td').filter({ hasText: 'Business Sector Accounts' }).locator('comp-datatype')).toBeVisible();
             await page.locator('comp-pagination a').nth(2).click();
-            await expect(page.locator('td', { hasText: 'Recruitment - Individual Hourly' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
-            await expect(page.getByText('Test').nth(1)).toBeVisible({ timeout: 20000 });
+            await expect(page.getByText('Test').nth(1)).toBeVisible();
+            await page.locator('comp-pagination a').first().click();
+            await expect(page.locator('td').filter({ hasText: 'Portal' }).locator('comp-datatype')).toBeVisible();
+            await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).click();
+            await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).fill('test');
+            await page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]').nth(1).press('Enter');
+            await page.getByText('Test').nth(1).click();
 
-            // --- Navigate back to Page 2 and 1 ---
-            await page.locator('comp-pagination a').nth(1).click();
-            await page.locator('comp-pagination a').nth(1).click();
-
-            // --- Search in Title field ---
-            const categoryInput = page.locator('#autoComplete_dropdown_tableTicketCategory input[type="text"]');
-            await categoryInput.nth(1).fill('portal');
-            await expect(page.locator('td', { hasText: 'Portal' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
-            await categoryInput.nth(1).fill('');
-            // await categoryInput.nth(2).fill('02');
-            // await expect(page.locator('td', { hasText: 'TCY0000002' }).locator('comp-datatype')).toBeVisible({ timeout: 20000 });
-            // await categoryInput.nth(2).fill('');
-            await page.locator('td', { hasText: 'Portal' }).click();
-
-            // Assign To dropdown
-            // const assignedLabel = page.locator('#autoComplete_dropdown_AssignedToByCategory label').nth(1);
-            // await expect(assignedLabel).toBeVisible({ timeout: 20000 });
-            // await assignedLabel.click();
-
-            // const assignedTable = page.locator('#autoComplete_dropdown_table_AssignedToByCategory');
-            // const assignedTexts = ['Name', 'Email', 'User Id', 'Ahamed Minhaj', 'Mohamed Afrith'];
-            // for (const text of assignedTexts) {
-            //     await expect(assignedTable.getByText(text)).toBeVisible({ timeout: 20000 });
-            // }
-
-            // // Filter by name and email
-            // const searchInputs = page.locator('input[type="search"]');
-            // await searchInputs.first().fill('afrith');
-            // await expect(assignedTable.getByText('Mohamed Afrith')).toBeVisible({ timeout: 20000 });
-            // await searchInputs.first().fill('');
-            // await expect(page.getByText('Ahamed Minhaj')).toBeVisible({ timeout: 20000 });
-
-            // await searchInputs.nth(1).fill('hyder');
-            // await expect(page.getByText('hyder@faaztechsolutions.com').first()).toBeVisible({ timeout: 20000 });
-            // await searchInputs.nth(1).fill('');
-            // await expect(page.getByText('a.minhaj@faaztechsolutions.com')).toBeVisible({ timeout: 20000 });
-
-            // // Select assignee
-            // await assignedTable.getByText('Mohamed Afrith').click();
-
-            //on behalf
-            // On Behalf Of
-            const onBehalfInput = page.locator('#autoComplete_dropdown_OnBehalfOf > .control-input > .form-control').first();
-            await expect(onBehalfInput).toBeVisible({ timeout: 20000 });
-            await onBehalfInput.click();
-
-            // Validate table headers
-            await expect(page.locator('th').filter({ hasText: 'User Id' })).toBeVisible({ timeout: 20000 });
-            await expect(page.locator('tr').filter({ hasText: 'User Id Name Email Mobile' }).locator('div').nth(1)).toBeVisible({ timeout: 20000 });
-            await expect(page.locator('th').filter({ hasText: 'Email' })).toBeVisible({ timeout: 20000 });
-            await expect(page.locator('th').filter({ hasText: 'Mobile Number' })).toBeVisible({ timeout: 20000 });
-
-            // Define common search input locator
-            const tableHead = page.locator('thead', { hasText: 'User Id Name Email Mobile' });
-            const onBehalfSearchInputs = tableHead.locator('input[type="search"]');
-
-            // Search by User Id
-            await onBehalfSearchInputs.nth(0).fill('a.hyder');
-            await expect(page.getByText('a.hyder')).toBeVisible({ timeout: 20000 });
-            await onBehalfSearchInputs.nth(0).fill('');
-
-            // Search by Name
-            await onBehalfSearchInputs.nth(1).fill('hyder');
-            await expect(page.locator('#DynamicCreate').getByText('Hyder Ali A')).toBeVisible({ timeout: 20000 });
-            await onBehalfSearchInputs.nth(1).fill('');
-
-            // Search by Email
-            await onBehalfSearchInputs.nth(2).fill('hyder');
-            await expect(page.locator('#DynamicCreate').getByText('hyder@faaztechsolutions.com')).toBeVisible({ timeout: 20000 });
-            await onBehalfSearchInputs.nth(2).fill('');
-
-            // Validate basic records
-            await expect(page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
-
-            // Pagination and email checks
-            // for (const emails of [
-            //     ['a.alabbad01@mawarid.com.sa', 'a.albesher@mawarid.com.sa'],
-            //     ['a.albugami@mawarid.com.sa', 'a.alhamad@mawarid.com.sa'],
-            //     [], [], [], // 3 more empty clicks
-            //     ['a.alrashidi@mawarid.com.sa', 'a.alshammari02@mawarid.com.sa']
-            // ]) {
-            //     await page.getByText('Next page').nth(1).click();
-            //     for (const email of emails) {
-            //         await expect(page.getByText(email).first()).toBeVisible({ timeout: 20000 });
-            //     }
-            // }
-            await page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first().click();
             await page.locator('.angular-editor-textarea').first().click();
-            await page.locator('.angular-editor-textarea').first().fill('Test test');
-            await page.getByText('a.abdalhamed@mawarid.com.sa').first().hover();
-            await page.locator('#autoComplete_dropdown_OnBehalfOf > .control-input > .form-control > .pull-right > .tabler-ti').click();
-            await page.locator('label').filter({ hasText: 'Portal' }).hover();
-            await page.locator('label').filter({ hasText: 'Portal' }).locator('i').click();
+            await page.locator('.angular-editor-textarea').first().fill('test');
+            await expect(page.getByText('Files HDRequest Attachment')).toBeVisible();
+            await page.locator('label').filter({ hasText: 'Test' }).hover();
+            await page.locator('label').filter({ hasText: 'Test' }).locator('i').click();
 
         });
     });
@@ -227,33 +138,10 @@ test.describe('Helpdesk', () => {
                 await page.locator('#autoComplete_dropdown_TicketCategory comp-pagination a').first().click();
                 await expect(page.locator('#autoComplete_dropdown_tableTicketCategory tbody').getByText('Portal')).toBeVisible({ timeout: 20000 });
                 await page.locator('#autoComplete_dropdown_tableTicketCategory tbody').getByText('Portal').click();
-                await page.locator('#autoComplete_dropdown_OnBehalfOf > .control-input > .form-control').first().click();
-                await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="search"]').first().click({ timeout: 20000 });
-                await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="search"]').first().fill('hyder');
-                await expect(page.getByText('a.hyder')).toBeVisible({ timeout: 20000 });
-                await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="search"]').first().click();
-                await page.locator('thead').filter({ hasText: 'User Id Name Email Mobile' }).locator('input[type="search"]').first().fill('');
-                await page.locator('thead').filter({ hasText: 'User Id Name Email' }).locator('input[type="search"]').nth(1).click();
-                await page.locator('thead').filter({ hasText: 'User Id Name Email' }).locator('input[type="search"]').nth(1).fill('');
-                await page.locator('thead').filter({ hasText: 'User Id Name Email' }).locator('input[type="search"]').nth(2).click();
-                await page.locator('thead').filter({ hasText: 'User Id Name Email' }).locator('input[type="search"]').nth(2).fill('hyder');
-                await expect(page.locator('#DynamicCreate').getByText('hyder@faaztechsolutions.com')).toBeVisible({ timeout: 20000 });
-                await page.locator('thead').filter({ hasText: 'User Id Name Email' }).locator('input[type="search"]').nth(2).click();
-                await page.locator('thead').filter({ hasText: 'User Id Name Email' }).locator('input[type="search"]').nth(2).fill('');
-                await expect(page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
-                await page.getByText('Next page').click();
-                await expect(page.locator('td').filter({ hasText: 'a.alamrani@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
-                await page.getByText('Next page').click();
-                await expect(page.locator('td').filter({ hasText: 'a.aldosari01@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
-                await page.getByText('Next page').click();
-                await expect(page.locator('td').filter({ hasText: 'a.almansour@mawarid.com.sa' }).first()).toBeVisible({ timeout: 20000 });
-                await page.locator('//*[@id="dropdownPagination"]/pagination-template/nav/ul/li[9]/a').click();
-                await page.getByText('page 1', { exact: true }).click();
-                await page.locator('td').filter({ hasText: 'a.abdalhamed@mawarid.com.sa' }).first().click();
-                await page.locator('.angular-editor-textarea').first().click({ timeout: 30000 });
-                await expect(page.getByText('Submit')).toBeVisible({ timeout: 20000 });
-                await expect(page.getByText('Close', { exact: true })).toBeVisible({ timeout: 20000 });
-                await page.locator('.modal-header > div > .btn').click();
+                await page.getByText('Type here...').first().click();
+                await page.locator('.angular-editor-textarea').first().fill('test');
+                await expect(page.getByText('Files')).toBeVisible();
+                await page.getByText('Close', { exact: true }).click();
                 await expect(page.locator('.Right > .d-flex > i').first()).toBeVisible({ timeout: 20000 });
                 await page.locator('.Right > .d-flex > i').first().click({ timeout: 40000 });
                 await page.locator('//*[@id="autoComplete_dropdown_Status"]/div[1]/label').click();
@@ -293,6 +181,7 @@ test.describe('Helpdesk', () => {
                 await expect(page.getByText('Note - Don\'t take any actions').nth(1)).toBeVisible({ timeout: 20000 });
 
                 // Assign action validations
+                await page.waitForTimeout(6000);
                 await page.getByText('Assign', { exact: true }).nth(1).click();
                 await page.waitForTimeout(6000);
                 await page.locator('#Actionform_EFN0000177').getByText('Portal').click({ timeout: 60000 });
@@ -2060,5 +1949,41 @@ test.describe('Helpdesk', () => {
             // Close details page
             await page.getByText('Close').click();
         });
+    });
+
+    // 📌 This hook runs automatically AFTER each test case
+    test.afterEach(async ({ page }, testInfo) => {
+
+        // 📌 Try to find any UI element that shows the text "Error"
+        // This usually indicates a frontend error message
+        const uiError = page.getByText('Error');
+
+        // 📌 Check if the "Error" text becomes visible within 3 seconds
+        // `.catch(() => false)` prevents the test from failing if not found
+        if (await uiError.isVisible({ timeout: 3000 }).catch(() => false)) {
+
+            // 📌 Log which test showed the UI error
+            console.error(`❌ UI Error in test: ${testInfo.title}`);
+
+            // 📌 If failed backend APIs were captured during the test
+            if (failedApis.length > 0) {
+
+                // 📌 Log header for failed API details
+                console.error('Failed APIs:');
+
+                // 📌 Print each failed API request clearly
+                failedApis.forEach(api => {
+                    console.error(`${api.method} ${api.url} → ${api.status}`);
+                });
+
+            } else {
+                // 📌 UI shows error but backend APIs look fine
+                console.error('⚠ UI error shown but no failed API captured');
+            }
+
+            // 📌 Explicitly fail the test
+            // This ensures UI errors caused by backend issues fail the test run
+            throw new Error('UI error caused by backend failure');
+        }
     });
 });

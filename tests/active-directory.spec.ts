@@ -1,8 +1,18 @@
 import { test, expect, Page } from '@playwright/test';
+import { trackFailedApis } from '../utils/api-error-catcher/apiErrorTracker';
 
 test.describe('active-directory login', () => {
+
+    let failedApis: any[] = [];
+
+    test.beforeEach(async ({ page }) => {
+        // START tracking APIs
+        failedApis = trackFailedApis(page);
+        await test.step('go to the login page', async () => {
+            await page.goto('https://portal.mawarid.com.sa/apps4x/#/login', { timeout: 60000 });
+        });
+    });
     test('AD login', async ({ page }) => {
-        await page.goto('https://portal.mawarid.com.sa/apps4x/#/login');
         await expect(page.getByRole('button', { name: 'Sign in with Active Directory' })).toBeVisible();
         const page1Promise = page.waitForEvent('popup');
         await page.getByRole('button', { name: 'Sign in with Active Directory' }).click();
@@ -38,5 +48,41 @@ test.describe('active-directory login', () => {
         await page.getByText('Sign out').click();
         await expect(page.getByRole('button', { name: 'Sign in with Active Directory' })).toBeVisible();
         await expect(page.getByRole('button', { name: 'Sign In', exact: true })).toBeVisible();
+    });
+
+    // 📌 This hook runs automatically AFTER each test case
+    test.afterEach(async ({ page }, testInfo) => {
+
+        // 📌 Try to find any UI element that shows the text "Error"
+        // This usually indicates a frontend error message
+        const uiError = page.getByText('Error');
+
+        // 📌 Check if the "Error" text becomes visible within 3 seconds
+        // `.catch(() => false)` prevents the test from failing if not found
+        if (await uiError.isVisible({ timeout: 3000 }).catch(() => false)) {
+
+            // 📌 Log which test showed the UI error
+            console.error(`❌ UI Error in test: ${testInfo.title}`);
+
+            // 📌 If failed backend APIs were captured during the test
+            if (failedApis.length > 0) {
+
+                // 📌 Log header for failed API details
+                console.error('Failed APIs:');
+
+                // 📌 Print each failed API request clearly
+                failedApis.forEach(api => {
+                    console.error(`${api.method} ${api.url} → ${api.status}`);
+                });
+
+            } else {
+                // 📌 UI shows error but backend APIs look fine
+                console.error('⚠ UI error shown but no failed API captured');
+            }
+
+            // 📌 Explicitly fail the test
+            // This ensures UI errors caused by backend issues fail the test run
+            throw new Error('UI error caused by backend failure');
+        }
     });
 });
